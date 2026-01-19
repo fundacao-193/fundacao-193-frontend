@@ -1,0 +1,166 @@
+import { useState } from 'react';
+import { Menu, X, ChevronDown } from 'lucide-react';
+
+export default function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const navItems = [
+    { label: 'Início', href: '#inicio' },
+    {
+      label: 'Institucional',
+      dropdown: [
+        { label: 'Quem Somos', href: '#quem-somos' },
+        { label: 'Nossa História', href: '#nossa-historia' },
+        { label: 'Missão e Valores', href: '#missao-valores' },
+        { label: 'Equipe', href: '#equipe' },
+      ]
+    },
+    {
+      label: 'Atuação',
+      dropdown: [
+        { label: 'Projetos', href: '#projetos' },
+        { label: 'Capacitação', href: '#capacitacao' },
+        { label: 'Eventos', href: '#eventos' },
+        { label: 'Parcerias', href: '#parcerias' },
+      ]
+    },
+    {
+      label: 'Transparência',
+      dropdown: [
+        { label: 'Prestação de Contas', href: '#prestacao-contas' },
+        { label: 'Editais', href: '#editais' },
+        { label: 'Documentos', href: '#documentos' },
+        { label: 'LGPD', href: '#lgpd' },
+      ]
+    },
+    { label: 'Impacto', href: '#impacto' },
+    { label: 'Notícias', href: '#noticias' },
+    { label: 'Contato', href: '#contato' },
+  ];
+
+  return (
+    <header className="bg-white shadow-md sticky top-0 z-50">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo-reduzida.png"
+                alt="Fundação 193 Logo"
+                className="h-12 w-auto"
+              />
+              <div>
+                <h1 className="text-xl font-bold text-neutral-900">Fundação 193</h1>
+                <p className="text-xs text-neutral-600">Instituição de Apoio ao CBMDF</p>
+              </div>
+            </div>
+
+            <div className="hidden lg:flex items-center space-x-6">
+              {navItems.map((item) => (
+                'dropdown' in item ? (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(item.label)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    <button className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2">
+                      {item.label}
+                      <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openDropdown === item.label && (
+                      <div className="absolute top-full left-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                        {item.dropdown.map((subItem) => (
+                          <a
+                            key={subItem.href}
+                            href={subItem.href}
+                            className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-[#3d685d] transition-colors"
+                          >
+                            {subItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                )
+              ))}
+              <a
+                href="#contato"
+                className="bg-[#3d685d] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
+              >
+                Colabore
+              </a>
+            </div>
+
+            <button
+              className="lg:hidden p-2"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </nav>
+
+        {isMenuOpen && (
+          <div className="lg:hidden bg-white border-t">
+            <div className="px-4 py-4 space-y-2">
+              {navItems.map((item) => (
+                'dropdown' in item ? (
+                  <div key={item.label}>
+                    <button
+                      onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
+                      className="flex items-center justify-between w-full py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                    >
+                      {item.label}
+                      <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openDropdown === item.label && (
+                      <div className="pl-4 space-y-1 mt-1">
+                        {item.dropdown.map((subItem) => (
+                          <a
+                            key={subItem.href}
+                            href={subItem.href}
+                            className="block py-2 text-sm text-neutral-600 hover:text-[#3d685d] transition-colors"
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              setOpenDropdown(null);
+                            }}
+                          >
+                            {subItem.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="block py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                )
+              ))}
+              <a
+                href="#contato"
+                className="block bg-[#3d685d] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2f5349] transition-colors text-center mt-4"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Colabore
+              </a>
+            </div>
+          </div>
+        )}
+      </header>
+  );
+}
