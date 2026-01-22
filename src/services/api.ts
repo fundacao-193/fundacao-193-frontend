@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_WP_API_URL;
 
 /**
- * Funcao base para qualquer requisicao na API
+ * Funcao base generica para requisicoes na API
  */
 async function fetchAPI<T>(endpoint: string): Promise<T> {
   const response = await fetch(`${API_URL}/${endpoint}`);
@@ -14,30 +14,14 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
 }
 
 /**
- * Tipos (vai para o front)
+ * Endpoints da API
  */
-export interface Noticia {
-  id: number;
-  date: string;
-  title: {
-    rendered: string;
-  };
-  excerpt: {
-    rendered: string;
-  };
-  acf?: {
-    featured_image?: number;
-    category?: string;
-  };
+import { News } from '../types/news';
+
+export function fetchNoticias(): Promise<News[]> {
+  return fetchAPI<News[]>('noticia');
 }
 
-/**
- * Endpoints
- */
-export function fetchNoticias() {
-  return fetchAPI<Noticia[]>('noticia');
-}
-
-export function fetchProjetos() {
+export function fetchProjetos(): Promise<any[]> {
   return fetchAPI<any[]>('projeto');
 }
