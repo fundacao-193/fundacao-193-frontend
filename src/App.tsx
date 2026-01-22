@@ -20,6 +20,7 @@ import Accounts from './components/pages/Accounts';
 import Edits from './components/pages/Edits';
 import Documents from './components/pages/Documents';
 import LGPD from './components/pages/LGPD';
+import { fetchProjetos } from './services/api';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<string | null>(null);
@@ -85,5 +86,17 @@ function App() {
     </div>
   );
 }
+
+//function App() {
+//  useEffect(() => {
+//    fetchProjetos().then(data => {
+//      console.log('Projetos:', data);
+//    });
+//  }, []);
+//
+// return <h1>Fundacao 193</h1>;
+//}
+
+
 
 export default App;
