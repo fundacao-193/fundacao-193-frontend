@@ -1,6 +1,6 @@
 import { ArrowLeft, Lock, Eye, Users, Shield } from 'lucide-react';
 
-export default function LGPD({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function LGPD() {
   const principles = [
     {
       icon: Lock,

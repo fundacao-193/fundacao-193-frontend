@@ -1,6 +1,6 @@
 import { ArrowLeft, Globe, Building2, Users, Zap } from 'lucide-react';
 
-export default function OurPartnerships({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function OurPartnerships() {
   const partners = [
     {
       category: 'Instituições Governamentais',

@@ -1,6 +1,6 @@
 import { ArrowLeft, Download, TrendingUp, BarChart3 } from 'lucide-react';
 
-export default function Accounts({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Accounts() {
   const reports = [
     {
       year: 2023,

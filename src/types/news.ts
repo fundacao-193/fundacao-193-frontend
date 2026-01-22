@@ -1,7 +1,7 @@
 /**
  * Tipo que representa uma Noticia vinda da API do WordPress
  */
-export interface News {
+export interface news {
   id: number;
   date: string;
   title: {

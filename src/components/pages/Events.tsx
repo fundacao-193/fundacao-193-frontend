@@ -1,6 +1,6 @@
 import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-react';
 
-export default function Events({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Events() {
   const upcomingEvents = [
     {
       title: 'Simpósio Internacional de Gestão de Emergências',

@@ -1,6 +1,6 @@
 import { ArrowLeft, Target, Heart, Lightbulb, Users, Shield, Zap } from 'lucide-react';
 
-export default function MissionValues({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function MissionValues() {
   const values = [
     {
       icon: Target,

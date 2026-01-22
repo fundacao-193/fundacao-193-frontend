@@ -1,6 +1,6 @@
 import { ArrowLeft, FileText, Download, Folder } from 'lucide-react';
 
-export default function Documents({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Documents() {
   const documentCategories = [
     {
       name: 'Documentos Institucionais',

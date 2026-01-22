@@ -3,6 +3,7 @@ const API_URL = import.meta.env.VITE_WP_API_URL;
 /**
  * Funcao base generica para requisicoes na API
  */
+
 async function fetchAPI<T>(endpoint: string): Promise<T> {
   const response = await fetch(`${API_URL}/${endpoint}`);
 
@@ -13,15 +14,15 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
   return response.json();
 }
 
-/**
- * Endpoints da API
- */
-import { News } from '../types/news';
+// Imports dos tipos
+import { news } from '../types/news';
+import { Project } from '../types/projects';
 
-export function fetchNoticias(): Promise<News[]> {
-  return fetchAPI<News[]>('noticia');
+export function fetchNoticias() {
+  return fetchAPI<news[]>('noticia');
 }
 
-export function fetchProjetos(): Promise<any[]> {
-  return fetchAPI<any[]>('projeto');
+export function fetchProjetos() {
+  return fetchAPI<Project[]>('projeto');
 }
+

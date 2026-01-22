@@ -1,6 +1,6 @@
 import { ArrowLeft, BookOpen, Users, Award, Zap } from 'lucide-react';
 
-export default function Training({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Training() {
   const programs = [
     {
       title: 'Combate a Incêndios Avançado',

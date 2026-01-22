@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 import Hero from './components/Hero';
 import About from './components/About';
 import Services from './components/Services';
@@ -9,6 +10,7 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
+
 import OurStory from './components/pages/OurStory';
 import MissionValues from './components/pages/MissionValues';
 import Team from './components/pages/Team';
@@ -20,48 +22,64 @@ import Accounts from './components/pages/Accounts';
 import Edits from './components/pages/Edits';
 import Documents from './components/pages/Documents';
 import LGPD from './components/pages/LGPD';
-import { fetchProjetos } from './services/api';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<string | null>(null);
+  // State que representa a pagina atual baseada no hash
+  const [currentPage, setCurrentPage] = useState<string>(() => {
+    return window.location.hash.replace('#', '') || 'home';
+  });
 
+  // Escuta mudancas no hash da URL
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    setCurrentPage(hash || null);
-
     const handleHashChange = () => {
-      const newHash = window.location.hash.slice(1);
-      setCurrentPage(newHash || null);
+      const hash = window.location.hash.replace('#', '') || 'home';
+      setCurrentPage(hash);
     };
 
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, []);
 
+  // Renderiza a pagina com base no hash atual
   const renderPage = () => {
     switch (currentPage) {
       case 'nossa-historia':
-        return <OurStory onNavigate={setCurrentPage} />;
+        return <OurStory />;
+
       case 'missao-valores':
-        return <MissionValues onNavigate={setCurrentPage} />;
+        return <MissionValues />;
+
       case 'equipe':
-        return <Team onNavigate={setCurrentPage} />;
+        return <Team />;
+
       case 'projetos':
-        return <Projects onNavigate={setCurrentPage} />;
+        return <Projects />;
+
       case 'capacitacao':
-        return <Training onNavigate={setCurrentPage} />;
+        return <Training />;
+
       case 'eventos':
-        return <Events onNavigate={setCurrentPage} />;
+        return <Events />;
+
       case 'parcerias':
-        return <OurPartnerships onNavigate={setCurrentPage} />;
+        return <OurPartnerships />;
+
       case 'prestacao-contas':
-        return <Accounts onNavigate={setCurrentPage} />;
+        return <Accounts />;
+
       case 'editais':
-        return <Edits onNavigate={setCurrentPage} />;
+        return <Edits />;
+
       case 'documentos':
-        return <Documents onNavigate={setCurrentPage} />;
+        return <Documents />;
+
       case 'lgpd':
-        return <LGPD onNavigate={setCurrentPage} />;
+        return <LGPD />;
+
+      case 'home':
       default:
         return (
           <>
@@ -86,17 +104,5 @@ function App() {
     </div>
   );
 }
-
-//function App() {
-//  useEffect(() => {
-//    fetchProjetos().then(data => {
-//      console.log('Projetos:', data);
-//    });
-//  }, []);
-//
-// return <h1>Fundacao 193</h1>;
-//}
-
-
 
 export default App;

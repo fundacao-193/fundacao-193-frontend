@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Calendar, ArrowRight } from 'lucide-react';
 
-import { fetchNoticias, Noticia } from '../services/api';
+import { fetchNoticias } from '../services/api';
+import type { news } from '../types/news';
+
 
 export default function News() {
   // Estado para guardar as noticias vindas da API
-  const [news, setNews] = useState<Noticia[]>([]);
+  const [news, setNews] = useState<news[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +18,7 @@ export default function News() {
         const data = await fetchNoticias();
         setNews(data);
       } catch (err) {
+        console.error(err);
         setError('Erro ao carregar notícias');
       } finally {
         setLoading(false);

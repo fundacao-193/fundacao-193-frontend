@@ -1,6 +1,6 @@
 import { ArrowLeft, Calendar, FileText, Download } from 'lucide-react';
 
-export default function Edits({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Edits() {
   const edits = [
     {
       year: 2024,

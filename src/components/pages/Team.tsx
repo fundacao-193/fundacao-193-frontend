@@ -1,6 +1,6 @@
 import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
 
-export default function Team({ onNavigate }: { onNavigate: (page: string | null) => void }) {
+export default function Team() {
   const teamMembers = [
     {
       name: 'Dr. Carlos Fernando',
