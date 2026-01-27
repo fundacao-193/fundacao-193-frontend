@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 
 export default function FloatingActions() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -24,6 +25,21 @@ export default function FloatingActions() {
     }
   }, []);
 
+  const handleToggle = () => {
+    if (isExpanded) {
+      // animação de saída antes de esconder
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsExpanded(false);
+        setIsClosing(false);
+      }, 200); // precisa combinar com a duração da animação de saída
+    } else {
+      setIsExpanded(true);
+    }
+  };
+
+  const showItems = isExpanded || isClosing;
+
   return (
     <div className="fixed left-6 bottom-6 z-40 flex flex-col items-start gap-3">
       <audio
@@ -33,13 +49,14 @@ export default function FloatingActions() {
         crossOrigin="anonymous"
       />
 
-      {isExpanded && (
+      {showItems && (
         <>
           <a
             href="https://instagram.com/fundacao193"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+            className={`flex items-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
+            style={{ animationDelay: '0s' }}
           >
             <span className="text-sm font-semibold whitespace-nowrap">Instagram</span>
             <Instagram size={20} />
@@ -49,7 +66,8 @@ export default function FloatingActions() {
             href="https://wa.me/5561987654321"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
+            className={`flex items-center gap-3 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
+            style={{ animationDelay: '0.05s' }}
           >
             <span className="text-sm font-semibold whitespace-nowrap">WhatsApp</span>
             <MessageCircle size={20} />
@@ -59,7 +77,8 @@ export default function FloatingActions() {
             onClick={toggleRadio}
             className={`flex items-center gap-3 ${
               isMuted ? 'bg-neutral-600' : 'bg-blue-600'
-            } text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110`}
+            } text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
+            style={{ animationDelay: '0.1s' }}
             title={isMuted ? 'Ativar Rádio' : 'Desativar Rádio'}
           >
             <span className="text-sm font-semibold whitespace-nowrap">Rádio</span>
@@ -69,7 +88,7 @@ export default function FloatingActions() {
       )}
 
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={handleToggle}
         className={`w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center font-bold text-xl ${
           isExpanded
             ? 'bg-neutral-600 text-white hover:bg-neutral-700'

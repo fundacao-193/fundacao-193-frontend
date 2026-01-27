@@ -43,6 +43,49 @@ function App() {
     };
   }, []);
 
+  // Atualiza o título da página (versão do commit da main — mantida)
+  useEffect(() => {
+    const baseTitle = 'Fundação 193';
+
+    switch (currentPage) {
+      case 'nossa-historia':
+        document.title = `Nossa História - ${baseTitle}`;
+        break;
+      case 'missao-valores':
+        document.title = `Missão e Valores - ${baseTitle}`;
+        break;
+      case 'equipe':
+        document.title = `Equipe - ${baseTitle}`;
+        break;
+      case 'projetos':
+        document.title = `Projetos - ${baseTitle}`;
+        break;
+      case 'capacitacao':
+        document.title = `Capacitação - ${baseTitle}`;
+        break;
+      case 'eventos':
+        document.title = `Eventos - ${baseTitle}`;
+        break;
+      case 'parcerias':
+        document.title = `Parcerias - ${baseTitle}`;
+        break;
+      case 'prestacao-contas':
+        document.title = `Prestação de Contas - ${baseTitle}`;
+        break;
+      case 'editais':
+        document.title = `Editais - ${baseTitle}`;
+        break;
+      case 'documentos':
+        document.title = `Documentos - ${baseTitle}`;
+        break;
+      case 'lgpd':
+        document.title = `LGPD - ${baseTitle}`;
+        break;
+      default:
+        document.title = `${baseTitle} - Instituição de Apoio ao CBMDF`;
+    }
+  }, [currentPage]);
+
   // Renderiza a pagina com base no hash atual
   const renderPage = () => {
     switch (currentPage) {
@@ -98,7 +141,9 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      {renderPage()}
+      <div key={currentPage || 'home'} className="page-transition">
+        {renderPage()}
+      </div>
       <Footer />
       <FloatingActions />
     </div>

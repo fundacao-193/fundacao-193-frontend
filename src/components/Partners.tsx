@@ -26,6 +26,19 @@ export default function Partners() {
     return null;
   }
 
+  const extractLogoUrl = (logoValue: unknown): string => {
+    if (!logoValue) return '';
+
+    if (typeof logoValue === 'string') return logoValue;
+
+    if (typeof logoValue === 'object' && logoValue !== null) {
+      const obj = logoValue as Record<string, unknown>;
+      if (typeof obj.url === 'string') return obj.url;
+    }
+
+    return '';
+  };
+
   return (
     <section className="py-16 bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,46 +51,30 @@ export default function Partners() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
-          {partners.map(partner => {
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 items-center">
+          {partners.map((partner) => {
             const name =
               partner.acf?.partner_name ||
               partner.title?.rendered ||
               '';
 
-            const logo = partner.acf?.partner_logo;
+            const logoUrl = extractLogoUrl(partner.acf?.partner_logo);
             const link = partner.acf?.partner_website;
-
-            const extractLogoUrl = (logoValue: unknown): string => {
-              if (!logoValue) return '';
-
-              if (typeof logoValue === 'string') return logoValue;
-
-              if (typeof logoValue === 'object' && logoValue !== null) {
-                const obj = logoValue as Record<string, unknown>;
-                if (typeof obj.url === 'string') return obj.url;
-              }
-
-              return '';
-            };
-
-            const logoUrl = extractLogoUrl(logo);
 
             if (!logoUrl) return null;
 
-            const content = (
+            const image = (
               <img
                 src={logoUrl}
                 alt={name}
                 className="
                   max-w-full
-                  h-16
+                  h-20
+                  md:h-24
                   object-contain
+                  opacity-90
                   transition-all
-                  opacity-80
-                  brightness-95
                   hover:opacity-100
-                  hover:brightness-100
                 "
                 onError={(e) => {
                   console.error('Erro ao carregar logo:', logoUrl);
@@ -91,14 +88,17 @@ export default function Partners() {
                 key={partner.id}
                 className="
                   bg-white
-                  rounded-lg
-                  p-6
+                  rounded-xl
+                  px-6
+                  py-5
                   flex
                   items-center
                   justify-center
-                  transition-all
+                  shadow-sm
                   hover:shadow-md
-                  hover:-translate-y-0.5
+                  hover:-translate-y-1
+                  transition-all
+                  duration-200
                 "
               >
                 {link ? (
@@ -108,12 +108,10 @@ export default function Partners() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center w-full h-full"
                   >
-                    {content}
+                    {image}
                   </a>
                 ) : (
-                  <div className="flex items-center justify-center w-full h-full">
-                    {content}
-                  </div>
+                  image
                 )}
               </div>
             );

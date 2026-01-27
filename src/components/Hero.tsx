@@ -1,6 +1,20 @@
+import { MouseEvent } from 'react';
 import { ArrowRight, Heart } from 'lucide-react';
 
 export default function Hero() {
+  const handleScrollClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) return;
+
+    const targetId = href.slice(1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.pushState(null, '', href);
+    }
+  };
+
   return (
     <section id="inicio" className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-[#3d685d] text-white overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1661806/pexels-photo-1661806.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-20"></div>
@@ -28,6 +42,7 @@ export default function Hero() {
             <a
               href="#quem-somos"
               className="inline-flex items-center justify-center gap-2 bg-[#3d685d] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#2f5349] transition-all hover:shadow-lg hover:shadow-[#3d685d]/30"
+              onClick={(event) => handleScrollClick(event, '#quem-somos')}
             >
               Conheça a Fundação
               <ArrowRight size={20} />
@@ -35,6 +50,7 @@ export default function Hero() {
             <a
               href="#areas"
               className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition-all"
+              onClick={(event) => handleScrollClick(event, '#areas')}
             >
               Nossos Projetos
             </a>
