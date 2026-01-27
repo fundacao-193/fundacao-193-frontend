@@ -1,11 +1,38 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  const navItems = [
+  const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith('#')) return;
+
+    const targetId = href.slice(1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      event.preventDefault();
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.pushState(null, '', href);
+    }
+  };
+
+  type NavItem =
+    | {
+        label: string;
+        href: string;
+      }
+    | {
+        label: string;
+        dropdown: { label: string; href: string }[];
+      };
+
+  const hasDropdown = (item: NavItem): item is Extract<NavItem, { dropdown: any }> => {
+    return 'dropdown' in item;
+  };
+
+  const navItems: NavItem[] = [
     { label: 'Início', href: '#inicio' },
     {
       label: 'Institucional',
@@ -43,7 +70,7 @@ export default function Header() {
     <header className="bg-white shadow-md sticky top-0 z-50">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 header-logo-animate">
               <img
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
@@ -57,7 +84,7 @@ export default function Header() {
 
             <div className="hidden lg:flex items-center space-x-6">
               {navItems.map((item) => (
-                'dropdown' in item ? (
+                hasDropdown(item) ? (
                   <div
                     key={item.label}
                     className="relative"
@@ -69,12 +96,13 @@ export default function Header() {
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     {openDropdown === item.label && (
-                      <div className="absolute top-full left-0 mt-1 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                      <div className="absolute top-full left-0 mt-0 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
                         {item.dropdown.map((subItem) => (
                           <a
                             key={subItem.href}
                             href={subItem.href}
                             className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-[#3d685d] transition-colors"
+                            onClick={(event) => handleNavClick(event, subItem.href)}
                           >
                             {subItem.label}
                           </a>
@@ -87,6 +115,7 @@ export default function Header() {
                     key={item.href}
                     href={item.href}
                     className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                    onClick={(event) => handleNavClick(event, item.href)}
                   >
                     {item.label}
                   </a>
@@ -113,7 +142,7 @@ export default function Header() {
           <div className="lg:hidden bg-white border-t">
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
-                'dropdown' in item ? (
+                hasDropdown(item) ? (
                   <div key={item.label}>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
@@ -129,7 +158,8 @@ export default function Header() {
                             key={subItem.href}
                             href={subItem.href}
                             className="block py-2 text-sm text-neutral-600 hover:text-[#3d685d] transition-colors"
-                            onClick={() => {
+                            onClick={(event) => {
+                              handleNavClick(event, subItem.href);
                               setIsMenuOpen(false);
                               setOpenDropdown(null);
                             }}
@@ -145,7 +175,10 @@ export default function Header() {
                     key={item.href}
                     href={item.href}
                     className="block py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(event) => {
+                      handleNavClick(event, item.href);
+                      setIsMenuOpen(false);
+                    }}
                   >
                     {item.label}
                   </a>

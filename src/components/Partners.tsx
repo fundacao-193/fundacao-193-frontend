@@ -1,11 +1,11 @@
 export default function Partners() {
   const partners = [
-    { name: 'CBMDF', logo: 'https://via.placeholder.com/150x60/dc2626/ffffff?text=CBMDF' },
-    { name: 'GDF', logo: 'https://via.placeholder.com/150x60/991b1b/ffffff?text=GDF' },
-    { name: 'Parceiro 1', logo: 'https://via.placeholder.com/150x60/7f1d1d/ffffff?text=Parceiro+1' },
-    { name: 'Parceiro 2', logo: 'https://via.placeholder.com/150x60/dc2626/ffffff?text=Parceiro+2' },
-    { name: 'Parceiro 3', logo: 'https://via.placeholder.com/150x60/991b1b/ffffff?text=Parceiro+3' },
-    { name: 'Parceiro 4', logo: 'https://via.placeholder.com/150x60/7f1d1d/ffffff?text=Parceiro+4' },
+    { name: 'Bonamix', logo: '/bonamix-300x180.png' },
+    { name: 'Parceiro 1', logo: '/Design-sem-nome-17-300x225.png' },
+    { name: 'Parceiro 2', logo: '/Design-sem-nome-18-300x225.png' },
+    { name: 'Parceiro 3', logo: '/Design-sem-nome-21-300x188.png' },
+    { name: 'Parceiro 4', logo: '/Design-sem-nome-32-300x188.png' },
+    { name: 'Parceiro 5', logo: '/O86YKgNIAzDFCqeeaeHMl5zPyI.avif' },
   ];
 
   return (
@@ -20,16 +20,16 @@ export default function Partners() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-10 items-center">
           {partners.map((partner, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg p-6 flex items-center justify-center hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl px-6 py-5 flex items-center justify-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200"
             >
               <img
                 src={partner.logo}
                 alt={partner.name}
-                className="max-w-full h-12 object-contain grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100"
+                className="max-w-full h-20 md:h-24 object-contain"
               />
             </div>
           ))}

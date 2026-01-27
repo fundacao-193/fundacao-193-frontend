@@ -1,3 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.page-transition {
+  animation: pageFadeInUp 0.4s ease-out;
+}
+
+@keyframes pageFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fab-item {
+  transform-origin: left center;
+}
+
+.fab-item-open {
+  animation: fabSlideIn 0.25s ease-out both;
+}
+
+.fab-item-close {
+  animation: fabSlideOut 0.2s ease-in both;
+}
+
+@keyframes fabSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fabSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+}
+
+.header-logo-animate {
+  animation: headerLogoFadeIn 0.5s ease-out;
+}
+
+.header-logo-animate img {
+  transition: transform 0.2s ease-out, filter 0.2s ease-out;
+}
+
+.header-logo-animate:hover img {
+  transform: translateY(-1px) scale(1.03);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+}
+
+@keyframes headerLogoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
