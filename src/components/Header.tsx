@@ -1,11 +1,17 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Se for #colabore, deixa navegar normalmente (é uma página)
+    if (href === '#colabore') {
+      return; // Deixa o hashchange do App.tsx lidar
+    }
+    
     if (!href.startsWith('#')) return;
 
     const targetId = href.slice(1);
@@ -89,14 +95,46 @@ export default function Header() {
                     key={item.label}
                     className="relative"
                     onMouseEnter={() => setOpenDropdown(item.label)}
-                    onMouseLeave={() => setOpenDropdown(null)}
+                    onMouseLeave={(e) => {
+                      // Verifica se o mouse está indo para o dropdown
+                      const relatedTarget = e.relatedTarget as HTMLElement;
+                      const dropdownElement = dropdownRefs.current[item.label];
+                      
+                      // Se o mouse está indo para o dropdown ou seus filhos, não fecha
+                      if (dropdownElement && dropdownElement.contains(relatedTarget)) {
+                        return;
+                      }
+                      
+                      // Pequeno delay para evitar fechamento acidental
+                      setTimeout(() => {
+                        setOpenDropdown((current) => {
+                          if (current === item.label && !dropdownElement?.contains(document.activeElement)) {
+                            return null;
+                          }
+                          return current;
+                        });
+                      }, 100);
+                    }}
                   >
                     <button className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2">
                       {item.label}
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
+                    
+                    {/* GAP INVISÍVEL entre botão e dropdown */}
+                    <div className="absolute top-full left-0 w-full h-2" />
+                    
                     {openDropdown === item.label && (
-                      <div className="absolute top-full left-0 mt-0 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50">
+                      <div
+                        ref={(el) => { dropdownRefs.current[item.label] = el; }}
+                        className="absolute top-full left-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50"
+                        onMouseEnter={() => setOpenDropdown(item.label)}
+                        onMouseLeave={() => {
+                          setTimeout(() => {
+                            setOpenDropdown(null);
+                          }, 100);
+                        }}
+                      >
                         {item.dropdown.map((subItem) => (
                           <a
                             key={subItem.href}
@@ -122,7 +160,7 @@ export default function Header() {
                 )
               ))}
               <a
-                href="#contato"
+                href="#colabore"
                 className="bg-[#3d685d] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
               >
                 Colabore
@@ -185,7 +223,7 @@ export default function Header() {
                 )
               ))}
               <a
-                href="#contato"
+                href="#colabore"
                 className="block bg-[#3d685d] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2f5349] transition-colors text-center mt-4"
                 onClick={() => setIsMenuOpen(false)}
               >

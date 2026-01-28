@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import Hero from './components/Hero';
 import About from './components/About';
 import Services from './components/Services';
@@ -10,7 +9,6 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
-
 import OurStory from './components/pages/OurStory';
 import MissionValues from './components/pages/MissionValues';
 import Team from './components/pages/Team';
@@ -22,28 +20,44 @@ import Accounts from './components/pages/Accounts';
 import Edits from './components/pages/Edits';
 import Documents from './components/pages/Documents';
 import LGPD from './components/pages/LGPD';
+import Collaborate from './components/pages/Collaborate';
 
+// logica simples para currentPage
 function App() {
   // State que representa a pagina atual baseada no hash
   const [currentPage, setCurrentPage] = useState<string>(() => {
     return window.location.hash.replace('#', '') || 'home';
   });
 
-  // Escuta mudancas no hash da URL
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Escuta mudancas no hash da URL COM TRANSITIONS
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '') || 'home';
-      setCurrentPage(hash);
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        const hash = window.location.hash.replace('#', '') || 'home';
+        setCurrentPage(hash);
+        
+        // Scroll suave para o topo 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        setIsTransitioning(false);
+      }, 150);
     };
 
     window.addEventListener('hashchange', handleHashChange);
+
+    // Atualiza tambem na carga inicial
+    handleHashChange();
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
 
-  // Atualiza o título da página (versão do commit da main — mantida)
+  // Atualiza o titulo da pagina
   useEffect(() => {
     const baseTitle = 'Fundação 193';
 
@@ -81,6 +95,9 @@ function App() {
       case 'lgpd':
         document.title = `LGPD - ${baseTitle}`;
         break;
+      case 'colabore': // NOVO - do irmão
+        document.title = `Colabore - ${baseTitle}`;
+        break;
       default:
         document.title = `${baseTitle} - Instituição de Apoio ao CBMDF`;
     }
@@ -91,37 +108,28 @@ function App() {
     switch (currentPage) {
       case 'nossa-historia':
         return <OurStory />;
-
       case 'missao-valores':
         return <MissionValues />;
-
       case 'equipe':
         return <Team />;
-
       case 'projetos':
         return <Projects />;
-
       case 'capacitacao':
         return <Training />;
-
       case 'eventos':
         return <Events />;
-
       case 'parcerias':
         return <OurPartnerships />;
-
       case 'prestacao-contas':
         return <Accounts />;
-
       case 'editais':
         return <Edits />;
-
       case 'documentos':
         return <Documents />;
-
       case 'lgpd':
         return <LGPD />;
-
+      case 'colabore':
+        return <Collaborate />;
       case 'home':
       default:
         return (
@@ -141,7 +149,12 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <div key={currentPage || 'home'} className="page-transition">
+      {/* Adiciona transicao suave  */}
+      <div 
+        className={`transition-opacity duration-300 ${
+          isTransitioning ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
         {renderPage()}
       </div>
       <Footer />
