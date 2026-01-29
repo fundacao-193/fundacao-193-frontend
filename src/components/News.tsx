@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, AlertCircle, RotateCw } from 'lucide-react';
 
 import { fetchNoticias } from '../services/api';
 import type { news } from '../types/news';
@@ -12,29 +12,62 @@ export default function News() {
   const [error, setError] = useState<string | null>(null);
 
   // Executa quando o componente carrega
-  useEffect(() => {
-    async function loadNoticias() {
-      try {
-        const data = await fetchNoticias();
-        setNews(data);
-      } catch (err) {
-        console.error(err);
-        setError('Erro ao carregar notícias');
-      } finally {
-        setLoading(false);
-      }
+  const loadNoticias = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchNoticias();
+      setNews(data);
+    } catch (err) {
+      console.error(err);
+      setError('Não conseguimos carregar as notícias no momento. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     loadNoticias();
   }, []);
 
   // Estados visuais basicos
   if (loading) {
-    return <p className="text-center py-20">Carregando notícias...</p>;
+    return (
+      <section id="noticias" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <div className="inline-flex items-center gap-2 text-[#3d685d]">
+              <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+              <p className="text-sm font-medium">Carregando notícias...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   if (error) {
-    return <p className="text-center py-20 text-red-500">{error}</p>;
+    return (
+      <section id="noticias" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-8 flex items-center gap-4">
+            <AlertCircle size={24} className="text-red-600 flex-shrink-0" aria-hidden="true" />
+            <div className="flex-1">
+              <h3 className="font-semibold text-red-900 mb-1">Erro ao carregar notícias</h3>
+              <p className="text-sm text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadNoticias}
+                aria-label="Recarregar notícias"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium focus:outline-2 focus:outline-offset-2 focus:outline-white"
+              >
+                <RotateCw size={16} />
+                Tentar Novamente
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

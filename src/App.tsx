@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import Hero from './components/Hero';
 import About from './components/About';
 import Services from './components/Services';
@@ -147,19 +148,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      {/* Adiciona transicao suave  */}
-      <div 
-        className={`transition-opacity duration-300 ${
-          isTransitioning ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        {renderPage()}
+    <ErrorBoundary>
+      <div className="min-h-screen bg-white">
+        <Header />
+        {/* Adiciona transicao suave  */}
+        <div 
+          className={`transition-opacity duration-300 ${
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {renderPage()}
+        </div>
+        <Footer />
+        <FloatingActions />
       </div>
-      <Footer />
-      <FloatingActions />
-    </div>
+    </ErrorBoundary>
   );
 }
 

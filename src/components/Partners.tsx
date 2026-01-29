@@ -1,28 +1,61 @@
 import { useEffect, useState } from 'react';
+import { AlertCircle, RotateCw } from 'lucide-react';
 import { fetchParceiros } from '../services/api';
 import type { Partner } from '../types/partners';
 
 export default function Partners() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadPartners = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchParceiros();
+      setPartners(data);
+    } catch (err) {
+      console.error('Erro ao carregar parceiros', err);
+      setError('Não conseguimos carregar os parceiros no momento. Tente novamente mais tarde.');
+      setPartners([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function loadPartners() {
-      try {
-        const data = await fetchParceiros();
-        setPartners(data);
-      } catch (error) {
-        console.error('Erro ao carregar parceiros', error);
-        setPartners([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     loadPartners();
   }, []);
 
-  if (loading || partners.length === 0) {
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    return (
+      <section className="py-16 bg-neutral-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-8 flex items-center gap-4 max-w-md mx-auto">
+            <AlertCircle size={24} className="text-red-600 flex-shrink-0" aria-hidden="true" />
+            <div className="flex-1">
+              <h3 className="font-semibold text-red-900 mb-1">Erro ao carregar parceiros</h3>
+              <p className="text-sm text-red-700 mb-4">{error}</p>
+              <button
+                onClick={loadPartners}
+                aria-label="Recarregar parceiros"
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium focus:outline-2 focus:outline-offset-2 focus:outline-white"
+              >
+                <RotateCw size={16} />
+                Tentar Novamente
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (partners.length === 0) {
     return null;
   }
 

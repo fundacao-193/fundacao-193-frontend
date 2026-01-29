@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, RotateCw } from 'lucide-react';
 
 import { fetchEventos } from '../../services/api';
 import type { Event } from '../../types/events';
@@ -40,27 +40,57 @@ export default function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadEvents() {
-      try {
-        const data = await fetchEventos();
-        setEvents(data);
-      } catch {
-        setError('Erro ao carregar eventos');
-      } finally {
-        setLoading(false);
-      }
+  const loadEvents = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchEventos();
+      setEvents(data);
+    } catch (err) {
+      console.error(err);
+      setError('Não conseguimos carregar os eventos no momento. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
     }
+  };
 
+  useEffect(() => {
     loadEvents();
   }, []);
 
   if (loading) {
-    return <p className="text-center py-20">Carregando eventos...</p>;
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 text-[#3d685d]">
+            <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+            <p className="text-sm font-medium">Carregando eventos...</p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <p className="text-center py-20 text-red-500">{error}</p>;
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-red-50 border border-red-200 rounded-lg p-8 flex items-center gap-4">
+          <AlertCircle size={24} className="text-red-600 flex-shrink-0" aria-hidden="true" />
+          <div className="flex-1">
+            <h3 className="font-semibold text-red-900 mb-1">Erro ao carregar eventos</h3>
+            <p className="text-sm text-red-700 mb-4">{error}</p>
+            <button
+              onClick={loadEvents}
+              aria-label="Recarregar eventos"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium focus:outline-2 focus:outline-offset-2 focus:outline-white"
+            >
+              <RotateCw size={16} />
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const today = startOfDay(new Date());

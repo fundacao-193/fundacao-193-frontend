@@ -5,6 +5,8 @@ import {
   Clock,
   BookOpen,
   Award,
+  AlertCircle,
+  RotateCw,
 } from 'lucide-react';
 import { fetchCapacitacoes } from '../../services/api';
 import type { Training } from '../../types/training';
@@ -112,15 +114,59 @@ const extractImageUrl = (value: unknown): string => {
 export default function Training() {
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const loadCapacitacoes = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchCapacitacoes();
+      setTrainings(data);
+    } catch (err) {
+      console.error(err);
+      setError('Não conseguimos carregar as capacitações no momento. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetchCapacitacoes()
-      .then(setTrainings)
-      .finally(() => setLoading(false));
+    loadCapacitacoes();
   }, []);
 
   if (loading) {
-    return <div className="p-16 text-center">Carregando capacitações…</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 text-[#3d685d]">
+            <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+            <p className="text-sm font-medium">Carregando capacitações...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-red-50 border border-red-200 rounded-lg p-8 flex items-center gap-4">
+          <AlertCircle size={24} className="text-red-600 flex-shrink-0" aria-hidden="true" />
+          <div className="flex-1">
+            <h3 className="font-semibold text-red-900 mb-1">Erro ao carregar capacitações</h3>
+            <p className="text-sm text-red-700 mb-4">{error}</p>
+            <button
+              onClick={loadCapacitacoes}
+              aria-label="Recarregar capacitações"
+              className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium focus:outline-2 focus:outline-offset-2 focus:outline-white"
+            >
+              <RotateCw size={16} />
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -129,7 +175,8 @@ export default function Training() {
 
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-[#3d685d] font-medium mb-8"
+          className="flex items-center gap-2 text-[#3d685d] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] hover:text-[#2f5349]"
+          aria-label="Voltar para página anterior"
         >
           <ArrowLeft size={20} />
           Voltar

@@ -34,8 +34,8 @@ export default function Header() {
         dropdown: { label: string; href: string }[];
       };
 
-  const hasDropdown = (item: NavItem): item is Extract<NavItem, { dropdown: any }> => {
-    return 'dropdown' in item;
+  const hasDropdown = (item: NavItem): item is Extract<NavItem, { dropdown: unknown }> => {
+    return 'dropdown' in item && item !== null && typeof item === 'object';
   };
 
   const navItems: NavItem[] = [
@@ -74,7 +74,7 @@ export default function Header() {
 
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Navegação principal">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center gap-3 header-logo-animate">
               <img
@@ -116,7 +116,11 @@ export default function Header() {
                       }, 100);
                     }}
                   >
-                    <button className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2">
+                    <button 
+                      className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2 focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                      aria-expanded={openDropdown === item.label}
+                      aria-haspopup="true"
+                    >
                       {item.label}
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
@@ -128,6 +132,7 @@ export default function Header() {
                       <div
                         ref={(el) => { dropdownRefs.current[item.label] = el; }}
                         className="absolute top-full left-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50"
+                        role="menu"
                         onMouseEnter={() => setOpenDropdown(item.label)}
                         onMouseLeave={() => {
                           setTimeout(() => {
@@ -139,7 +144,8 @@ export default function Header() {
                           <a
                             key={subItem.href}
                             href={subItem.href}
-                            className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-[#3d685d] transition-colors"
+                            className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-[#3d685d] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                            role="menuitem"
                             onClick={(event) => handleNavClick(event, subItem.href)}
                           >
                             {subItem.label}
@@ -152,7 +158,7 @@ export default function Header() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
                     onClick={(event) => handleNavClick(event, item.href)}
                   >
                     {item.label}
@@ -161,15 +167,18 @@ export default function Header() {
               ))}
               <a
                 href="#colabore"
-                className="bg-[#3d685d] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
+                className="bg-[#3d685d] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#2f5349] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-white"
               >
                 Colabore
               </a>
             </div>
 
             <button
-              className="lg:hidden p-2"
+              className="lg:hidden p-2 focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] rounded"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -177,25 +186,28 @@ export default function Header() {
         </nav>
 
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t">
+          <div className="lg:hidden bg-white border-t" id="mobile-menu" role="navigation" aria-label="Menu móvel">
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 hasDropdown(item) ? (
                   <div key={item.label}>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                      className="flex items-center justify-between w-full py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                      className="flex items-center justify-between w-full py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                      aria-expanded={openDropdown === item.label}
+                      aria-haspopup="true"
                     >
                       {item.label}
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     {openDropdown === item.label && (
-                      <div className="pl-4 space-y-1 mt-1">
+                      <div className="pl-4 space-y-1 mt-1" role="menu">
                         {item.dropdown.map((subItem) => (
                           <a
                             key={subItem.href}
                             href={subItem.href}
-                            className="block py-2 text-sm text-neutral-600 hover:text-[#3d685d] transition-colors"
+                            className="block py-2 text-sm text-neutral-600 hover:text-[#3d685d] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                            role="menuitem"
                             onClick={(event) => {
                               handleNavClick(event, subItem.href);
                               setIsMenuOpen(false);
@@ -212,7 +224,7 @@ export default function Header() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="block py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors"
+                    className="block py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
                     onClick={(event) => {
                       handleNavClick(event, item.href);
                       setIsMenuOpen(false);
@@ -224,7 +236,7 @@ export default function Header() {
               ))}
               <a
                 href="#colabore"
-                className="block bg-[#3d685d] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2f5349] transition-colors text-center mt-4"
+                className="block bg-[#3d685d] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2f5349] transition-colors text-center mt-4 focus:outline-2 focus:outline-offset-2 focus:outline-white"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Colabore

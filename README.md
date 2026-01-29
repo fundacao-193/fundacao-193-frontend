@@ -20,7 +20,22 @@ Este website foi desenvolvido para:
 - **Vite** - Build tool moderna e rápida
 - **Tailwind CSS 3.4.1** - Framework CSS utilitário
 - **Lucide React 0.344.0** - Biblioteca de ícones
-- **Supabase 2.57.4** - Plataforma de backend (banco de dados)
+- **WordPress REST API** - CMS headless com conteúdo dinâmico (Custom Theme + ACF)
+
+## Arquitetura
+
+### CMS & Backend
+O website utiliza **WordPress como CMS headless** com uma custom theme e ACF (Advanced Custom Fields) para gerenciar:
+- **Notícias** (CPT: `noticia`)
+- **Projetos** (CPT: `projeto`)
+- **Parceiros** (CPT: `parceria`)
+- **Eventos** (CPT: `evento`)
+- **Capacitações** (CPT: `capacitacao`)
+
+A API do WordPress é consumida via `VITE_WP_API_URL`.
+
+### Frontend
+React aplicação com hash-based routing (sem React Router) para navegação leve e direta.
 
 ## Pré-requisitos
 
@@ -28,6 +43,7 @@ Antes de começar, certifique-se de ter instalado:
 
 - **Node.js** (versão 18 ou superior)
 - **npm** (geralmente vem com Node.js)
+- **Local WP** (para desenvolvimento local do WordPress) - [Download](https://localwp.com/)
 
 Para verificar se você tem o Node.js instalado:
 
@@ -36,19 +52,43 @@ node --version
 npm --version
 ```
 
-## Instalação
+## Instalação e Setup Local
 
-1. Clone o repositório (ou baixe os arquivos do projeto)
+### 1. Clone o repositório
 
 ```bash
 git clone [URL_DO_REPOSITORIO]
-cd fundacao-193
+cd fundacao-193/fundacao-193-frontend
 ```
 
-2. Instale as dependências
+### 2. Instale as dependências
 
 ```bash
 npm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```bash
+cp .env.example .env.local
+```
+
+Edite `.env.local` com suas configurações:
+
+```ini
+# Local WordPress via Local WP (padrão)
+VITE_WP_API_URL=http://localhost:10003/wp-json/wp/v2
+
+# Ou seu WordPress local customizado
+# VITE_WP_API_URL=http://seu-wordpress.local/wp-json/wp/v2
+```
+
+**Para Produção:**
+Atualize `VITE_WP_API_URL` para o domínio do WordPress em produção:
+```ini
+VITE_WP_API_URL=https://api.fundacao193.org.br/wp-json/wp/v2
 ```
 
 ## Como Executar
@@ -62,6 +102,10 @@ npm run dev
 ```
 
 O site estará disponível em `http://localhost:5173`
+
+**Pré-requisitos:**
+- WordPress rodando localmente via Local WP (ou outro servidor)
+- `VITE_WP_API_URL` apontando para sua instalação WordPress local
 
 ### Build para Produção
 
