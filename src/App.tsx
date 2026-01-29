@@ -96,7 +96,7 @@ function App() {
       case 'lgpd':
         document.title = `LGPD - ${baseTitle}`;
         break;
-      case 'colabore': // NOVO - do irmão
+      case 'colabore':
         document.title = `Colabore - ${baseTitle}`;
         break;
       default:
@@ -136,9 +136,9 @@ function App() {
         return (
           <>
             <Hero />
+            <Impact />
             <About />
             <Services />
-            <Impact />
             <News />
             <Partners />
             <Contact />

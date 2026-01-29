@@ -7,9 +7,8 @@ export default function Header() {
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Se for #colabore, deixa navegar normalmente (é uma página)
     if (href === '#colabore') {
-      return; // Deixa o hashchange do App.tsx lidar
+      return; // manda pro hashchange do App.tsx lidar
     }
     
     if (!href.startsWith('#')) return;
@@ -96,7 +95,7 @@ export default function Header() {
                     className="relative"
                     onMouseEnter={() => setOpenDropdown(item.label)}
                     onMouseLeave={(e) => {
-                      // Verifica se o mouse está indo para o dropdown
+                      // Verifica se o mouse esta indo para o dropdown
                       const relatedTarget = e.relatedTarget as HTMLElement;
                       const dropdownElement = dropdownRefs.current[item.label];
                       
@@ -125,7 +124,7 @@ export default function Header() {
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     
-                    {/* GAP INVISÍVEL entre botão e dropdown */}
+                    {/* GAP INVISIVEL entre botao e dropdown */}
                     <div className="absolute top-full left-0 w-full h-2" />
                     
                     {openDropdown === item.label && (
