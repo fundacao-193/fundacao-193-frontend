@@ -136,8 +136,8 @@ function App() {
         return (
           <>
             <Hero />
-            <Impact />
             <About />
+            <Impact />
             <Services />
             <News />
             <Partners />

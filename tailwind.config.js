@@ -13,6 +13,10 @@ export default {
         warning: COLORS.warning,
         error: COLORS.error,
         info: COLORS.info,
+        // Visual guide accents
+        'accent-red': COLORS.accent.red,
+        'accent-orange': COLORS.accent.orange,
+        'accent-green': COLORS.accent.deepGreen,
       },
       borderRadius: {
         sm: BORDER_RADIUS.sm,

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { AlertCircle } from 'lucide-react';
 
 interface ErrorBoundaryProps {
@@ -78,5 +78,4 @@ export class ErrorBoundary extends React.Component<
   }
 }
 
-// Add React import for class component
-import React from 'react';
+

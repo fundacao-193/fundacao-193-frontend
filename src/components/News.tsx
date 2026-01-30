@@ -35,11 +35,25 @@ export default function News() {
     return (
       <section id="noticias" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center py-12">
+          <div className="text-center py-8">
             <div className="inline-flex items-center gap-2 text-[#3d685d]">
               <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
               <p className="text-sm font-medium">Carregando notícias...</p>
             </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mt-8">
+            {[1,2,3].map((i) => (
+              <div key={i} className="bg-white border border-neutral-200 rounded-xl overflow-hidden animate-pulse">
+                <div className="aspect-[16/10] bg-neutral-200" />
+                <div className="p-6 space-y-3">
+                  <div className="h-3 bg-neutral-200 rounded w-1/3" />
+                  <div className="h-5 bg-neutral-200 rounded w-4/5" />
+                  <div className="h-3 bg-neutral-200 rounded w-full" />
+                  <div className="h-8 bg-neutral-200 rounded w-1/2 mt-4" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -92,7 +106,7 @@ export default function News() {
           {news.map((item) => (
             <article
               key={item.id}
-              className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1"
+              className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim"
             >
               {/* Imagem (placeholder por enquanto) */}
               <div className="relative aspect-[16/10] overflow-hidden bg-neutral-200">

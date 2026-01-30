@@ -1,10 +1,38 @@
-import { MouseEvent, useState, useRef } from 'react';
+import { MouseEvent, useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Timer used to debounce closing the dropdown, prevents race with rendering
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearCloseTimer = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+  const startCloseTimer = (label: string) => {
+    clearCloseTimer();
+    closeTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown((current) => (current === label ? null : current));
+      closeTimeoutRef.current = null;
+    }, 150);
+  };
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearCloseTimer();
+    };
+  }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href === '#colabore') {
@@ -37,6 +65,25 @@ export default function Header() {
     return 'dropdown' in item && item !== null && typeof item === 'object';
   };
 
+  // Helper to create stable id for aria-controls
+  const getPanelId = (label: string) => `dropdown-${label.replace(/\s+/g, '-').toLowerCase()}`;
+
+  // Keyboard handler for dropdown trigger buttons
+  const handleDropdownTriggerKeyDown = (label: string) => (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Escape') {
+      setOpenDropdown(null);
+      (e.currentTarget as HTMLElement).focus();
+      return;
+    }
+
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setOpenDropdown(label);
+      // focus first menuitem
+      const first = dropdownRefs.current[label]?.querySelector('a') as HTMLElement | null;
+      if (first) first.focus();
+    }
+  };
   const navItems: NavItem[] = [
     { label: 'Início', href: '#inicio' },
     {
@@ -72,7 +119,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Navegação principal">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center gap-3 header-logo-animate">
@@ -80,6 +127,8 @@ export default function Header() {
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-12 w-auto"
+                loading="lazy"
+                decoding="async"
               />
               <div>
                 <h1 className="text-xl font-bold text-neutral-900">Fundação 193</h1>
@@ -93,34 +142,23 @@ export default function Header() {
                   <div
                     key={item.label}
                     className="relative"
-                    onMouseEnter={() => setOpenDropdown(item.label)}
-                    onMouseLeave={(e) => {
-                      // Verifica se o mouse esta indo para o dropdown
-                      const relatedTarget = e.relatedTarget as HTMLElement;
-                      const dropdownElement = dropdownRefs.current[item.label];
-                      
-                      // Se o mouse está indo para o dropdown ou seus filhos, não fecha
-                      if (dropdownElement && dropdownElement.contains(relatedTarget)) {
-                        return;
-                      }
-                      
-                      // Pequeno delay para evitar fechamento acidental
-                      setTimeout(() => {
-                        setOpenDropdown((current) => {
-                          if (current === item.label && !dropdownElement?.contains(document.activeElement)) {
-                            return null;
-                          }
-                          return current;
-                        });
-                      }, 100);
+                    onMouseOver={() => {
+                      clearCloseTimer();
+                      setOpenDropdown(item.label);
+                    }}
+                    onMouseOut={() => {
+                      // start a short timer to close if the mouse doesn't enter the dropdown panel
+                      startCloseTimer(item.label);
                     }}
                   >
                     <button 
                       className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2 focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
+                      aria-controls={getPanelId(item.label)}
+                      onKeyDown={handleDropdownTriggerKeyDown(item.label)}
                     >
-                      {item.label}
+                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active text-[#3d685d]' : ''}`}>{item.label}</span>
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     
@@ -128,15 +166,15 @@ export default function Header() {
                     <div className="absolute top-full left-0 w-full h-2" />
                     
                     {openDropdown === item.label && (
-                      <div
-                        ref={(el) => { dropdownRefs.current[item.label] = el; }}
-                        className="absolute top-full left-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50"
+                      <div                        id={getPanelId(item.label)}                        ref={(el) => { dropdownRefs.current[item.label] = el; }}
+                        className="absolute top-full left-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-lg py-2 min-w-[200px] z-50 dropdown-panel animate-scale-in"
                         role="menu"
-                        onMouseEnter={() => setOpenDropdown(item.label)}
-                        onMouseLeave={() => {
-                          setTimeout(() => {
-                            setOpenDropdown(null);
-                          }, 100);
+                        onMouseOver={() => {
+                          clearCloseTimer();
+                          setOpenDropdown(item.label);
+                        }}
+                        onMouseOut={() => {
+                          startCloseTimer(item.label);
                         }}
                       >
                         {item.dropdown.map((subItem) => (
@@ -157,7 +195,7 @@ export default function Header() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] animated-underline"
                     onClick={(event) => handleNavClick(event, item.href)}
                   >
                     {item.label}
@@ -185,7 +223,7 @@ export default function Header() {
         </nav>
 
         {isMenuOpen && (
-          <div className="lg:hidden bg-white border-t" id="mobile-menu" role="navigation" aria-label="Menu móvel">
+          <div className="lg:hidden bg-white border-t animate-slide-down" id="mobile-menu" role="navigation" aria-label="Menu móvel">
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 hasDropdown(item) ? (
@@ -196,7 +234,7 @@ export default function Header() {
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
-                      {item.label}
+                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active text-[#3d685d]' : ''}`}>{item.label}</span>
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     {openDropdown === item.label && (

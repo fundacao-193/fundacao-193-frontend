@@ -10,6 +10,13 @@ export const COLORS = {
   primary: '#3d685d',
   primaryDark: '#2f5349',
   
+  // Accent colors from visual guide
+  accent: {
+    red: '#c11827',
+    orange: '#ef7e24',
+    deepGreen: '#1d4f42',
+  },
+  
   // Neutral scale - text and backgrounds
   neutral: {
     50: '#f9fafb',
@@ -36,6 +43,11 @@ export const COLORS = {
   textSecondary: '#6b7280',
   border: '#e5e7eb',
   shadow: '#00000010',
+
+  // Convenience aliases for accents
+  accentRed: '#c11827',
+  accentOrange: '#ef7e24',
+  accentGreen: '#1d4f42',
 } as const;
 
 export const SPACING = {

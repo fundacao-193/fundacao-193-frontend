@@ -73,11 +73,13 @@ export default function Collaborate() {
 
           <div className="relative">
             <div className="sticky top-8">
-              <div className="bg-red-600 rounded-xl overflow-hidden aspect-[3/4]">
+              <div className="bg-red-600 rounded-xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] hover:shadow-lg">
                 <img
                   src="https://images.pexels.com/photos/3683065/pexels-photo-3683065.jpeg?auto=compress&cs=tinysrgb&w=600"
                   alt="Coração na mão"
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="mt-6 flex items-center gap-2 text-[#3d685d] font-semibold text-sm">
@@ -117,13 +119,18 @@ export default function Collaborate() {
             </div>
 
             <div className="flex flex-col items-center justify-center">
-              <div className="bg-white rounded-xl p-8 shadow-lg border border-neutral-200">
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-neutral-200 qr-card">
                 <QrCode size={32} className="text-neutral-400 mb-4 mx-auto" />
                 <img
                   src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=000201260936049201099FUNDACAO193000520166360014br.gov.bcb.brcode01051.0.052023621390011br.com.mercadolibre06072.4012.0231230ABDCDEF123456789012345670123456789012345635400520540010BR5913FUNDACAO19360009SAO PAULO6009SAO PAULO62090505TESTE63041D21"
                   alt="QR Code PIX"
                   className="w-64 h-64 rounded-lg"
+                  loading="lazy"
+                  decoding="async"
                 />
+                
+                {/* Add small hover interaction for visual feedback */}
+                <style>{`.qr-card { transition: transform 180ms ease, box-shadow 180ms ease; } .qr-card:hover { transform: scale(1.03); box-shadow: 0 8px 30px rgba(23,23,23,0.08); }`}</style>
                 <p className="text-center text-sm text-neutral-600 mt-4">
                   Escaneie com seu app de banco
                 </p>
