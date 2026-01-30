@@ -219,15 +219,15 @@ html {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -2px; /* sit tighter to the text */
-  height: 2px; /* keep consistent thickness */
+  bottom: -2px; 
+  height: 2px; 
   width: 100%;
   background: currentColor;
-  transform: scaleX(0.01) translateZ(0); /* avoid perfect 0 to reduce aliasing */
+  transform: scaleX(0.01) translateZ(0); 
   transform-origin: left center;
   will-change: transform, opacity;
   backface-visibility: hidden;
-  opacity: 0; /* hidden by default to avoid 1px artifact */
+  opacity: 0; 
   transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 160ms ease;
 }
 /* On hover/focus/active, expand underline */
@@ -237,7 +237,6 @@ html {
   transform: scaleX(1) translateZ(0);
   opacity: 1;
   filter: brightness(1.08);
-  /* prefer currentColor but underline-active will set explicit background */
   background: currentColor;
 }
 
@@ -248,7 +247,7 @@ html {
 .animated-underline.underline-active::after {
   background: #3d685d;
 } 
-/* Helpful hint for interactive cards */
+/* hint for interactive cards */
 .card-anim {
   will-change: transform, box-shadow;
 }

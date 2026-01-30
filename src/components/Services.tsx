@@ -62,10 +62,33 @@ export default function Services() {
                 {service.description}
               </p>
 
-              <button className="text-[#3d685d] font-semibold text-sm hover:gap-2 inline-flex items-center gap-1 transition-all group-hover:gap-2">
+              {/* Link to the most relevant section instead of a no-op button */}
+              <a
+                href={
+                  service.title === 'Apoio Operacional' ? '#projetos' :
+                  service.title === 'Capacitação e Treinamentos' ? '#capacitacao' :
+                  service.title === 'Eventos Institucionais' ? '#eventos' :
+                  '#projetos'
+                }
+                className="text-[#3d685d] font-semibold text-sm hover:gap-2 inline-flex items-center gap-1 transition-all group-hover:gap-2"
+                onClick={(e) => {
+                  const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+                  if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href.slice(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      window.history.pushState(null, '', href);
+                    } else {
+                      window.location.hash = href;
+                    }
+                  }
+                }}
+              >
                 Saiba mais
                 <span>→</span>
-              </button>
+              </a>
             </div>
           ))}
         </div>

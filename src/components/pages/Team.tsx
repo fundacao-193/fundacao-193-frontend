@@ -54,10 +54,24 @@ export default function Team() {
                 <p className="text-[#3d685d] font-semibold mb-4">{member.position}</p>
                 <p className="text-neutral-600 leading-relaxed mb-4">{member.bio}</p>
                 <div className="flex gap-3">
-                  <a href="#" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+                  {/* Linkedin profile not available yet - mark as coming soon for accessibility */}
+                  <a
+                    href="#"
+                    aria-disabled="true"
+                    tabIndex={-1}
+                    title="Perfil em breve"
+                    onClick={(e) => e.preventDefault()}
+                    className="text-neutral-400 opacity-60 cursor-not-allowed transition-colors"
+                  >
                     <Linkedin size={20} />
                   </a>
-                  <a href="#" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+
+                  {/* Mail opens a new message to the general contact with prefilled subject */}
+                  <a
+                    href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent('Contato sobre ' + member.name)}`}
+                    className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+                    aria-label={`Enviar e-mail para ${member.name}`}
+                  >
                     <Mail size={20} />
                   </a>
                 </div>

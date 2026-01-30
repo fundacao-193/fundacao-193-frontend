@@ -96,10 +96,10 @@ export default function News() {
               Acompanhe nossas atividades
             </h2>
           </div>
-          <button className="hidden md:inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all">
+          <a href="#noticias" className="hidden md:inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias">
             Ver todas
             <ArrowRight size={20} />
-          </button>
+          </a>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -133,20 +133,43 @@ export default function News() {
                   dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
                 />
 
-                <button className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all">
+                {/* Prefer a real link when possible; fallback to an internal hash if external link is not available */}
+                <a
+                  href={item.link || `#noticia-${item.id}`}
+                  target={item.link ? '_blank' : undefined}
+                  rel={item.link ? 'noopener noreferrer' : undefined}
+                  aria-label={`Leia mais sobre ${item.title.rendered.replace(/<[^>]*>/g, '')}`}
+                  className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all"
+                  onClick={(e) => {
+                    // If the link is internal hash navigation, use existing scroll handler
+                    const href = item.link || `#noticia-${item.id}`;
+                    if (href && href.startsWith('#')) {
+                      e.preventDefault();
+                      const targetId = href.slice(1);
+                      const targetElement = document.getElementById(targetId);
+                      if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        window.history.pushState(null, '', href);
+                      } else {
+                        // Set the hash so App can potentially handle it if a route exists
+                        window.location.hash = href;
+                      }
+                    }
+                  }}
+                >
                   Ler mais
                   <ArrowRight size={16} />
-                </button>
+                </a>
               </div>
             </article>
           ))}
         </div>
 
         <div className="mt-8 text-center md:hidden">
-          <button className="inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all">
+          <a href="#noticias" className="inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias">
             Ver todas as notícias
             <ArrowRight size={20} />
-          </button>
+          </a>
         </div>
       </div>
     </section>

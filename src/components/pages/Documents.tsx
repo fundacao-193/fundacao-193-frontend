@@ -83,9 +83,17 @@ export default function Documents() {
                           <p className="text-xs text-neutral-500">{file.size} • {file.date}</p>
                         </div>
                       </div>
-                      <button className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+                      {/* Placeholder download - not available yet */}
+                      <a
+                        href="#"
+                        aria-disabled="true"
+                        tabIndex={-1}
+                        onClick={(e) => e.preventDefault()}
+                        title="Disponível em breve"
+                        className="text-neutral-400 opacity-60 cursor-not-allowed transition-colors"
+                      >
                         <Download size={20} />
-                      </button>
+                      </a>
                     </div>
                   ))}
                 </div>
@@ -100,9 +108,9 @@ export default function Documents() {
             <p className="text-neutral-600 leading-relaxed mb-6">
               Não encontrou o documento que procura? Você pode solicitar cópias de documentos específicos através do formulário eletrônico.
             </p>
-            <button className="px-6 py-3 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors">
+            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20de%20Documento" className="inline-block px-6 py-3 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors" aria-label="Solicitar documento">
               Solicitar Documento
-            </button>
+            </a>
           </div>
 
           <div className="bg-gradient-to-br from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
@@ -110,9 +118,9 @@ export default function Documents() {
             <p className="text-opacity-90 leading-relaxed mb-6">
               Conforme Lei 12.527/2011, a Fundação 193 garante o direito de acesso à informação pública.
             </p>
-            <button className="px-6 py-3 bg-white text-[#3d685d] rounded-lg font-medium hover:bg-neutral-100 transition-colors">
+            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20LAI" className="inline-block px-6 py-3 bg-white text-[#3d685d] rounded-lg font-medium hover:bg-neutral-100 transition-colors" aria-label="Fazer solicitação LAI">
               Fazer Solicitação LAI
-            </button>
+            </a>
           </div>
         </section>
 

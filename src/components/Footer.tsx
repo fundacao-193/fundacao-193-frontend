@@ -62,33 +62,54 @@ export default function Footer() {
               </a>
             </div>
             <div className="flex gap-3">
+              {/* Social links: placeholders for now - marked as coming soon to avoid no-op navigation */}
               <a
                 href="#"
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#3d685d] transition-colors"
+                aria-disabled="true"
+                tabIndex={-1}
+                title="Facebook - Em breve"
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
               >
                 <Facebook size={20} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#3d685d] transition-colors"
+                aria-disabled="true"
+                tabIndex={-1}
+                title="Instagram - Em breve"
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
               >
                 <Instagram size={20} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#3d685d] transition-colors"
+                aria-disabled="true"
+                tabIndex={-1}
+                title="Twitter - Em breve"
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
               >
                 <Twitter size={20} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#3d685d] transition-colors"
+                aria-disabled="true"
+                tabIndex={-1}
+                title="LinkedIn - Em breve"
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
               >
                 <Linkedin size={20} />
               </a>
               <a
                 href="#"
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#3d685d] transition-colors"
+                aria-disabled="true"
+                tabIndex={-1}
+                title="YouTube - Em breve"
+                onClick={(e) => e.preventDefault()}
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
               >
                 <Youtube size={20} />
               </a>
@@ -150,10 +171,10 @@ export default function Footer() {
               {currentYear} Fundação 193. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-sm">
-              <a href="#" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+              <a href="#lgpd" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
                 Política de Privacidade
               </a>
-              <a href="#" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+              <a href="#documentos" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
                 Termos de Uso
               </a>
             </div>
