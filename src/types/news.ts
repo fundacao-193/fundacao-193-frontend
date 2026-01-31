@@ -12,6 +12,10 @@ export interface news {
   };
   // Optional direct link to the post (when provided by API)
   link?: string;
+  // Full content when returned by the API
+  content?: {
+    rendered: string;
+  };
   acf?: {
     featured_image?: number;
     category?: string;

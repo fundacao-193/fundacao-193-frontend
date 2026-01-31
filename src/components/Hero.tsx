@@ -17,7 +17,7 @@ export default function Hero() {
 
   return (
     <section id="inicio" className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-[#3d685d] text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1661806/pexels-photo-1661806.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-20"></div>
+      <div className="absolute inset-0 bg-[url('src/assets/images/line.jpg')] bg-cover bg-center opacity-20"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
         <div className="max-w-3xl">

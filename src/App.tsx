@@ -22,8 +22,13 @@ import Edits from './components/pages/Edits';
 import Documents from './components/pages/Documents';
 import LGPD from './components/pages/LGPD';
 import Collaborate from './components/pages/Collaborate';
+import NewsList from './components/pages/NewsList';
+import NewsDetail from './components/pages/NewsDetail';
+import ProjectDetail from './components/pages/ProjectDetail';
+import EventDetail from './components/pages/EventDetail';
+import Activities from './components/pages/Activities';
 
-// logica simples para currentPage
+// logica para currentPage
 function App() {
   // State que representa a pagina atual baseada no hash
   const [currentPage, setCurrentPage] = useState<string>(() => {
@@ -106,6 +111,32 @@ function App() {
 
   // Renderiza a pagina com base no hash atual
   const renderPage = () => {
+    if (currentPage.startsWith('noticia-')) {
+      const idStr = currentPage.replace('noticia-', '');
+      const id = Number(idStr);
+      if (!Number.isNaN(id)) return <NewsDetail id={id} />;
+    }
+
+    if (currentPage === 'noticias') {
+      return <NewsList />;
+    }
+
+    if (currentPage === 'atividades') {
+      return <Activities />;
+    }
+
+    if (currentPage.startsWith('projeto-')) {
+      const idStr = currentPage.replace('projeto-', '');
+      const id = Number(idStr);
+      if (!Number.isNaN(id)) return <ProjectDetail id={id} />;
+    }
+
+    if (currentPage.startsWith('evento-')) {
+      const idStr = currentPage.replace('evento-', '');
+      const id = Number(idStr);
+      if (!Number.isNaN(id)) return <EventDetail id={id} />;
+    }
+
     switch (currentPage) {
       case 'nossa-historia':
         return <OurStory />;
@@ -145,13 +176,13 @@ function App() {
           </>
         );
     }
-  };
+  }; 
 
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-white">
         <Header />
-        {/* Adiciona transicao suave  */}
+        {}
         <div 
           className={`transition-opacity duration-300 ${
             isTransitioning ? 'opacity-0' : 'opacity-100'

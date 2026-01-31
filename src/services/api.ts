@@ -41,3 +41,16 @@ export function fetchCapacitacoes() {
   return fetchAPI<Training[]>('capacitacao?acf_format=standard');
 }
 
+// Single-entity fetch helpers for detail pages
+export function fetchNoticia(id: number | string) {
+  return fetchAPI<news>(`noticia/${id}`);
+}
+
+export function fetchProjeto(id: number | string) {
+  return fetchAPI<Project>(`projeto/${id}`);
+}
+
+export function fetchEvento(id: number | string) {
+  return fetchAPI<Event>(`evento/${id}`);
+} 
+

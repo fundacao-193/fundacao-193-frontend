@@ -1,0 +1,208 @@
+import { useEffect, useMemo, useState, useRef } from 'react';
+import { Calendar, ArrowRight, MapPin } from 'lucide-react';
+import { fetchNoticias, fetchEventos } from '../../services/api';
+import type { news } from '../../types/news';
+import type { Event } from '../../types/events';
+
+type Filter = 'all' | 'news' | 'events';
+
+// Helper to extract first image src from HTML string
+function extractImageFromHtml(html?: string): string | null {
+  if (!html) return null;
+  const m = html.match(/<img[^>]+src=["']?([^"'>\s]+)["']?/i);
+  return m ? m[1] : null;
+}
+
+// Convert YMD "YYYYMMDD" to ISO "YYYY-MM-DD" for Date parsing
+function ymdToIso(ymd?: string): string | null {
+  if (!ymd) return null;
+  if (/^\d{8}$/.test(ymd)) {
+    return `${ymd.substring(0,4)}-${ymd.substring(4,6)}-${ymd.substring(6,8)}`;
+  }
+  return ymd;
+}
+
+export default function Activities() {
+  const [newsItems, setNewsItems] = useState<news[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<Filter>('all');
+  const [anim, setAnim] = useState(false);
+  const [page, setPage] = useState(1);
+  const pageSize = 9;
+  const animTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [n, e] = await Promise.all([fetchNoticias(), fetchEventos()]);
+        setNewsItems(n);
+        setEvents(e);
+      } catch (err) {
+        console.error(err);
+        setError('Não conseguimos carregar as atividades no momento.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
+
+  const items = useMemo(() => {
+    const newsCards = newsItems.map((n) => ({
+      id: `noticia-${n.id}`,
+      type: 'news' as const,
+      title: n.title.rendered,
+      excerpt: n.excerpt.rendered,
+      date: n.date,
+      image: extractImageFromHtml(n.content?.rendered) || extractImageFromHtml(n.excerpt?.rendered) || null,
+    }));
+
+    const eventCards = events.map((ev) => ({
+      id: `evento-${ev.id}`,
+      type: 'event' as const,
+      title: ev.title.rendered,
+      excerpt: ev.acf?.event_summary || '',
+      date: ymdToIso(ev.acf?.event_start_date) || '',
+      location: ev.acf?.event_location || '',
+      image: ev.acf?.event_featured_image || null,
+    }));
+
+    const all = [...newsCards, ...eventCards].sort((a, b) => {
+      const ad = new Date(a.date).getTime() || 0;
+      const bd = new Date(b.date).getTime() || 0;
+      return bd - ad;
+    });
+
+    if (filter === 'news') return all.filter(i => i.type === 'news');
+    if (filter === 'events') return all.filter(i => i.type === 'event');
+    return all;
+  }, [newsItems, events, filter]);
+
+  // pagination
+  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+  const pagedItems = items.slice((page - 1) * pageSize, page * pageSize);
+
+  useEffect(() => {
+    setAnim(true);
+    setPage(1);
+    
+    // Reset animation state after it completes (matches CSS animation duration)
+    animTimer.current = window.setTimeout(() => {
+      setAnim(false);
+    }, 350);
+    
+    return () => {
+      if (animTimer.current) { 
+        window.clearTimeout(animTimer.current); 
+        animTimer.current = null; 
+      }
+    };
+  }, [filter]);
+
+  if (loading) return (
+    <div className="min-h-screen py-20 bg-white"><div className="max-w-6xl mx-auto px-4">Carregando atividades...</div></div>
+  );
+
+  if (error) return (
+    <div className="min-h-screen py-20 bg-white"><div className="max-w-6xl mx-auto px-4 text-center text-red-600">{error}</div></div>
+  );
+
+  return (
+    <div className="min-h-screen py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {}
+        <div className="mb-6">
+          <button
+            onClick={() => (window.location.hash = '')}
+            className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium transition-colors"
+            aria-label="Voltar para a página inicial"
+          >
+            <ArrowRight size={16} className="rotate-180" />
+            Voltar
+          </button>
+        </div>
+
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900">Acompanhe nossas atividades</h1>
+            <p className="text-neutral-600 mt-2">Filtre por tipo clicando nos rótulos abaixo.</p>
+
+            <div className="mt-4 inline-flex gap-3">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-3 py-1 rounded-full ${filter === 'all' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+              >
+                Todas
+              </button>
+              <button
+                onClick={() => setFilter('news')}
+                className={`px-3 py-1 rounded-full ${filter === 'news' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+              >
+                Notícias
+              </button>
+              <button
+                onClick={() => setFilter('events')}
+                className={`px-3 py-1 rounded-full ${filter === 'events' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+              >
+                Eventos
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className={`grid md:grid-cols-3 gap-8 ${anim ? 'animate-fade-in-up' : ''}`} key={filter}>
+          {pagedItems.map((it) => (
+            <article key={it.id} className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col">
+              {it.image ? (
+                <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
+                  <img src={it.image} alt={it.title.replace(/<[^>]*>/g, '')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                </div>
+              ) : null}
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm text-neutral-500 inline-flex items-center gap-2">
+                    <Calendar size={14} />
+                    <span>{it.date ? new Date(it.date).toLocaleDateString('pt-BR') : 'Data a definir'}</span>
+                  </div>
+
+                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${it.type === 'news' ? 'bg-[#3d685d]/10 text-[#3d685d]' : 'bg-[#ef7e24]/10 text-[#ef7e24]'}`}>
+                    {it.type === 'news' ? 'Notícia' : 'Evento'}
+                  </span>
+                </div>
+
+                <h3 className="text-xl font-bold text-neutral-900 mb-3" dangerouslySetInnerHTML={{ __html: it.title }} />
+                <p className="text-neutral-600 mb-4 line-clamp-3" dangerouslySetInnerHTML={{ __html: it.excerpt }} />
+
+                {it.type === 'event' && it.location && (
+                  <div className="mb-4 text-sm text-neutral-600 flex items-center gap-2">
+                    <MapPin size={14} />
+                    <span>{it.location}</span>
+                  </div>
+                )}
+
+                <div className="flex-grow" />
+
+                <a href={`#${it.id}`} className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all" aria-label={`Leia mais sobre ${it.title.replace(/<[^>]*>/g, '')}`}>
+                  {it.type === 'news' ? 'Ler mais' : 'Saiba mais'}
+                  <ArrowRight size={16} />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        <div className="mt-8 flex items-center justify-center gap-4">
+          <button className="px-4 py-2 rounded bg-neutral-100" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>Anterior</button>
+          <span className="text-neutral-500">Página {page} de {totalPages}</span>
+          <button className="px-4 py-2 rounded bg-neutral-100" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Próxima</button>
+        </div>
+      </div>
+    </div>
+  );
+}

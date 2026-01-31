@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Calendar, MapPin, Users, AlertCircle, RotateCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, MapPin, Users, AlertCircle, RotateCw } from 'lucide-react';
 
 import { fetchEventos } from '../../services/api';
 import type { Event } from '../../types/events';
@@ -118,7 +118,7 @@ export default function Events() {
     });
 
   const cardClass =
-    'bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#3d685d]';
+    'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#3d685d]';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -136,7 +136,7 @@ export default function Events() {
         </h1>
 
         <p className="text-xl text-neutral-600 mb-16">
-          Encontros, seminarios e atividades que promovem conhecimento e participacao.
+          Encontros, seminários e atividades que promovem conhecimento e participação.
         </p>
 
         {/* Upcoming events */}
@@ -152,37 +152,49 @@ export default function Events() {
           <div className="space-y-6">
             {upcomingEvents.map(event => (
               <div key={event.id} className={cardClass}>
-                <h3
-                  className="text-2xl font-bold text-neutral-900 mb-2"
-                  dangerouslySetInnerHTML={{ __html: event.title.rendered }}
-                />
+                <div className="p-6">
+                  <h3
+                    className="text-2xl font-bold text-neutral-900 mb-2"
+                    dangerouslySetInnerHTML={{ __html: event.title.rendered }}
+                  />
 
-                <p className="text-neutral-600 leading-relaxed mb-4">
-                  {event.acf?.event_summary || 'Descricao nao informada.'}
-                </p>
+                  <p className="text-neutral-600 leading-relaxed mb-4">
+                    {event.acf?.event_summary || 'Descricao nao informada.'}
+                  </p>
 
-                <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={18} className="text-[#3d685d]" />
-                    <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
+                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={18} className="text-[#3d685d]" />
+                      <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <MapPin size={18} className="text-[#3d685d]" />
+                      <span>{event.acf?.event_location || 'Local a definir'}</span>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <MapPin size={18} className="text-[#3d685d]" />
-                    <span>{event.acf?.event_location || 'Local a definir'}</span>
-                  </div>
-                </div>
+                  {event.acf?.event_registration_url && (
+                    <a
+                      href={event.acf.event_registration_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-block px-6 py-2 mr-4 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
+                    >
+                      Inscrever-se
+                    </a>
+                  )}
 
-                {event.acf?.event_registration_url && (
+                  {/* Leia / Saiba mais to event detail */}
                   <a
-                    href={event.acf.event_registration_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 inline-block px-6 py-2 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
+                    href={`#evento-${event.id}`}
+                    className="mt-8 inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all"
+                    aria-label={`Saiba mais sobre ${event.title.rendered.replace(/<[^>]*>/g, '')}`}
                   >
-                    Inscrever-se
+                    Saiba mais
+                    <ArrowRight size={16} />
                   </a>
-                )}
+                </div>
               </div>
             ))}
           </div>
@@ -201,27 +213,29 @@ export default function Events() {
           <div className="space-y-6">
             {pastEvents.map(event => (
               <div key={event.id} className={cardClass}>
-                <h3
-                  className="text-2xl font-bold text-neutral-900 mb-2"
-                  dangerouslySetInnerHTML={{ __html: event.title.rendered }}
-                />
+                <div className="p-6">
+                  <h3
+                    className="text-2xl font-bold text-neutral-900 mb-2"
+                    dangerouslySetInnerHTML={{ __html: event.title.rendered }}
+                  />
 
-                <p className="text-neutral-600 mb-4">
-                  {event.acf?.event_summary || 'Descricao nao informada.'}
-                </p>
+                  <p className="text-neutral-600 mb-4">
+                    {event.acf?.event_summary || 'Descricao nao informada.'}
+                  </p>
 
-                <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={18} className="text-[#3d685d]" />
-                    <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
-                  </div>
-
-                  {event.acf?.event_location && (
+                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
                     <div className="flex items-center gap-2">
-                      <MapPin size={18} className="text-[#3d685d]" />
-                      <span>{event.acf.event_location}</span>
+                      <Calendar size={18} className="text-[#3d685d]" />
+                      <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
                     </div>
-                  )}
+
+                    {event.acf?.event_location && (
+                      <div className="flex items-center gap-2">
+                        <MapPin size={18} className="text-[#3d685d]" />
+                        <span>{event.acf.event_location}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

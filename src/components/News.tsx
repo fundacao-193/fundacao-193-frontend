@@ -1,23 +1,39 @@
-import { useEffect, useState } from 'react';
-import { Calendar, ArrowRight, AlertCircle, RotateCw } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { Calendar, ArrowRight, AlertCircle, RotateCw, MapPin } from 'lucide-react';
 
-import { fetchNoticias } from '../services/api';
+import { fetchNoticias, fetchEventos } from '../services/api';
 import type { news } from '../types/news';
+import type { Event } from '../types/events';
 
+// Extract first image from HTML
+function extractImageFromHtml(html?: string): string | null {
+  if (!html) return null;
+  const m = html.match(/<img[^>]+src=["']?([^"'>\s]+)["']?/i);
+  return m ? m[1] : null;
+}
+
+// Convert YMD to ISO for Date parsing
+function ymdToIso(ymd?: string): string | null {
+  if (!ymd) return null;
+  if (/^\d{8}$/.test(ymd)) {
+    return `${ymd.substring(0,4)}-${ymd.substring(4,6)}-${ymd.substring(6,8)}`;
+  }
+  return ymd;
+}
 
 export default function News() {
-  // Estado para guardar as noticias vindas da API
-  const [news, setNews] = useState<news[]>([]);
+  const [newsItems, setNewsItems] = useState<news[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Executa quando o componente carrega
-  const loadNoticias = async () => {
+  const loadData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchNoticias();
-      setNews(data);
+      const [n, e] = await Promise.all([fetchNoticias(), fetchEventos()]);
+      setNewsItems(n);
+      setEvents(e);
     } catch (err) {
       console.error(err);
       setError('Não conseguimos carregar as notícias no momento. Tente novamente mais tarde.');
@@ -27,8 +43,53 @@ export default function News() {
   };
 
   useEffect(() => {
-    loadNoticias();
+    loadData();
   }, []);
+
+  // Mix news and events, show at least 1 of each, sort by date desc, max 3
+  const mixedCards = useMemo(() => {
+    const newsCards = newsItems.map((n) => ({
+      id: `noticia-${n.id}`,
+      type: 'news' as const,
+      title: n.title.rendered,
+      excerpt: n.excerpt.rendered,
+      date: n.date,
+      image: extractImageFromHtml(n.content?.rendered) || extractImageFromHtml(n.excerpt?.rendered) || null,
+    }));
+
+    const eventCards = events.map((ev) => ({
+      id: `evento-${ev.id}`,
+      type: 'event' as const,
+      title: ev.title.rendered,
+      excerpt: ev.acf?.event_summary || '',
+      date: ymdToIso(ev.acf?.event_start_date) || '',
+      location: ev.acf?.event_location || '',
+      image: ev.acf?.event_featured_image || null,
+    }));
+
+    // Sort all by date desc
+    const all = [...newsCards, ...eventCards].sort((a, b) => {
+      const ad = new Date(a.date).getTime() || 0;
+      const bd = new Date(b.date).getTime() || 0;
+      return bd - ad;
+    });
+
+    // Ensure at least 1 news + 1 event, then fill remaining slots with most recent (3 total)
+    const result: typeof all = [];
+    const newsOnly = all.filter(c => c.type === 'news');
+    const eventsOnly = all.filter(c => c.type === 'event');
+
+    if (newsOnly.length > 0) result.push(newsOnly[0]);
+    if (eventsOnly.length > 0) result.push(eventsOnly[0]);
+
+    // Add remaining most recent items up to 3 total
+    for (const item of all) {
+      if (result.length >= 3) break;
+      if (!result.find(r => r.id === item.id)) result.push(item);
+    }
+
+    return result;
+  }, [newsItems, events]);
 
   // Estados visuais basicos
   if (loading) {
@@ -70,7 +131,7 @@ export default function News() {
               <h3 className="font-semibold text-red-900 mb-1">Erro ao carregar notícias</h3>
               <p className="text-sm text-red-700 mb-4">{error}</p>
               <button
-                onClick={loadNoticias}
+                onClick={loadData}
                 aria-label="Recarregar notícias"
                 className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors text-sm font-medium focus:outline-2 focus:outline-offset-2 focus:outline-white"
               >
@@ -89,75 +150,69 @@ export default function News() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-12">
           <div>
-            <div className="inline-block bg-[#3d685d]/10 text-[#3d685d] px-4 py-2 rounded-full text-sm font-semibold mb-4">
-              Notícias
-            </div>
+
+            <div className="inline-block bg-[#3d685d]/10 text-[#3d685d] px-4 py-2 rounded-full text-sm font-semibold mb-4">Notícias e Eventos</div>
+
             <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900">
               Acompanhe nossas atividades
             </h2>
           </div>
-          <a href="#noticias" className="hidden md:inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias">
+          <a href="#atividades" className="hidden md:inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias e eventos">
             Ver todas
             <ArrowRight size={20} />
           </a>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {news.map((item) => (
+          {mixedCards.map((item) => (
             <article
               key={item.id}
-              className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim"
+              className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col"
             >
-              {/* Imagem (placeholder por enquanto) */}
-              <div className="relative aspect-[16/10] overflow-hidden bg-neutral-200">
-                <div className="absolute top-4 left-4">
-                  <span className="inline-block bg-[#3d685d] text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    Notícia
-                  </span>
+              {item.image ? (
+                <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
+                  <img src={item.image} alt={item.title.replace(/<[^>]*>/g, '')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 </div>
-              </div>
+              ) : (
+                <div className="aspect-[16/10] bg-neutral-200" />
+              )}
 
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-neutral-500 mb-3">
-                  <Calendar size={16} />
-                  <span>{new Date(item.date).toLocaleDateString('pt-BR')}</span>
+              <div className="p-6 flex flex-col flex-grow">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2 text-sm text-neutral-500">
+                    <Calendar size={16} />
+                    <span>{new Date(item.date).toLocaleDateString('pt-BR')}</span>
+                  </div>
+                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${item.type === 'news' ? 'bg-[#3d685d]/10 text-[#3d685d]' : 'bg-[#ef7e24]/10 text-[#ef7e24]'}`}>
+                    {item.type === 'news' ? 'Notícia' : 'Evento'}
+                  </span>
                 </div>
 
                 <h3
-                  className="text-xl font-bold text-neutral-900 mb-3 line-clamp-2 group-hover:text-[#3d685d] transition-colors"
-                  dangerouslySetInnerHTML={{ __html: item.title.rendered }}
+                  className="text-lg font-bold text-neutral-900 mb-2 line-clamp-2 group-hover:text-[#3d685d] transition-colors"
+                  dangerouslySetInnerHTML={{ __html: item.title }}
                 />
 
                 <p
-                  className="text-neutral-600 mb-4 line-clamp-3"
-                  dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }}
+                  className="text-sm text-neutral-600 mb-4 line-clamp-2"
+                  dangerouslySetInnerHTML={{ __html: item.excerpt }}
                 />
 
-                {/* Prefer a real link when possible; fallback to an internal hash if external link is not available */}
+                {item.type === 'event' && item.location && (
+                  <div className="text-xs text-neutral-600 flex items-center gap-1 mb-4">
+                    <MapPin size={14} />
+                    <span className="line-clamp-1">{item.location}</span>
+                  </div>
+                )}
+
+                <div className="flex-grow" />
+
                 <a
-                  href={item.link || `#noticia-${item.id}`}
-                  target={item.link ? '_blank' : undefined}
-                  rel={item.link ? 'noopener noreferrer' : undefined}
-                  aria-label={`Leia mais sobre ${item.title.rendered.replace(/<[^>]*>/g, '')}`}
+                  href={`#${item.id}`}
+                  aria-label={`${item.type === 'news' ? 'Leia' : 'Saiba'} mais sobre ${item.title.replace(/<[^>]*>/g, '')}`}
                   className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all"
-                  onClick={(e) => {
-                    // If the link is internal hash navigation, use existing scroll handler
-                    const href = item.link || `#noticia-${item.id}`;
-                    if (href && href.startsWith('#')) {
-                      e.preventDefault();
-                      const targetId = href.slice(1);
-                      const targetElement = document.getElementById(targetId);
-                      if (targetElement) {
-                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        window.history.pushState(null, '', href);
-                      } else {
-                        // Set the hash so App can potentially handle it if a route exists
-                        window.location.hash = href;
-                      }
-                    }
-                  }}
                 >
-                  Ler mais
+                  {item.type === 'news' ? 'Ler mais' : 'Saiba mais'}
                   <ArrowRight size={16} />
                 </a>
               </div>
@@ -166,8 +221,8 @@ export default function News() {
         </div>
 
         <div className="mt-8 text-center md:hidden">
-          <a href="#noticias" className="inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias">
-            Ver todas as notícias
+          <a href="#atividades" className="inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all" aria-label="Ver todas as notícias e eventos">
+            Ver todas
             <ArrowRight size={20} />
           </a>
         </div>
