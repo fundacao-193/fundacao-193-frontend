@@ -39,7 +39,7 @@ export default function MissionValues() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -50,7 +50,7 @@ export default function MissionValues() {
 
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-neutral-900 mb-6">Nossa Missão</h2>
-          <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-[#3d685d]">
+          <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-primary">
             <p className="text-lg text-neutral-700 leading-relaxed">
               Apoiar, fortalecer e potencializar as atividades do Corpo de Bombeiros Militar do Distrito Federal através de investimentos em capacitação profissional, modernização de infraestrutura, pesquisa e inovação, promovendo segurança e bem-estar para a população e comunidades do Distrito Federal.
             </p>
@@ -59,7 +59,7 @@ export default function MissionValues() {
 
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-neutral-900 mb-6">Nossa Visão</h2>
-          <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-[#3d685d]">
+          <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-primary">
             <p className="text-lg text-neutral-700 leading-relaxed">
               Ser reconhecida como a instituição de apoio mais inovadora, eficiente e comprometida com a excelência operacional dos bombeiros, sendo referência em prevenção, resposta e gestão de risco no Brasil e na América Latina.
             </p>
@@ -74,8 +74,8 @@ export default function MissionValues() {
               return (
                 <div key={value.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#3d685d] rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon size={24} className="text-white" />
+                    <div className="w-12 h-12 bg-icon-bg rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon size={24} className="text-icon-fg" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-neutral-900 mb-2">{value.title}</h3>

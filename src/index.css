@@ -2,6 +2,175 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+  Theme System - Semantic Color Tokens
+  Red Theme = Energia, Ação, Urgência (predominância vermelha)
+  Green Theme = Confiança, Institucional, Estabilidade (predominância verde)
+*/
+
+/* Dark theme background for body and main container */
+[data-theme="dark"] body {
+  background-color: #0f172a;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] #root {
+  background-color: #0f172a;
+}
+
+/* Seções com fundo escuro no tema dark */
+[data-theme="dark"] section {
+  background-color: #111827 !important;
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] section h2,
+[data-theme="dark"] section h3 {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] section p,
+[data-theme="dark"] section span:not(.badge) {
+  color: #d1d5db;
+}
+
+:root {
+  /* RED THEME - Energético e orientado à ação */
+  
+  /* Primary - Cor dominante para CTAs e ações principais */
+  --color-primary: #c11827;
+  --color-primary-hover: #a91620;
+  --color-primary-light: #e63946;
+  
+  /* Secondary - Destaques e elementos de suporte */
+  --color-secondary: #ef7e24;
+  --color-secondary-hover: #d66b1f;
+  
+  /* Institutional - Usa vermelho no tema RED para manter consistência */
+  --color-institutional: #c11827;
+  --color-institutional-hover: #a91620;
+  --color-institutional-light: #e63946;
+  
+  /* Badges - Pills e tags em vermelho/laranja */
+  --color-badge-bg: rgba(193, 24, 39, 0.1);
+  --color-badge-text: #c11827;
+  --color-badge-event-bg: rgba(239, 126, 36, 0.1);
+  --color-badge-event-text: #ef7e24;
+  
+  /* Icon Backgrounds - laranja suave para contraste */
+  --color-icon-bg: rgba(239, 126, 36, 0.1);
+  --color-icon-fg: #ef7e24;
+  
+  /* Hero gradient - tons quentes (cinza escuro → vermelho escuro) */
+  --color-hero-start: #1a1a1a;
+  --color-hero-mid: #2d1b1f;
+  --color-hero-end: #4a1f27;
+  --color-hero-badge-bg: rgba(193, 24, 39, 0.15);
+  --color-hero-badge-border: rgba(193, 24, 39, 0.3);
+  --color-hero-badge-icon: #ef7e24;
+  
+  /* Impact section - tons mais escuros e menos saturados */
+  --color-impact-start: #1e272e;
+  --color-impact-end: #2f3640;
+  
+  /* Text gradients - laranja → vermelho */
+  --color-gradient-start: #ffa726;
+  --color-gradient-mid: #ef7e24;
+  --color-gradient-end: #c11827;
+  
+  /* Underline animations - vermelho */
+  --color-underline: #c11827;
+}
+
+[data-theme="green"] {
+  /* GREEN THEME - Institucional e confiável */
+  
+  /* Primary - Verde como cor dominante */
+  --color-primary: #3d685d;
+  --color-primary-hover: #2f5349;
+  --color-primary-light: #4a7a6d;
+  
+  /* Secondary - Verde mais claro para variação */
+  --color-secondary: #4a7a6d;
+  --color-secondary-hover: #3d685d;
+  
+  /* Institutional - Verde escuro para profundidade */
+  --color-institutional: #1d4f42;
+  --color-institutional-hover: #153d33;
+  --color-institutional-light: #2a6854;
+  
+  /* Badges */
+  --color-badge-bg: rgba(61, 104, 93, 0.1);
+  --color-badge-text: #3d685d;
+  --color-badge-event-bg: rgba(74, 122, 109, 0.1);
+  --color-badge-event-text: #4a7a6d;
+  
+  /* Icon Backgrounds */
+  --color-icon-bg: rgba(61, 104, 93, 0.1);
+  --color-icon-fg: #3d685d;
+  
+  /* Hero gradient */
+  --color-hero-start: #0f2027;
+  --color-hero-mid: #203a43;
+  --color-hero-end: #3d685d;
+  --color-hero-badge-bg: rgba(61, 104, 93, 0.2);
+  --color-hero-badge-border: rgba(61, 104, 93, 0.3);
+  --color-hero-badge-icon: #3d685d;
+  
+  /* Impact section */
+  --color-impact-start: #3d685d;
+  --color-impact-end: #2f5349;
+  
+  /* Text gradients - tons de verde */
+  --color-gradient-start: #6aa883;
+  --color-gradient-mid: #4a7a6d;
+  --color-gradient-end: #3d685d;
+  
+  /* Underline animations */
+  --color-underline: #3d685d;
+}
+
+[data-theme="dark"] {
+  /* DARK THEME - Moderno e contrastante */
+  
+  /* Fundo escuro */
+  --bg-dark: #0f172a;
+  
+  --color-primary: #ff4757;
+  --color-primary-hover: #ee3344;
+  --color-primary-light: #ff6b7a;
+  
+  --color-secondary: #ffa502;
+  --color-secondary-hover: #ff8c00;
+  
+  --color-institutional: #2ed573;
+  --color-institutional-hover: #26de81;
+  --color-institutional-light: #55efc4;
+  
+  --color-badge-bg: rgba(46, 213, 115, 0.15);
+  --color-badge-text: #2ed573;
+  --color-badge-event-bg: rgba(255, 165, 2, 0.15);
+  --color-badge-event-text: #ffa502;
+  
+  --color-icon-bg: rgba(46, 213, 115, 0.15);
+  --color-icon-fg: #2ed573;
+  
+  --color-hero-start: #0c0c0c;
+  --color-hero-mid: #1e272e;
+  --color-hero-end: #2f3640;
+  --color-hero-badge-bg: rgba(46, 213, 115, 0.15);
+  --color-hero-badge-border: rgba(46, 213, 115, 0.25);
+  --color-hero-badge-icon: #2ed573;
+  
+  --color-impact-start: #1e272e;
+  --color-impact-end: #2f3640;
+  
+  --color-gradient-start: #ff6b7a;
+  --color-gradient-mid: #ff4757;
+  --color-gradient-end: #ee3344;
+  
+  --color-underline: #2ed573;
+}
 
 html {
   scroll-behavior: smooth; 
@@ -43,11 +212,12 @@ html {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    will-change: auto;
   }
 }
 
@@ -75,7 +245,7 @@ html {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .animate-scale-in {
@@ -242,13 +412,14 @@ html {
 
 /* When a dropdown/menu is active keep the underline and text in brand color */
 .animated-underline.underline-active {
-  color: #3d685d;
+  color: var(--color-underline);
 }
 .animated-underline.underline-active::after {
-  background: #3d685d;
+  background: var(--color-underline);
 } 
 /* hint for interactive cards */
 .card-anim {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   will-change: transform, box-shadow;
 }
 

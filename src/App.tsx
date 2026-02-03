@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,6 +10,7 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
+import ThemeToggle from './components/ThemeToggle';
 import OurStory from './components/pages/OurStory';
 import MissionValues from './components/pages/MissionValues';
 import Team from './components/pages/Team';
@@ -36,30 +37,40 @@ function App() {
   });
 
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const hasInitialized = useRef(false);
 
   // Escuta mudancas no hash da URL COM TRANSITIONS
   useEffect(() => {
-    const handleHashChange = () => {
-      setIsTransitioning(true);
-      
+    const handleHashChange = (withTransition: boolean) => {
+      if (withTransition) {
+        setIsTransitioning(true);
+      }
+
       setTimeout(() => {
         const hash = window.location.hash.replace('#', '') || 'home';
         setCurrentPage(hash);
-        
-        // Scroll suave para o topo 
+
+        // Scroll suave para o topo
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        setIsTransitioning(false);
-      }, 150);
+
+        if (withTransition) {
+          setIsTransitioning(false);
+        }
+      }, withTransition ? 150 : 0);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
+    const onHashChange = () => handleHashChange(true);
 
-    // Atualiza tambem na carga inicial
-    handleHashChange();
+    window.addEventListener('hashchange', onHashChange);
+
+    // Atualiza tambem na carga inicial sem transição para evitar flash
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      handleHashChange(false);
+    }
 
     return () => {
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('hashchange', onHashChange);
     };
   }, []);
 
@@ -182,7 +193,6 @@ function App() {
     <ErrorBoundary>
       <div className="min-h-screen bg-white">
         <Header />
-        {}
         <div 
           className={`transition-opacity duration-300 ${
             isTransitioning ? 'opacity-0' : 'opacity-100'
@@ -192,6 +202,7 @@ function App() {
         </div>
         <Footer />
         <FloatingActions />
+        <ThemeToggle />
       </div>
     </ErrorBoundary>
   );

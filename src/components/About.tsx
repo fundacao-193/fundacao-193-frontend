@@ -6,7 +6,7 @@ export default function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <div className="inline-block bg-[#3d685d]/10 text-[#3d685d] px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <div className="inline-block bg-badge-bg text-badge-text px-4 py-2 rounded-full text-sm font-semibold mb-4">
               Quem Somos
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-6">
@@ -22,8 +22,8 @@ export default function About() {
               salvamento e prevenção de incêndios.
             </p>
             <a
-              href="#contato"
-              className="inline-flex items-center gap-2 text-[#3d685d] font-semibold hover:gap-3 transition-all"
+              href="#nossa-historia"
+              className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all hover:text-primary-hover"
             >
               Nossa História Completa
               <span>→</span>
@@ -38,7 +38,7 @@ export default function About() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -left-6 bg-[#3d685d] text-white p-6 rounded-xl shadow-xl">
+            <div className="absolute -bottom-6 -left-6 bg-institutional text-white p-6 rounded-xl shadow-xl">
               <p className="text-4xl font-bold mb-1">30+</p>
               <p className="text-sm">Anos de história</p>
             </div>
@@ -47,8 +47,8 @@ export default function About() {
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="bg-neutral-50 p-8 rounded-xl hover:shadow-lg transition-shadow">
-            <div className="w-14 h-14 bg-[#3d685d]/10 rounded-lg flex items-center justify-center mb-4">
-              <Target className="text-[#3d685d]" size={28} />
+            <div className="w-14 h-14 bg-icon-bg rounded-lg flex items-center justify-center mb-4">
+              <Target className="text-icon-fg" size={28} />
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Missão</h3>
             <p className="text-neutral-600 leading-relaxed">
@@ -58,8 +58,8 @@ export default function About() {
           </div>
 
           <div className="bg-neutral-50 p-8 rounded-xl hover:shadow-lg transition-shadow">
-            <div className="w-14 h-14 bg-[#3d685d]/10 rounded-lg flex items-center justify-center mb-4">
-              <Eye className="text-[#3d685d]" size={28} />
+            <div className="w-14 h-14 bg-icon-bg rounded-lg flex items-center justify-center mb-4">
+              <Eye className="text-icon-fg" size={28} />
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Visão</h3>
             <p className="text-neutral-600 leading-relaxed">
@@ -69,8 +69,8 @@ export default function About() {
           </div>
 
           <div className="bg-neutral-50 p-8 rounded-xl hover:shadow-lg transition-shadow">
-            <div className="w-14 h-14 bg-[#3d685d]/10 rounded-lg flex items-center justify-center mb-4">
-              <Shield className="text-[#3d685d]" size={28} />
+            <div className="w-14 h-14 bg-icon-bg rounded-lg flex items-center justify-center mb-4">
+              <Shield className="text-icon-fg" size={28} />
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Valores</h3>
             <p className="text-neutral-600 leading-relaxed">

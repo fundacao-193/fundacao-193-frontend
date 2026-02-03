@@ -37,8 +37,8 @@ export default function Projects() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-[#3d685d]">
-            <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 text-badge-text">
+            <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
             <p className="text-sm font-medium">Carregando projetos...</p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Projects() {
         {/* Voltar */}
         <button
           onClick={() => (window.location.hash = '')}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -98,7 +98,7 @@ export default function Projects() {
               key={project.id}
               className="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow"
             >
-              <div className="w-16 h-16 bg-[#3d685d]/10 text-[#3d685d] rounded-lg flex items-center justify-center mb-4">
+              <div className="w-16 h-16 bg-icon-bg/10 text-icon-fg rounded-lg flex items-center justify-center mb-4">
                 <Flame size={32} />
               </div>
 
@@ -123,7 +123,7 @@ export default function Projects() {
               {/* Impacto */}
               {project.acf?.impacto && (
                 <div className="border-t border-neutral-200 pt-4">
-                  <p className="text-[#3d685d] font-semibold">
+                  <p className="text-primary font-semibold">
                     {project.acf.impacto}
                   </p>
                 </div>
@@ -139,7 +139,7 @@ export default function Projects() {
           </h2>
 
           <div className="space-y-6">
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-xl font-bold text-neutral-900 mb-2">
                 Plataforma Digital de Gerenciamento de Emergências
               </h4>
@@ -149,7 +149,7 @@ export default function Projects() {
               </p>
             </div>
 
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-xl font-bold text-neutral-900 mb-2">
                 Centro de Pesquisa e Inovação
               </h4>
@@ -159,7 +159,7 @@ export default function Projects() {
               </p>
             </div>
 
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-xl font-bold text-neutral-900 mb-2">
                 Parcerias Internacionais de Cooperação Técnica
               </h4>
@@ -172,7 +172,7 @@ export default function Projects() {
         </section>
 
         {/* Como contribuir */}
-        <div className="bg-gradient-to-r from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+        <div className="bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-8 text-white">
           <h3 className="text-2xl font-bold mb-4">
             Como Contribuir com Nossos Projetos
           </h3>

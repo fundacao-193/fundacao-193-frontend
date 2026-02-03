@@ -43,7 +43,7 @@ export default function Accounts() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -59,14 +59,14 @@ export default function Accounts() {
           {financialMetrics.map((metric) => (
             <div key={metric.label} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-neutral-600 text-sm font-medium mb-2">{metric.label}</p>
-              <p className="text-3xl font-bold text-[#3d685d]">{metric.value}</p>
+              <p className="text-3xl font-bold text-primary">{metric.value}</p>
             </div>
           ))}
         </div>
 
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <BarChart3 size={28} className="text-[#3d685d]" />
+            <BarChart3 size={28} className="text-icon-fg" />
             <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
           </div>
 
@@ -84,7 +84,7 @@ export default function Accounts() {
                         <p className="font-semibold text-neutral-900">{doc.name}</p>
                         <p className="text-sm text-neutral-500">{doc.size}</p>
                       </div>
-                      <button className="text-[#3d685d] hover:text-[#2f5349] transition-colors">
+                      <button className="text-primary hover:text-primary-hover transition-colors">
                         <Download size={22} />
                       </button>
                     </div>
@@ -98,7 +98,7 @@ export default function Accounts() {
         <section className="grid md:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-2xl p-8 shadow-md">
             <div className="flex items-center gap-3 mb-6">
-              <TrendingUp size={24} className="text-[#3d685d]" />
+              <TrendingUp size={24} className="text-icon-fg" />
               <h3 className="text-2xl font-bold text-neutral-900">Política de Alocação de Recursos</h3>
             </div>
             <p className="text-neutral-600 leading-relaxed mb-6">
@@ -106,28 +106,28 @@ export default function Accounts() {
             </p>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-[#3d685d] rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">60% - Projetos e Capacitação</p>
                   <p className="text-sm text-neutral-600">Investimento direto em programas de impacto</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-[#3d685d] rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">20% - Infraestrutura e Equipamentos</p>
                   <p className="text-sm text-neutral-600">Manutenção e modernização de recursos</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-[#3d685d] rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">15% - Administração</p>
                   <p className="text-sm text-neutral-600">Custos operacionais e gestão</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-[#3d685d] rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">5% - Contingência</p>
                   <p className="text-sm text-neutral-600">Reserva para situações emergenciais</p>
@@ -136,7 +136,7 @@ export default function Accounts() {
             </ul>
           </div>
 
-          <div className="bg-gradient-to-br from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-6">Certificações e Auditorias</h3>
             <div className="space-y-4">
               <div>

@@ -11,8 +11,6 @@ import {
 import { fetchCapacitacoes } from '../../services/api';
 import type { Training } from '../../types/training';
 
-const GREEN = '#3d685d';
-
 /* =====================
    Utils
 ===================== */
@@ -138,8 +136,8 @@ export default function Training() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-[#3d685d]">
-            <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 text-badge-text">
+            <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
             <p className="text-sm font-medium">Carregando capacitações...</p>
           </div>
         </div>
@@ -175,7 +173,7 @@ export default function Training() {
 
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-2 text-[#3d685d] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] hover:text-[#2f5349]"
+          className="flex items-center gap-2 text-primary font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary hover:text-primary-hover"
           aria-label="Voltar para página anterior"
         >
           <ArrowLeft size={20} />
@@ -238,14 +236,14 @@ export default function Training() {
                     <div className="flex items-center gap-4 flex-wrap">
                       {acf?.cap_workload && (
                         <span className="flex items-center gap-1">
-                          <Clock size={16} color={GREEN} />
+                          <Clock size={16} className="text-icon-fg" />
                           {acf.cap_workload}
                         </span>
                       )}
 
                       {dateLabel && (
                         <span className="flex items-center gap-1">
-                          <Calendar size={16} color={GREEN} />
+                          <Calendar size={16} className="text-icon-fg" />
                           {dateLabel}
                         </span>
                       )}
@@ -268,12 +266,12 @@ export default function Training() {
                         text-center
                         px-4
                         py-2
-                        bg-[#3d685d]
+                        bg-primary
                         text-white
                         rounded-md
                         text-sm
                         font-medium
-                        hover:bg-[#2f5349]
+                        hover:bg-primary-hover
                         transition
                       "
                     >
@@ -290,8 +288,8 @@ export default function Training() {
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <section className="bg-white rounded-2xl p-8 shadow-md">
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 bg-[#3d685d] rounded-lg flex items-center justify-center">
-                <BookOpen size={24} className="text-white" />
+              <div className="w-12 h-12 bg-icon-bg rounded-lg flex items-center justify-center">
+                <BookOpen size={24} className="text-icon-fg" />
               </div>
               <h3 className="text-2xl font-bold">Metodologia de Ensino</h3>
             </div>
@@ -306,8 +304,8 @@ export default function Training() {
 
           <section className="bg-white rounded-2xl p-8 shadow-md">
             <div className="flex items-start gap-4 mb-6">
-              <div className="w-12 h-12 bg-[#3d685d] rounded-lg flex items-center justify-center">
-                <Award size={24} className="text-white" />
+              <div className="w-12 h-12 bg-icon-bg rounded-lg flex items-center justify-center">
+                <Award size={24} className="text-icon-fg" />
               </div>
               <h3 className="text-2xl font-bold">Certificações</h3>
             </div>
@@ -321,7 +319,7 @@ export default function Training() {
           </section>
         </div>
 
-        <section className="bg-gradient-to-r from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+        <section className="bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-8 text-white">
           <h3 className="text-2xl font-bold mb-4">
             Próximos Cursos e Inscrições
           </h3>

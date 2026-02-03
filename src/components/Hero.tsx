@@ -1,5 +1,6 @@
 import { MouseEvent } from 'react';
 import { ArrowRight, Heart } from 'lucide-react';
+import lineImage from '../assets/images/line.jpg';
 
 export default function Hero() {
   const handleScrollClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -16,19 +17,26 @@ export default function Hero() {
   };
 
   return (
-    <section id="inicio" className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-[#3d685d] text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('src/assets/images/line.jpg')] bg-cover bg-center opacity-20"></div>
+    <section id="inicio" className="relative bg-gradient-to-br from-hero-start via-hero-mid to-hero-end text-white overflow-hidden">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{ backgroundImage: `url(${lineImage})` }}
+      ></div>
+      
+      {/* Directional gradient overlay - darker left (text), lighter right (helicopter action) */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/20 pointer-events-none"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 lg:py-40">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 bg-[#3d685d]/20 border border-[#3d685d]/30 rounded-full px-4 py-2 mb-6">
-            <Heart size={16} className="text-[#3d685d]" />
+          <div className="inline-flex items-center gap-2 bg-hero-badge-bg border border-hero-badge-border rounded-full px-4 py-2 mb-6">
+            <Heart size={16} className="text-hero-badge-icon" />
             <span className="text-sm font-medium">Apoio ao Corpo de Bombeiros</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
             Apoiando quem
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#3d685d] to-[#3d685d]">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end">
               salva vidas
             </span>
           </h1>
@@ -41,7 +49,7 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="#quem-somos"
-              className="inline-flex items-center justify-center gap-2 bg-[#3d685d] text-white px-8 py-4 rounded-lg font-semibold hover:bg-[#2f5349] transition-all hover:shadow-lg hover:shadow-[#3d685d]/30"
+              className="inline-flex items-center justify-center gap-2 bg-primary text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-hover transition-all shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/60 hover:scale-105"
               onClick={(event) => handleScrollClick(event, '#quem-somos')}
             >
               Conheça a Fundação
@@ -49,7 +57,7 @@ export default function Hero() {
             </a>
             <a
               href="#areas"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/20 transition-all shadow-md hover:shadow-xl hover:shadow-white/20 hover:scale-105"
               onClick={(event) => handleScrollClick(event, '#areas')}
             >
               Nossos Projetos
@@ -57,8 +65,8 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
+      {/* Directional gradient overlay - darker left (text), lighter right (helicopter action) 
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>*/}
     </section>
   );
 }

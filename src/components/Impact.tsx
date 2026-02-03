@@ -29,7 +29,7 @@ export default function Impact() {
   ];
 
   return (
-    <section id="impacto" className="relative py-20 bg-gradient-to-br from-[#3d685d] to-[#3d685d] text-white overflow-hidden">
+    <section id="impacto" className="relative py-20 bg-gradient-to-br from-impact-start to-impact-end text-white overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/5198239/pexels-photo-5198239.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-10"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

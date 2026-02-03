@@ -39,7 +39,7 @@ export default function LGPD() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -59,8 +59,8 @@ export default function LGPD() {
               return (
                 <div key={principle.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#3d685d] rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon size={24} className="text-white" />
+                    <div className="flex items-center justify-center flex-shrink-0">
+                      <Icon size={24} className="text-orange-500" />
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-neutral-900 mb-2">{principle.title}</h3>
@@ -108,7 +108,7 @@ export default function LGPD() {
             <div className="grid md:grid-cols-2 gap-4">
               {userRights.map((right) => (
                 <div key={right} className="flex items-start gap-3 p-4 bg-neutral-50 rounded-lg">
-                  <div className="w-5 h-5 bg-[#3d685d] rounded-full mt-0.5 flex-shrink-0 flex items-center justify-center">
+                  <div className="w-5 h-5 bg-primary rounded-full mt-0.5 flex-shrink-0 flex items-center justify-center">
                     <span className="text-white text-xs">✓</span>
                   </div>
                   <p className="text-neutral-700">{right}</p>
@@ -130,7 +130,7 @@ export default function LGPD() {
                 <li>Receberá resposta em até 30 dias</li>
               </ol>
             </div>
-            <div className="bg-gradient-to-br from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-8 text-white">
               <h4 className="text-lg font-bold mb-4">Exclusão de Dados</h4>
               <ol className="list-decimal list-inside text-opacity-90 space-y-2 mb-6">
                 <li>Envie solicitação de exclusão por email</li>
@@ -149,7 +149,7 @@ export default function LGPD() {
               A Fundação 193 implementa medidas técnicas e administrativas rigorosas para proteger seus dados:
             </p>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="border-l-4 border-[#3d685d] pl-6">
+              <div className="border-l-4 border-primary pl-6">
                 <h4 className="font-bold text-neutral-900 mb-2">Medidas Técnicas</h4>
                 <ul className="list-disc list-inside text-neutral-600 space-y-1">
                   <li>Criptografia de dados em trânsito</li>
@@ -158,7 +158,7 @@ export default function LGPD() {
                   <li>Backups regulares</li>
                 </ul>
               </div>
-              <div className="border-l-4 border-[#3d685d] pl-6">
+              <div className="border-l-4 border-primary pl-6">
                 <h4 className="font-bold text-neutral-900 mb-2">Medidas Administrativas</h4>
                 <ul className="list-disc list-inside text-neutral-600 space-y-1">
                   <li>Controle de acesso restrito</li>

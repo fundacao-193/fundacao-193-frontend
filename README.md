@@ -264,6 +264,66 @@ O projeto pode ser hospedado em qualquer serviço que suporte sites estáticos:
 
 ## Personalização
 
+### Sistema de Temas
+
+O projeto possui um sistema de temas completo com 3 variações:
+
+1. **Tema Vermelho (Padrão)** - Energia, ação e urgência
+   - Cor principal: `#c11827`
+   - Usado para CTAs e elementos de destaque
+
+2. **Tema Verde** - Confiança institucional e estabilidade
+   - Cor principal: `#3d685d`
+   - Design original do projeto
+
+3. **Tema Dark** - Moderno e contrastante
+   - Fundo escuro: `#0f172a`
+   - Para usuários que preferem dark mode
+
+#### Alternando Temas
+
+Os usuários podem alternar entre temas através do ícone de paleta no canto inferior direito da tela.
+
+#### Esconder o Seletor de Temas (para apresentações/produção)
+
+Para ocultar temporariamente o seletor de temas, edite [src/App.tsx](src/App.tsx):
+
+```tsx
+// Linha ~203 - Comente a linha do ThemeToggle:
+<Footer />
+<FloatingActions />
+{/* <ThemeToggle /> */}  // ← Seletor de temas escondido
+```
+
+Ou remova completamente a linha. O tema ativo continuará funcionando normalmente.
+
+#### Personalizar Cores dos Temas
+
+As cores dos temas estão definidas em [src/index.css](src/index.css) usando CSS Custom Properties:
+
+```css
+:root {
+  /* Tema Vermelho (padrão) */
+  --color-primary: #c11827;
+  --color-secondary: #ef7e24;
+  /* ... mais variáveis */
+}
+
+[data-theme="green"] {
+  /* Tema Verde */
+  --color-primary: #3d685d;
+  /* ... */
+}
+
+[data-theme="dark"] {
+  /* Tema Dark */
+  --color-primary: #ff4757;
+  /* ... */
+}
+```
+
+O sistema de temas é integrado ao Tailwind via [tailwind.config.js](tailwind.config.js) usando classes como `bg-primary`, `text-primary`, etc.
+
 ### Alterar Cores
 
 Edite o arquivo `tailwind.config.js` para modificar o tema:

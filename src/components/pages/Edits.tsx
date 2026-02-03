@@ -73,7 +73,7 @@ export default function Edits() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -94,7 +94,7 @@ export default function Edits() {
               <p className="font-semibold text-neutral-900">Edital Aberto</p>
               <p className="text-sm text-neutral-600">Edital de Seleção de Projetos 2024</p>
             </div>
-            <button className="ml-auto px-4 py-2 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors">
+            <button className="ml-auto px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors">
               Acessar
             </button>
           </div>
@@ -104,7 +104,7 @@ export default function Edits() {
           {edits.map((yearGroup) => (
             <section key={yearGroup.year}>
               <h2 className="text-3xl font-bold text-neutral-900 mb-6 flex items-center gap-2">
-                <Calendar size={28} className="text-[#3d685d]" />
+                <Calendar size={28} className="text-icon-fg" />
                 Ano {yearGroup.year}
               </h2>
               <div className="space-y-4">
@@ -116,7 +116,7 @@ export default function Edits() {
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <FileText size={20} className="text-[#3d685d]" />
+                          <FileText size={20} className="text-icon-fg" />
                           <h4 className="text-lg font-bold text-neutral-900">{edit.title}</h4>
                         </div>
                         <p className="text-neutral-600 mb-3">{edit.description}</p>
@@ -130,7 +130,7 @@ export default function Edits() {
                         >
                           {edit.status}
                         </span>
-                        <button className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+                        <button className="text-neutral-400 hover:text-primary transition-colors">
                           <Download size={20} />
                         </button>
                       </div>
@@ -142,7 +142,7 @@ export default function Edits() {
           ))}
         </div>
 
-        <section className="mt-16 bg-gradient-to-r from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+        <section className="mt-16 bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-8 text-white">
           <h3 className="text-2xl font-bold mb-6">Como Participar de Nossos Editais</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>

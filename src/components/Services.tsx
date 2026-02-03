@@ -6,25 +6,25 @@ export default function Services() {
       icon: Flame,
       title: 'Apoio Operacional',
       description: 'Fornecimento de equipamentos, tecnologia e recursos para aprimorar as operações de salvamento e combate a incêndios.',
-      color: 'from-[#3d685d] to-[#3d685d]',
+      color: 'from-institutional to-institutional',
     },
     {
       icon: GraduationCap,
       title: 'Capacitação e Treinamentos',
       description: 'Programas especializados de formação e aperfeiçoamento para bombeiros, com instrutores qualificados e estrutura moderna.',
-      color: 'from-[#3d685d] to-[#3d685d]',
+      color: 'from-institutional to-institutional',
     },
     {
       icon: Users,
       title: 'Eventos Institucionais',
       description: 'Organização de seminários, congressos e encontros técnicos para promover a troca de experiências e conhecimento.',
-      color: 'from-[#3d685d] to-[#3d685d]',
+      color: 'from-institutional to-institutional',
     },
     {
       icon: Lightbulb,
       title: 'Projetos Sociais',
       description: 'Desenvolvimento de iniciativas voltadas à educação preventiva e conscientização da comunidade sobre segurança.',
-      color: 'from-[#3d685d] to-[#3d685d]',
+      color: 'from-institutional to-institutional',
     },
   ];
 
@@ -32,7 +32,7 @@ export default function Services() {
     <section id="areas" className="py-20 bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-block bg-[#3d685d]/10 text-[#3d685d] px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          <div className="inline-block bg-badge-bg text-badge-text px-4 py-2 rounded-full text-sm font-semibold mb-4">
             Áreas de Atuação
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-6">
@@ -70,7 +70,7 @@ export default function Services() {
                   service.title === 'Eventos Institucionais' ? '#eventos' :
                   '#projetos'
                 }
-                className="text-[#3d685d] font-semibold text-sm hover:gap-2 inline-flex items-center gap-1 transition-all group-hover:gap-2"
+                className="text-primary font-semibold text-sm hover:gap-2 inline-flex items-center gap-1 transition-all group-hover:gap-2 hover:text-primary-hover"
                 onClick={(e) => {
                   const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
                   if (href && href.startsWith('#')) {

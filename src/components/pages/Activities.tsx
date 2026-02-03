@@ -94,7 +94,7 @@ export default function Activities() {
     // Reset animation state after it completes (matches CSS animation duration)
     animTimer.current = window.setTimeout(() => {
       setAnim(false);
-    }, 350);
+    }, 500);
     
     return () => {
       if (animTimer.current) { 
@@ -119,7 +119,7 @@ export default function Activities() {
         <div className="mb-6">
           <button
             onClick={() => (window.location.hash = '')}
-            className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium transition-colors"
+            className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium transition-colors"
             aria-label="Voltar para a página inicial"
           >
             <ArrowRight size={16} className="rotate-180" />
@@ -135,19 +135,19 @@ export default function Activities() {
             <div className="mt-4 inline-flex gap-3">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-3 py-1 rounded-full ${filter === 'all' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'all' ? 'bg-primary text-white shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
               >
                 Todas
               </button>
               <button
                 onClick={() => setFilter('news')}
-                className={`px-3 py-1 rounded-full ${filter === 'news' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'news' ? 'bg-badge-bg text-badge-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
               >
                 Notícias
               </button>
               <button
                 onClick={() => setFilter('events')}
-                className={`px-3 py-1 rounded-full ${filter === 'events' ? 'bg-[#3d685d] text-white' : 'bg-neutral-100 text-neutral-700'}`}
+                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'events' ? 'bg-badge-event-bg text-badge-event-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
               >
                 Eventos
               </button>
@@ -170,7 +170,7 @@ export default function Activities() {
                     <span>{it.date ? new Date(it.date).toLocaleDateString('pt-BR') : 'Data a definir'}</span>
                   </div>
 
-                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${it.type === 'news' ? 'bg-[#3d685d]/10 text-[#3d685d]' : 'bg-[#ef7e24]/10 text-[#ef7e24]'}`}>
+                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${it.type === 'news' ? 'bg-badge-bg text-badge-text' : 'bg-badge-event-bg text-badge-event-text'}`}>
                     {it.type === 'news' ? 'Notícia' : 'Evento'}
                   </span>
                 </div>
@@ -187,7 +187,7 @@ export default function Activities() {
 
                 <div className="flex-grow" />
 
-                <a href={`#${it.id}`} className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all" aria-label={`Leia mais sobre ${it.title.replace(/<[^>]*>/g, '')}`}>
+                <a href={`#${it.id}`} className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all" aria-label={`Leia mais sobre ${it.title.replace(/<[^>]*>/g, '')}`}>
                   {it.type === 'news' ? 'Ler mais' : 'Saiba mais'}
                   <ArrowRight size={16} />
                 </a>

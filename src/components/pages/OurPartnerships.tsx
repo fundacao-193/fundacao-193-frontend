@@ -49,7 +49,7 @@ export default function OurPartnerships() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -67,7 +67,7 @@ export default function OurPartnerships() {
             return (
               <div key={partnerGroup.category} className="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-[#3d685d] rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 bg-icon-bg rounded-lg flex items-center justify-center">
                     <Icon size={24} className="text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-neutral-900">{partnerGroup.category}</h3>
@@ -75,7 +75,7 @@ export default function OurPartnerships() {
                 <ul className="space-y-3">
                   {partnerGroup.items.map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-[#3d685d] rounded-full mt-2 flex-shrink-0"></div>
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                       <span className="text-neutral-600">{item}</span>
                     </li>
                   ))}
@@ -90,28 +90,28 @@ export default function OurPartnerships() {
             <h2 className="text-2xl font-bold text-neutral-900 mb-6">Benefícios das Parcerias</h2>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <div className="w-3 h-3 bg-[#3d685d] rounded-full mt-1.5 flex-shrink-0"></div>
+                <div className="w-3 h-3 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">Compartilhamento de Expertise</p>
                   <p className="text-sm text-neutral-600">Acesso a conhecimento especializado e melhores práticas globais</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-3 h-3 bg-[#3d685d] rounded-full mt-1.5 flex-shrink-0"></div>
+                <div className="w-3 h-3 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">Sinergia de Recursos</p>
                   <p className="text-sm text-neutral-600">Otimização e potencialização de investimentos conjuntos</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-3 h-3 bg-[#3d685d] rounded-full mt-1.5 flex-shrink-0"></div>
+                <div className="w-3 h-3 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">Inovação Tecnológica</p>
                   <p className="text-sm text-neutral-600">Acesso a soluções inovadoras e tecnologia de ponta</p>
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <div className="w-3 h-3 bg-[#3d685d] rounded-full mt-1.5 flex-shrink-0"></div>
+                <div className="w-3 h-3 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
                 <div>
                   <p className="font-semibold text-neutral-900">Alcance Ampliado</p>
                   <p className="text-sm text-neutral-600">Expansão de atuação e impacto em diferentes regiões</p>
@@ -120,7 +120,7 @@ export default function OurPartnerships() {
             </ul>
           </div>
 
-          <div className="bg-gradient-to-br from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-8 text-white">
             <h2 className="text-2xl font-bold mb-6">Proposta de Parceria</h2>
             <p className="leading-relaxed mb-6">
               Estamos sempre abertos a novas parcerias estratégicas que estejam alinhadas com nossa missão e valores.
@@ -136,7 +136,7 @@ export default function OurPartnerships() {
                 </ul>
               </div>
             </div>
-            <button className="w-full px-6 py-2 bg-white text-[#3d685d] rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
+            <button className="w-full px-6 py-2 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
               Propor Parceria
             </button>
           </div>
@@ -145,15 +145,15 @@ export default function OurPartnerships() {
         <section className="bg-white rounded-2xl p-8 shadow-md">
           <h2 className="text-2xl font-bold text-neutral-900 mb-6">Histórico de Parcerias Bem-Sucedidas</h2>
           <div className="space-y-6">
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-lg font-bold text-neutral-900 mb-2">Modernização de Frota (2022-2023)</h4>
               <p className="text-neutral-600">Parceria com fabricante internacional resultou na aquisição de 8 viaturas de última geração, aumentando capacidade operacional em 40%.</p>
             </div>
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-lg font-bold text-neutral-900 mb-2">Centro de Excelência (2021-2022)</h4>
               <p className="text-neutral-600">Cooperação técnica com universidade internacional para criação de programa especializado em gestão de crises.</p>
             </div>
-            <div className="border-l-4 border-[#3d685d] pl-6">
+            <div className="border-l-4 border-primary pl-6">
               <h4 className="text-lg font-bold text-neutral-900 mb-2">Programa Comunitário (2020-Presente)</h4>
               <p className="text-neutral-600">Aliança com 15 ONGs locais para capacitação de 50.000+ pessoas em prevenção de incêndios e primeiros socorros.</p>
             </div>

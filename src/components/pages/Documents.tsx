@@ -49,7 +49,7 @@ export default function Documents() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -67,7 +67,7 @@ export default function Documents() {
             return (
               <section key={category.name}>
                 <div className="flex items-center gap-3 mb-6">
-                  <Icon size={28} className="text-[#3d685d]" />
+                  <Icon size={28} className="text-icon-fg" />
                   <h2 className="text-2xl font-bold text-neutral-900">{category.name}</h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -77,7 +77,7 @@ export default function Documents() {
                       className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3">
-                        <FileText size={20} className="text-[#3d685d]" />
+                        <FileText size={20} className="text-icon-fg" />
                         <div>
                           <p className="font-semibold text-neutral-900">{file.name}</p>
                           <p className="text-xs text-neutral-500">{file.size} • {file.date}</p>
@@ -108,17 +108,17 @@ export default function Documents() {
             <p className="text-neutral-600 leading-relaxed mb-6">
               Não encontrou o documento que procura? Você pode solicitar cópias de documentos específicos através do formulário eletrônico.
             </p>
-            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20de%20Documento" className="inline-block px-6 py-3 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors" aria-label="Solicitar documento">
+            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20de%20Documento" className="inline-block px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors" aria-label="Solicitar documento">
               Solicitar Documento
             </a>
           </div>
 
-          <div className="bg-gradient-to-br from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+          <div className="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-6">Lei de Acesso à Informação</h3>
             <p className="text-opacity-90 leading-relaxed mb-6">
               Conforme Lei 12.527/2011, a Fundação 193 garante o direito de acesso à informação pública.
             </p>
-            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20LAI" className="inline-block px-6 py-3 bg-white text-[#3d685d] rounded-lg font-medium hover:bg-neutral-100 transition-colors" aria-label="Fazer solicitação LAI">
+            <a href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20LAI" className="inline-block px-6 py-3 bg-white text-primary rounded-lg font-medium hover:bg-neutral-100 transition-colors" aria-label="Fazer solicitação LAI">
               Fazer Solicitação LAI
             </a>
           </div>

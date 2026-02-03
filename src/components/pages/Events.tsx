@@ -62,8 +62,8 @@ export default function Events() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-[#3d685d]">
-            <div className="w-2 h-2 bg-[#3d685d] rounded-full animate-pulse"></div>
+          <div className="inline-flex items-center gap-2 text-badge-text">
+            <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
             <p className="text-sm font-medium">Carregando eventos...</p>
           </div>
         </div>
@@ -118,14 +118,14 @@ export default function Events() {
     });
 
   const cardClass =
-    'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#3d685d]';
+    'bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border-l-4 border-primary';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => (window.location.hash = '')}
-          className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium mb-8 transition-colors"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors"
         >
           <ArrowLeft size={20} />
           Voltar
@@ -164,12 +164,12 @@ export default function Events() {
 
                   <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
                     <div className="flex items-center gap-2">
-                      <Calendar size={18} className="text-[#3d685d]" />
+                      <Calendar size={18} className="text-icon-fg" />
                       <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <MapPin size={18} className="text-[#3d685d]" />
+                      <MapPin size={18} className="text-icon-fg" />
                       <span>{event.acf?.event_location || 'Local a definir'}</span>
                     </div>
                   </div>
@@ -179,7 +179,7 @@ export default function Events() {
                       href={event.acf.event_registration_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-6 inline-block px-6 py-2 mr-4 bg-[#3d685d] text-white rounded-lg font-medium hover:bg-[#2f5349] transition-colors"
+                      className="mt-6 inline-block px-6 py-2 mr-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
                     >
                       Inscrever-se
                     </a>
@@ -188,7 +188,7 @@ export default function Events() {
                   {/* Leia / Saiba mais to event detail */}
                   <a
                     href={`#evento-${event.id}`}
-                    className="mt-8 inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all"
+                    className="mt-8 inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all"
                     aria-label={`Saiba mais sobre ${event.title.rendered.replace(/<[^>]*>/g, '')}`}
                   >
                     Saiba mais
@@ -225,13 +225,13 @@ export default function Events() {
 
                   <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
                     <div className="flex items-center gap-2">
-                      <Calendar size={18} className="text-[#3d685d]" />
+                      <Calendar size={18} className="text-icon-fg" />
                       <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
                     </div>
 
                     {event.acf?.event_location && (
                       <div className="flex items-center gap-2">
-                        <MapPin size={18} className="text-[#3d685d]" />
+                        <MapPin size={18} className="text-icon-fg" />
                         <span>{event.acf.event_location}</span>
                       </div>
                     )}
@@ -243,7 +243,7 @@ export default function Events() {
         </section>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-[#3d685d] to-[#2f5349] rounded-2xl p-8 text-white">
+        <div className="bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-8 text-white">
           <div className="flex items-start gap-4 mb-6">
             <Users size={32} />
             <div>
@@ -256,7 +256,7 @@ export default function Events() {
             </div>
           </div>
 
-          <button className="px-6 py-2 bg-white text-[#3d685d] rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
+          <button className="px-6 py-2 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
             Entre em Contato
           </button>
         </div>

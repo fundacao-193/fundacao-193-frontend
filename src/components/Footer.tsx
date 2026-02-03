@@ -48,14 +48,14 @@ export default function Footer() {
             <div className="mb-6 space-y-2">
               <a
                 href="tel:+556133213000"
-                className="flex items-center gap-2 text-neutral-400 hover:text-[#3d685d] transition-colors"
+                className="flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors"
               >
                 <Phone size={16} />
                 <span>(61) 3321-3000</span>
               </a>
               <a
                 href="mailto:contato@fundacao193.org.br"
-                className="flex items-center gap-2 text-neutral-400 hover:text-[#3d685d] transition-colors"
+                className="flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors"
               >
                 <Mail size={16} />
                 <span>contato@fundacao193.org.br</span>
@@ -123,7 +123,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+                    className="text-neutral-400 hover:text-primary transition-colors"
                   >
                     {link.label}
                   </a>
@@ -139,7 +139,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+                    className="text-neutral-400 hover:text-primary transition-colors"
                   >
                     {link.label}
                   </a>
@@ -155,7 +155,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+                    className="text-neutral-400 hover:text-primary transition-colors"
                   >
                     {link.label}
                   </a>
@@ -171,10 +171,10 @@ export default function Footer() {
               {currentYear} Fundação 193. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-sm">
-              <a href="#lgpd" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+              <a href="#lgpd" className="text-neutral-400 hover:text-primary transition-colors">
                 Política de Privacidade
               </a>
-              <a href="#documentos" className="text-neutral-400 hover:text-[#3d685d] transition-colors">
+              <a href="#documentos" className="text-neutral-400 hover:text-primary transition-colors">
                 Termos de Uso
               </a>
             </div>

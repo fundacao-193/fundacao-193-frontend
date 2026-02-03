@@ -152,13 +152,13 @@ export default function Header() {
                     }}
                   >
                     <button 
-                      className="flex items-center gap-1 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors py-2 focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                      className="flex items-center gap-1 text-neutral-700 hover:text-institutional font-medium transition-colors py-2 focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                       aria-controls={getPanelId(item.label)}
                       onKeyDown={handleDropdownTriggerKeyDown(item.label)}
                     >
-                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active text-[#3d685d]' : ''}`}>{item.label}</span>
+                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active' : ''}`}>{item.label}</span>
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     
@@ -181,7 +181,7 @@ export default function Header() {
                           <a
                             key={subItem.href}
                             href={subItem.href}
-                            className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-[#3d685d] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                            className="block px-4 py-2 text-neutral-700 hover:bg-neutral-50 hover:text-institutional transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
                             role="menuitem"
                             onClick={(event) => handleNavClick(event, subItem.href)}
                           >
@@ -195,7 +195,7 @@ export default function Header() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] animated-underline"
+                    className="text-neutral-700 hover:text-institutional font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-institutional animated-underline"
                     onClick={(event) => handleNavClick(event, item.href)}
                   >
                     {item.label}
@@ -204,14 +204,14 @@ export default function Header() {
               ))}
               <a
                 href="#colabore"
-                className="bg-[#3d685d] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#2f5349] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-white"
+                className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-hover transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-white"
               >
                 Colabore
               </a>
             </div>
 
             <button
-              className="lg:hidden p-2 focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d] rounded"
+              className="lg:hidden p-2 focus:outline-2 focus:outline-offset-2 focus:outline-institutional rounded"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={isMenuOpen}
@@ -230,11 +230,11 @@ export default function Header() {
                   <div key={item.label}>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                      className="flex items-center justify-between w-full py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                      className="flex items-center justify-between w-full py-2 text-neutral-700 hover:text-institutional font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
                       aria-expanded={openDropdown === item.label}
                       aria-haspopup="true"
                     >
-                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active text-[#3d685d]' : ''}`}>{item.label}</span>
+                      <span className={`animated-underline ${openDropdown === item.label ? 'underline-active' : ''}`}>{item.label}</span>
                       <ChevronDown size={16} className={`transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
                     </button>
                     {openDropdown === item.label && (
@@ -243,7 +243,7 @@ export default function Header() {
                           <a
                             key={subItem.href}
                             href={subItem.href}
-                            className="block py-2 text-sm text-neutral-600 hover:text-[#3d685d] transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                            className="block py-2 text-sm text-neutral-600 hover:text-institutional transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
                             role="menuitem"
                             onClick={(event) => {
                               handleNavClick(event, subItem.href);
@@ -261,7 +261,7 @@ export default function Header() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="block py-2 text-neutral-700 hover:text-[#3d685d] font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#3d685d]"
+                    className="block py-2 text-neutral-700 hover:text-institutional font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
                     onClick={(event) => {
                       handleNavClick(event, item.href);
                       setIsMenuOpen(false);
@@ -273,7 +273,7 @@ export default function Header() {
               ))}
               <a
                 href="#colabore"
-                className="block bg-[#3d685d] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2f5349] transition-colors text-center mt-4 focus:outline-2 focus:outline-offset-2 focus:outline-white"
+                className="block bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-hover transition-colors text-center mt-4 focus:outline-2 focus:outline-offset-2 focus:outline-white"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Colabore

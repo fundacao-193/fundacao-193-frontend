@@ -31,7 +31,7 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
 
   return (
     <div className={`group ${sizeClasses[size]} mx-auto`}>
-      <article className="bg-white rounded-xl overflow-hidden shadow-lg border-2 border-slate-200 hover:border-[#3d685d] transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+      <article className="bg-white rounded-xl overflow-hidden shadow-lg border-2 border-slate-200 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
         <div className={`relative overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 ${imageHeightClasses[size]}`}>
           <img
             src={member.image}
@@ -42,10 +42,10 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
         </div>
 
         <div className="p-4 text-center">
-          <h3 className="text-base font-bold text-neutral-900 mb-1 group-hover:text-[#3d685d] transition-colors">
+          <h3 className="text-base font-bold text-neutral-900 mb-1 group-hover:text-primary transition-colors">
             {member.name}
           </h3>
-          <p className="text-sm font-semibold text-[#3d685d] mb-3">{member.role}</p>
+          <p className="text-sm font-semibold text-primary mb-3">{member.role}</p>
 
           <div className="flex gap-2 justify-center pt-3 border-t border-slate-100">
             <a
@@ -62,7 +62,7 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
               href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
                 'Contato sobre ' + member.name,
               )}`}
-              className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+              className="text-neutral-400 hover:text-primary transition-colors"
               title={`Enviar e-mail para ${member.name}`}
             >
               <Mail size={16} />
@@ -225,25 +225,21 @@ export default function Team() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="inline-flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-semibold mb-12 transition-colors hover:gap-3 group"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Voltar
         </button>
 
-        <div className="mb-16 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-neutral-900 mb-6 leading-tight">
-            Organograma Institucional
-          </h1>
-          <p className="text-lg md:text-xl text-neutral-600 max-w-3xl mx-auto leading-relaxed">
-            Estrutura organizacional hierárquica da Fundação 193, demonstrando claramente as relações e responsabilidades.
-          </p>
-        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">Nossa Equipe</h1>
+        <p className="text-xl text-neutral-600 mb-16">
+          Profissionais dedicados e experientes comprometidos com a excelência e o impacto social.
+        </p>
 
         <div className="mb-24 bg-gradient-to-br from-slate-50 to-white rounded-3xl p-8 md:p-12 border border-slate-200 shadow-lg">
           <div className="mb-8 text-center">
-            <span className="inline-block px-4 py-2 bg-[#3d685d]/10 text-[#3d685d] rounded-full text-sm font-semibold">
+            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold">
               Nível 1 - Presidência
             </span>
           </div>
@@ -253,7 +249,7 @@ export default function Team() {
           <VerticalConnector />
 
           <div className="mb-8 text-center">
-            <span className="inline-block px-4 py-2 bg-[#3d685d]/10 text-[#3d685d] rounded-full text-sm font-semibold">
+            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold">
               Nível 2 - Presidência Executiva
             </span>
           </div>
@@ -263,7 +259,7 @@ export default function Team() {
           <TreeConnector branches={3} />
 
           <div className="mb-8 text-center">
-            <span className="inline-block px-4 py-2 bg-[#3d685d]/10 text-[#3d685d] rounded-full text-sm font-semibold">
+            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold">
               Nível 3 - Diretoria Executiva
             </span>
           </div>
@@ -275,7 +271,7 @@ export default function Team() {
           </div>
         </div>
 
-        <div className="my-24 h-0.5 bg-gradient-to-r from-transparent via-[#3d685d]/20 to-transparent" />
+        <div className="my-24 h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
         <div className="mb-20">
           <div className="mb-12 text-center">
@@ -283,16 +279,16 @@ export default function Team() {
             <p className="text-neutral-600 max-w-2xl mx-auto">
               Conselhos independentes que garantem transparência, fiscalização e conformidade institucional.
             </p>
-            <div className="h-1 w-24 bg-gradient-to-r from-[#3d685d] to-transparent rounded-full mx-auto mt-6" />
+            <div className="h-1 w-24 bg-gradient-to-r from-primary to-transparent rounded-full mx-auto mt-6" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-10">
             {departments.map((dept) => (
               <section
                 key={dept.id}
-                className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-[#3d685d]/40 transition-all duration-300 hover:shadow-2xl"
+                className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl"
               >
-                <div className="bg-gradient-to-r from-[#3d685d] to-[#2f5349] p-6 text-white">
+                <div className="bg-gradient-to-r from-primary via-primary to-secondary p-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">
                     {dept.title}
                   </h3>
@@ -303,7 +299,7 @@ export default function Team() {
                   <div className="space-y-4">
                     {dept.members.map((member, idx) => (
                       <div key={member.id}>
-                        <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-[#3d685d]/30 hover:bg-slate-50 transition-all duration-300 group/item">
+                        <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all duration-300 group/item">
                           <div className="relative w-16 h-16 flex-shrink-0">
                             <img
                               src={member.image}
@@ -312,10 +308,10 @@ export default function Team() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-[#3d685d] transition-colors truncate">
+                            <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-primary transition-colors truncate">
                               {member.name}
                             </h4>
-                            <p className="text-[#3d685d] font-medium text-xs mb-1">{member.role}</p>
+                            <p className="text-primary font-medium text-xs mb-1">{member.role}</p>
                             <p className="text-neutral-600 text-xs line-clamp-1">{member.bio}</p>
                           </div>
                           <div className="flex gap-2 flex-shrink-0">
@@ -333,7 +329,7 @@ export default function Team() {
                               href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
                                 'Contato sobre ' + member.name,
                               )}`}
-                              className="text-neutral-400 hover:text-[#3d685d] transition-colors"
+                              className="text-neutral-400 hover:text-primary transition-colors"
                               title={`Enviar e-mail para ${member.name}`}
                             >
                               <Mail size={14} />
@@ -354,7 +350,7 @@ export default function Team() {
 
         <section className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 md:p-12 border border-slate-200 shadow-sm">
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-3">Desenvolvimento Contínuo</h2>
-          <div className="h-1 w-24 bg-gradient-to-r from-[#3d685d] to-transparent rounded-full mb-8" />
+          <div className="h-1 w-24 bg-gradient-to-r from-primary to-transparent rounded-full mb-8" />
 
           <p className="text-neutral-700 leading-relaxed mb-8 text-lg">
             Na Fundação 193, acreditamos que nosso maior ativo é nossa equipe. Por isso, investimos continuamente no
@@ -370,10 +366,10 @@ export default function Team() {
               { title: 'Bem-estar Integral', desc: 'Programa completo de qualidade de vida e saúde' },
               { title: 'Inclusão e Colaboração', desc: 'Ambiente inclusivo que valoriza diversidade e trabalho em equipe' },
             ].map((item, idx) => (
-              <div key={idx} className="flex gap-4 p-5 rounded-lg bg-white border border-slate-100 hover:border-[#3d685d]/20 hover:shadow-md transition-all duration-300 group">
+              <div key={idx} className="flex gap-4 p-5 rounded-lg bg-white border border-slate-100 hover:border-primary/20 hover:shadow-md transition-all duration-300 group">
                 <div className="flex-shrink-0 mt-1">
-                  <div className="flex items-center justify-center h-8 w-8 rounded-full bg-[#3d685d]/10 group-hover:bg-[#3d685d]/20 transition-colors">
-                    <div className="h-2.5 w-2.5 rounded-full bg-[#3d685d]" />
+                  <div className="flex items-center justify-center h-8 w-8 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <div className="h-2.5 w-2.5 rounded-full bg-primary" />
                   </div>
                 </div>
                 <div>

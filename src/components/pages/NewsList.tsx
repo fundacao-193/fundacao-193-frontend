@@ -40,7 +40,7 @@ export default function NewsList() {
   if (loading) return (
     <div className="min-h-screen py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-center text-[#3d685d] font-medium">Carregando notícias...</p>
+        <p className="text-center text-badge-text font-medium">Carregando notícias...</p>
       </div>
     </div>
   );
@@ -59,7 +59,7 @@ export default function NewsList() {
         <div className="mb-8">
           <button
             onClick={() => (window.location.hash = '')}
-            className="flex items-center gap-2 text-[#3d685d] hover:text-[#2f5349] font-medium transition-colors"
+            className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium transition-colors"
             aria-label="Voltar para a página inicial"
           >
             <ArrowRight size={16} className="rotate-180" />
@@ -69,7 +69,7 @@ export default function NewsList() {
 
         <div className="flex items-center justify-between mb-12">
           <div>
-            <div className="inline-block bg-[#3d685d]/10 text-[#3d685d] px-4 py-2 rounded-full text-sm font-semibold mb-4">Notícias</div>
+            <div className="inline-block bg-badge-bg text-badge-text px-4 py-2 rounded-full text-sm font-semibold mb-4">Notícias</div>
             <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900">Todas as Notícias</h1>
           </div>
         </div>
@@ -91,14 +91,14 @@ export default function NewsList() {
 
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-xl font-bold text-neutral-900 mb-0" dangerouslySetInnerHTML={{ __html: item.title.rendered }} />
-                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-[#3d685d]/10 text-[#3d685d]">Notícia</span>
+                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-badge-bg text-badge-text">Notícia</span>
                 </div>
 
                 <p className="text-neutral-600 mb-4" dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }} />
 
                 <a
                   href={item.link || `#noticia-${item.id}`}
-                  className="inline-flex items-center gap-2 text-[#3d685d] font-semibold text-sm hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all hover:text-primary-hover"
                 >
                   Ler mais
                   <ArrowRight size={16} />
