@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { ArrowRight, Heart } from 'lucide-react';
-import lineImage from '../assets/images/line.jpg';
+import lineImage from '../assets/images/HeroImgLine.jpg';
 
 export default function Hero() {
   const handleScrollClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
