@@ -288,7 +288,7 @@ export default function Team() {
                 key={dept.id}
                 className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl"
               >
-                <div className="bg-gradient-to-r from-primary via-primary to-secondary p-6 text-white">
+                <div className="bg-primary p-6 text-white">
                   <h3 className="text-2xl font-bold mb-2">
                     {dept.title}
                   </h3>

@@ -6,7 +6,7 @@ export default function Collaborate() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <button
           onClick={() => window.location.hash = ''}
-          className="flex items-center gap-2 text-[#c11827] hover:text-[#a91620] font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[#c11827]"
+          className="flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-primary"
           aria-label="Voltar para página inicial"
         >
           <ArrowLeft size={20} />
@@ -44,27 +44,27 @@ export default function Collaborate() {
               <h3 className="text-2xl font-bold text-neutral-900 mb-6">Sua doação estará contribuindo para:</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Preservar o meio ambiente</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Prevenir acidentes</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Prevenir incêndios</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Preservar a memória do CBMDF</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Incentivar a pesquisa em incêndios e explosões</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
+                  <span className="text-primary font-bold text-xl">•</span>
                   <span className="text-neutral-700">Desenvolvimento de atividades sociais, culturais e desportivas</span>
                 </li>
               </ul>
@@ -82,7 +82,7 @@ export default function Collaborate() {
                   decoding="async"
                 />
               </div>
-              <div className="mt-6 flex items-center gap-2 text-[#1d4f42] font-semibold text-sm">
+              <div className="mt-6 flex items-center gap-2 text-primary font-semibold text-sm">
                 <Heart size={16} />
                 <span>Ajude-nos a salvar vidas</span>
               </div>
@@ -142,7 +142,7 @@ export default function Collaborate() {
         <section className="mb-20">
           <h2 className="text-3xl font-bold text-neutral-900 mb-8">Outras Formas de Colaborar</h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-[#1d4f42] to-[#153d33] rounded-xl p-8 text-white">
+            <div className="bg-primary rounded-xl p-8 text-white">
               <div className="text-3xl font-bold mb-3">01</div>
               <h3 className="text-xl font-bold mb-3">Voluntariado</h3>
               <p className="text-opacity-90">
@@ -150,7 +150,7 @@ export default function Collaborate() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[#1d4f42] to-[#153d33] rounded-xl p-8 text-white">
+            <div className="bg-primary rounded-xl p-8 text-white">
               <div className="text-3xl font-bold mb-3">02</div>
               <h3 className="text-xl font-bold mb-3">Parcerias Corporativas</h3>
               <p className="text-opacity-90">
@@ -158,7 +158,7 @@ export default function Collaborate() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[#ef7e24] to-[#c11827] rounded-xl p-8 text-white">
+            <div className="bg-primary rounded-xl p-8 text-white">
               <div className="text-3xl font-bold mb-3">03</div>
               <h3 className="text-xl font-bold mb-3">Doações em Espécie</h3>
               <p className="text-opacity-90">
@@ -168,14 +168,14 @@ export default function Collaborate() {
           </div>
         </section>
 
-        <section className="bg-gradient-to-r from-[#1d4f42] to-[#153d33] rounded-2xl p-8 text-white text-center">
+        <section className="bg-primary rounded-2xl p-8 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">Dúvidas?</h2>
           <p className="text-lg text-opacity-90 mb-6">
             Entre em contato conosco para saber mais sobre as formas de colaboração.
           </p>
           <a
             href="mailto:contato@fundacao193.org.br"
-            className="inline-block px-8 py-3 bg-white text-[#c11827] rounded-lg font-semibold hover:bg-neutral-50 transition-colors"
+            className="inline-block px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-50 transition-colors"
           >
             Enviar E-mail
           </a>
