@@ -1,4 +1,5 @@
 import { Shield, Target, Eye } from 'lucide-react';
+import aboutImage from '../assets/images/about.jpg';
 
 export default function About() {
   return (
@@ -13,13 +14,10 @@ export default function About() {
               Instituição de apoio ao Corpo de Bombeiros do Distrito Federal
             </h2>
             <p className="text-lg text-neutral-600 mb-6 leading-relaxed">
-              A Fundação 193 é uma instituição sem fins lucrativos criada para fortalecer
-              e apoiar as atividades do Corpo de Bombeiros Militar do Distrito Federal.
+              A Fundação 193 é uma instituição sem fins lucrativos criada para apoiar e fortalecer o Corpo de Bombeiros Militar do Distrito Federal, atuando como um elo entre a Corporação e a sociedade.
             </p>
             <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
-              Atuamos no desenvolvimento de projetos, capacitação de profissionais,
-              modernização de equipamentos e fortalecimento das operações de
-              salvamento e prevenção de incêndios.
+            Nossa atuação está voltada ao desenvolvimento de projetos socioambientais, preventivos, culturais, educacionais e desportivos, contribuindo para a capacitação de profissionais, o aprimoramento das operações e a promoção da segurança e do bem-estar da população.
             </p>
             <a
               href="#nossa-historia"
@@ -33,13 +31,13 @@ export default function About() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.pexels.com/photos/8761410/pexels-photo-8761410.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src={aboutImage}
                 alt="Bombeiros em treinamento"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-institutional text-white p-6 rounded-xl shadow-xl">
-              <p className="text-4xl font-bold mb-1">30+</p>
+              <p className="text-4xl font-bold mb-1">3+</p>
               <p className="text-sm">Anos de história</p>
             </div>
           </div>
@@ -52,8 +50,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Missão</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Apoiar o CBMDF no desenvolvimento de projetos que fortaleçam suas
-              operações e promovam a excelência no atendimento à população.
+            Apoiar o Corpo de Bombeiros Militar do Distrito Federal por meio do desenvolvimento de projetos e ações que fortaleçam suas operações, promovam a prevenção, a segurança e o bem-estar da sociedade.
             </p>
           </div>
 
@@ -63,8 +60,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Visão</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Ser referência nacional em gestão e apoio institucional aos
-              Corpos de Bombeiros, promovendo inovação e eficiência.
+            Consolidar-se como instituição de referência no apoio institucional ao Corpo de Bombeiros Militar do Distrito Federal, fortalecendo a integração com a sociedade e ampliando o impacto social de suas ações.
             </p>
           </div>
 
@@ -74,8 +70,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Valores</h3>
             <p className="text-neutral-600 leading-relaxed">
-              Comprometimento, transparência, excelência, inovação e
-              respeito à vida são os pilares que guiam todas as nossas ações.
+            Ética, transparência, compromisso social, responsabilidade institucional, inovação, solidariedade e respeito à vida.
             </p>
           </div>
         </div>

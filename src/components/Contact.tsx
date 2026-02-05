@@ -43,7 +43,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-neutral-900 mb-1">Telefone</h3>
                   <p className="text-neutral-600">
-                    (61) 3321-3000
+                    (61) 99557-8286
                     <br />
                     Seg à Sex: 8h às 18h
                   </p>
@@ -58,8 +58,6 @@ export default function Contact() {
                   <h3 className="font-bold text-neutral-900 mb-1">E-mail</h3>
                   <p className="text-neutral-600">
                     contato@fundacao193.org.br
-                    <br />
-                    assessoria@fundacao193.org.br
                   </p>
                 </div>
               </div>

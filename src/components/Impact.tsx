@@ -1,4 +1,5 @@
 import { TrendingUp, Users, Award, Calendar } from 'lucide-react';
+import impactImage from '../assets/images/impact.jpg';
 
 export default function Impact() {
   const stats = [
@@ -22,7 +23,7 @@ export default function Impact() {
     },
     {
       icon: TrendingUp,
-      value: '30+',
+      value: '3+',
       label: 'Anos de Atuação',
       description: 'Apoiando quem salva vidas',
     },
@@ -30,7 +31,10 @@ export default function Impact() {
 
   return (
     <section id="impacto" className="relative py-20 bg-gradient-to-br from-impact-start to-impact-end text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/5198239/pexels-photo-5198239.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-10"></div>
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{ backgroundImage: `url(${impactImage})` }}
+      ></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
