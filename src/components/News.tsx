@@ -99,7 +99,7 @@ export default function News() {
           <div className="text-center py-8">
             <div className="inline-flex items-center gap-2 text-badge-text">
               <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
-              <p className="text-sm font-medium">Carregando notícias...</p>
+              <p className="text-sm font-medium">Carregando atividades...</p>
             </div>
           </div>
 
@@ -151,13 +151,13 @@ export default function News() {
         <div className="flex items-end justify-between mb-12">
           <div>
 
-            <div className="inline-block bg-badge-bg text-badge-text px-4 py-2 rounded-full text-sm font-semibold mb-4">Notícias e Eventos</div>
+            <div className="inline-block bg-badge-bg text-badge-text px-4 py-2 rounded-full text-sm font-semibold mb-4">Atividades</div>
 
             <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900">
               Acompanhe nossas atividades
             </h2>
           </div>
-          <a href="#atividades" className="hidden md:inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all hover:text-primary-hover" aria-label="Ver todas as notícias e eventos">
+          <a href="#atividades" className="hidden md:inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all hover:text-primary-hover" aria-label="Ver todas as atividades">
             Ver todas
             <ArrowRight size={20} />
           </a>
@@ -221,7 +221,7 @@ export default function News() {
         </div>
 
         <div className="mt-8 text-center md:hidden">
-          <a href="#atividades" className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all hover:text-primary-hover" aria-label="Ver todas as notícias e eventos">
+          <a href="#atividades" className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all hover:text-primary-hover" aria-label="Ver todas as atividades">
             Ver todas
             <ArrowRight size={20} />
           </a>

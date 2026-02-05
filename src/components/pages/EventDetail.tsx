@@ -78,7 +78,14 @@ export default function EventDetail({ id }: Props) {
           {item.acf.event_location && <div className="flex items-center gap-2"><MapPin size={16} />{item.acf.event_location}</div>}
         </div>
 
-        <div className="text-neutral-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: item.acf.event_summary || '' }} />
+        <div className="prose max-w-none text-neutral-700 leading-relaxed mb-6">
+          {item.content?.rendered && (
+            <div dangerouslySetInnerHTML={{ __html: item.content.rendered }} />
+          )}
+          {!item.content?.rendered && item.acf.event_summary && (
+            <p>{item.acf.event_summary}</p>
+          )}
+        </div>
 
         {item.acf.event_registration_url && (
           <a href={item.acf.event_registration_url} target="_blank" rel="noopener noreferrer" className="inline-block mt-6 px-6 py-3 bg-primary hover:bg-primary-hover text-white rounded-lg transition-colors">Inscreva-se</a>

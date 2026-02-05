@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
-import { Calendar, ArrowRight, MapPin } from 'lucide-react';
-import { fetchNoticias, fetchEventos } from '../../services/api';
+import { Calendar, ArrowRight, MapPin, Flame } from 'lucide-react';
+import { fetchNoticias, fetchEventos, fetchProjetos } from '../../services/api';
 import type { news } from '../../types/news';
 import type { Event } from '../../types/events';
+import type { Project } from '../../types/projects';
 
-type Filter = 'all' | 'news' | 'events';
+type Filter = 'all' | 'news' | 'events' | 'projects';
 
 // Helper to extract first image src from HTML string
 function extractImageFromHtml(html?: string): string | null {
@@ -25,6 +26,7 @@ function ymdToIso(ymd?: string): string | null {
 export default function Activities() {
   const [newsItems, setNewsItems] = useState<news[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<Filter>('all');
@@ -38,9 +40,10 @@ export default function Activities() {
       setLoading(true);
       setError(null);
       try {
-        const [n, e] = await Promise.all([fetchNoticias(), fetchEventos()]);
+        const [n, e, p] = await Promise.all([fetchNoticias(), fetchEventos(), fetchProjetos()]);
         setNewsItems(n);
         setEvents(e);
+        setProjects(p);
       } catch (err) {
         console.error(err);
         setError('Não conseguimos carregar as atividades no momento.');
@@ -72,7 +75,16 @@ export default function Activities() {
       image: ev.acf?.event_featured_image || null,
     }));
 
-    const all = [...newsCards, ...eventCards].sort((a, b) => {
+    const projectCards = projects.map((p) => ({
+      id: `projeto-${p.id}`,
+      type: 'project' as const,
+      title: p.title.rendered,
+      excerpt: p.excerpt?.rendered || '',
+      date: '',
+      image: p.acf?.project_image || null,
+    }));
+
+    const all = [...newsCards, ...eventCards, ...projectCards].sort((a, b) => {
       const ad = new Date(a.date).getTime() || 0;
       const bd = new Date(b.date).getTime() || 0;
       return bd - ad;
@@ -80,8 +92,9 @@ export default function Activities() {
 
     if (filter === 'news') return all.filter(i => i.type === 'news');
     if (filter === 'events') return all.filter(i => i.type === 'event');
+    if (filter === 'projects') return all.filter(i => i.type === 'project');
     return all;
-  }, [newsItems, events, filter]);
+  }, [newsItems, events, projects, filter]);
 
   // pagination
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
@@ -105,7 +118,16 @@ export default function Activities() {
   }, [filter]);
 
   if (loading) return (
-    <div className="min-h-screen py-20 bg-white"><div className="max-w-6xl mx-auto px-4">Carregando atividades...</div></div>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="text-center">
+        <div className="inline-flex items-center gap-3 text-primary mb-3">
+          <div className="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+          <div className="w-3 h-3 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-3 h-3 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+        <p className="text-sm font-medium text-neutral-600">Carregando atividades...</p>
+      </div>
+    </div>
   );
 
   if (error) return (
@@ -135,21 +157,27 @@ export default function Activities() {
             <div className="mt-4 inline-flex gap-3">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'all' ? 'bg-primary text-white shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out ${filter === 'all' ? 'bg-primary text-white shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'}`}
               >
                 Todas
               </button>
               <button
                 onClick={() => setFilter('news')}
-                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'news' ? 'bg-badge-bg text-badge-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out ${filter === 'news' ? 'bg-badge-bg text-badge-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'}`}
               >
                 Notícias
               </button>
               <button
                 onClick={() => setFilter('events')}
-                className={`px-3 py-1 rounded-full transition-all duration-200 ease-out ${filter === 'events' ? 'bg-badge-event-bg text-badge-event-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out ${filter === 'events' ? 'bg-badge-event-bg text-badge-event-text shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'}`}
               >
                 Eventos
+              </button>
+              <button
+                onClick={() => setFilter('projects')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ease-out ${filter === 'projects' ? 'bg-pink-100 text-pink-800 shadow-md' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:shadow-sm'}`}
+              >
+                Projetos
               </button>
             </div>
           </div>
@@ -162,6 +190,10 @@ export default function Activities() {
                 <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
                   <img src={it.image} alt={it.title.replace(/<[^>]*>/g, '')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 </div>
+              ) : it.type === 'project' ? (
+                <div className="aspect-[16/10] bg-primary/10 flex items-center justify-center">
+                  <Flame size={48} className="text-primary" />
+                </div>
               ) : null}
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex items-center justify-between mb-3">
@@ -170,8 +202,12 @@ export default function Activities() {
                     <span>{it.date ? new Date(it.date).toLocaleDateString('pt-BR') : 'Data a definir'}</span>
                   </div>
 
-                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${it.type === 'news' ? 'bg-badge-bg text-badge-text' : 'bg-badge-event-bg text-badge-event-text'}`}>
-                    {it.type === 'news' ? 'Notícia' : 'Evento'}
+                  <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full ${
+                    it.type === 'news' ? 'bg-badge-bg text-badge-text' : 
+                    it.type === 'event' ? 'bg-badge-event-bg text-badge-event-text' : 
+                    'bg-pink-100 text-pink-800'
+                  }`}>
+                    {it.type === 'news' ? 'Notícia' : it.type === 'event' ? 'Evento' : 'Projeto'}
                   </span>
                 </div>
 
@@ -188,7 +224,7 @@ export default function Activities() {
                 <div className="flex-grow" />
 
                 <a href={`#${it.id}`} className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all" aria-label={`Leia mais sobre ${it.title.replace(/<[^>]*>/g, '')}`}>
-                  {it.type === 'news' ? 'Ler mais' : 'Saiba mais'}
+                  {it.type === 'news' ? 'Ler mais' : it.type === 'event' ? 'Saiba mais' : 'Ver projeto'}
                   <ArrowRight size={16} />
                 </a>
               </div>

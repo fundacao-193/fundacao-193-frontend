@@ -47,8 +47,35 @@ export default function ProjectDetail({ id }: Props) {
           Voltar
         </button>
 
+        {item.acf?.project_image && (
+          <div className="mb-8 rounded-lg overflow-hidden">
+            <img 
+              src={item.acf.project_image} 
+              alt={item.title.rendered.replace(/<[^>]*>/g, '')} 
+              className="w-full max-h-96 object-cover" 
+              loading="lazy" 
+              decoding="async" 
+            />
+          </div>
+        )}
+
         <h1 className="text-3xl font-bold text-neutral-900 mb-6" dangerouslySetInnerHTML={{ __html: item.title.rendered }} />
-        <div className="text-neutral-600 leading-relaxed" dangerouslySetInnerHTML={{ __html: (item.excerpt && item.excerpt.rendered) || '' }} />
+        
+        <div className="prose max-w-none text-neutral-600 leading-relaxed mb-8">
+          {item.content?.rendered && (
+            <div dangerouslySetInnerHTML={{ __html: item.content.rendered }} />
+          )}
+          {!item.content?.rendered && item.excerpt?.rendered && (
+            <div dangerouslySetInnerHTML={{ __html: item.excerpt.rendered }} />
+          )}
+        </div>
+
+        {item.acf?.impacto && (
+          <div className="bg-primary/5 border-l-4 border-primary p-6 rounded-r-lg">
+            <h3 className="font-bold text-neutral-900 mb-2">Impacto</h3>
+            <p className="text-primary font-semibold">{item.acf.impacto}</p>
+          </div>
+        )}
       </div>
     </div>
   );

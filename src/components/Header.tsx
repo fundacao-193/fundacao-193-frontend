@@ -35,8 +35,9 @@ export default function Header() {
   }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href === '#colabore') {
-      return; // manda pro hashchange do App.tsx lidar
+    // Deixa esses hashs irem direto para a página (App.tsx renderiza)
+    if (href === '#colabore' || href === '#noticias') {
+      return;
     }
     
     if (!href.startsWith('#')) return;

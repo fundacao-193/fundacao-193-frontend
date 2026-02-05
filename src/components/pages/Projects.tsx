@@ -94,41 +94,58 @@ export default function Projects() {
         {/* Lista de projetos */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {projects.map((project) => (
-            <div
+            <a
               key={project.id}
-              className="bg-white rounded-xl p-8 shadow-md hover:shadow-lg transition-shadow"
+              href={`#projeto-${project.id}`}
+              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-1 group"
             >
-              <div className="w-16 h-16 bg-icon-bg/10 text-icon-fg rounded-lg flex items-center justify-center mb-4">
-                <Flame size={32} />
-              </div>
-
-              {/* Titulo */}
-              <h3
-                className="text-2xl font-bold text-neutral-900 mb-3"
-                dangerouslySetInnerHTML={{
-                  __html: project.title.rendered,
-                }}
-              />
-
-              {/* Resumo */}
-              {project.excerpt?.rendered && (
-                <p
-                  className="text-neutral-600 leading-relaxed mb-4"
-                  dangerouslySetInnerHTML={{
-                    __html: project.excerpt.rendered,
-                  }}
-                />
-              )}
-
-              {/* Impacto */}
-              {project.acf?.impacto && (
-                <div className="border-t border-neutral-200 pt-4">
-                  <p className="text-primary font-semibold">
-                    {project.acf.impacto}
-                  </p>
+              {project.acf?.project_image && (
+                <div className="aspect-[16/9] bg-neutral-200 overflow-hidden">
+                  <img 
+                    src={project.acf.project_image} 
+                    alt={project.title.rendered.replace(/<[^>]*>/g, '')} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
               )}
-            </div>
+
+              <div className="p-8">
+                {!project.acf?.project_image && (
+                  <div className="w-16 h-16 bg-icon-bg/10 text-icon-fg rounded-lg flex items-center justify-center mb-4">
+                    <Flame size={32} />
+                  </div>
+                )}
+
+                {/* Titulo */}
+                <h3
+                  className="text-2xl font-bold text-neutral-900 mb-3 group-hover:text-primary transition-colors"
+                  dangerouslySetInnerHTML={{
+                    __html: project.title.rendered,
+                  }}
+                />
+
+                {/* Resumo */}
+                {project.excerpt?.rendered && (
+                  <p
+                    className="text-neutral-600 leading-relaxed mb-4 line-clamp-3"
+                    dangerouslySetInnerHTML={{
+                      __html: project.excerpt.rendered,
+                    }}
+                  />
+                )}
+
+                {/* Impacto */}
+                {project.acf?.impacto && (
+                  <div className="border-t border-neutral-200 pt-4 mt-4">
+                    <p className="text-primary font-semibold">
+                      {project.acf.impacto}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </a>
           ))}
         </div>
 

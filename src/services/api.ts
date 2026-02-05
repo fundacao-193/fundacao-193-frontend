@@ -113,6 +113,50 @@ export function fetchNoticias() {
   return fetchAPI<news[]>('noticia');
 }
 
+// Fetch news from multiple categories with category info
+export async function fetchNoticiasByCategories(categoryIds: string[]): Promise<(news & { category_ids: number[] })[]> {
+  if (isLegacyEnabled) {
+    const postsMap = new Map<number, news & { category_ids: number[] }>();
+    
+    for (const catId of categoryIds) {
+      if (!catId) continue;
+      try {
+        const posts = await fetchLegacyPostsByCategory(catId);
+        for (const post of posts) {
+          const existing = postsMap.get(post.id);
+          if (existing) {
+            // Post já existe, adiciona categoria
+            if (!existing.category_ids.includes(Number(catId))) {
+              existing.category_ids.push(Number(catId));
+            }
+          } else {
+            // Novo post
+            postsMap.set(post.id, {
+              id: post.id,
+              date: post.date,
+              title: post.title,
+              excerpt: post.excerpt,
+              content: post.content,
+              link: post.link,
+              category_ids: [Number(catId)],
+            });
+          }
+        }
+      } catch (err) {
+        console.warn(`Failed to fetch category ${catId}:`, err);
+      }
+    }
+    
+    // Converte Map para array e ordena por data
+    const allPosts = Array.from(postsMap.values());
+    return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
+  
+  // For CPT/ACF, just fetch all noticias (no multi-category support needed)
+  const posts = await fetchAPI<news[]>('noticia');
+  return posts.map(p => ({ ...p, category_ids: [0] }));
+}
+
 export function fetchProjetos() {
   if (isLegacyEnabled) {
     return fetchLegacyPostsByCategory(LEGACY_CATEGORY_PROJECTS).then((posts) =>
@@ -120,8 +164,10 @@ export function fetchProjetos() {
         id: post.id,
         title: post.title,
         excerpt: post.excerpt,
+        content: post.content,
         acf: {
           impacto: '',
+          project_image: getFeaturedImageUrl(post) || undefined,
         },
       }))
     );
@@ -136,8 +182,9 @@ export function fetchEventos() {
         id: post.id,
         slug: '',
         title: post.title,
+        content: post.content,
         acf: {
-          event_summary: post.excerpt?.rendered || '',
+          event_summary: post.excerpt?.rendered?.replace(/<[^>]*>/g, '').trim() || '',
           event_start_date: toYmd(post.date),
           event_end_date: '',
           event_location: '',
@@ -215,8 +262,10 @@ export function fetchProjeto(id: number | string) {
       id: post.id,
       title: post.title,
       excerpt: post.excerpt,
+      content: post.content,
       acf: {
         impacto: '',
+        project_image: getFeaturedImageUrl(post) || undefined,
       },
     }));
   }
@@ -229,8 +278,9 @@ export function fetchEvento(id: number | string) {
       id: post.id,
       slug: '',
       title: post.title,
+      content: post.content,
       acf: {
-        event_summary: post.excerpt?.rendered || '',
+        event_summary: post.excerpt?.rendered?.replace(/<[^>]*>/g, '').trim() || '',
         event_start_date: toYmd(post.date),
         event_end_date: '',
         event_location: '',
