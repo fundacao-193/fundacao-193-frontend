@@ -1,4 +1,19 @@
 const API_URL = import.meta.env.VITE_WP_API_URL;
+const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || API_URL;
+const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
+const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
+
+const LEGACY_CATEGORY_NEWS = import.meta.env.VITE_WP_LEGACY_CATEGORY_NEWS;
+const LEGACY_CATEGORY_PROJECTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PROJECTS;
+const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS;
+const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS;
+const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING;
+
+const isLegacyEnabled = import.meta.env.DEV && DATA_SOURCE === 'legacy';
+
+if (DATA_SOURCE === 'legacy' && !import.meta.env.DEV) {
+  console.warn('[data] DATA_SOURCE=legacy ignorado em produção. Usando CPT/ACF.');
+}
 
 /**
  * Funcao base generica para requisicoes na API
@@ -14,6 +29,67 @@ async function fetchAPI<T>(endpoint: string): Promise<T> {
   return response.json();
 }
 
+async function fetchLegacyAPI<T>(endpoint: string): Promise<T> {
+  const response = await fetch(`${LEGACY_API_URL}/${endpoint}`);
+
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar ${endpoint}`);
+  }
+
+  return response.json();
+}
+
+type LegacyPost = {
+  id: number;
+  date: string;
+  title: { rendered: string };
+  excerpt: { rendered: string };
+  content?: { rendered: string };
+  link?: string;
+  featured_media?: number;
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{ source_url?: string }>;
+  };
+};
+
+const toYmd = (dateStr?: string): string => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) return '';
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}${m}${day}`;
+};
+
+const getFeaturedImageUrl = (post: LegacyPost): string => {
+  const embedded = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+  if (embedded) return embedded;
+  return '';
+};
+
+const ensureLegacyCategory = (value?: string): string | null => {
+  if (!value) return null;
+  return value;
+};
+
+const fetchLegacyPostsByCategory = async (category?: string): Promise<LegacyPost[]> => {
+  const cat = ensureLegacyCategory(category);
+  if (!cat) return [];
+
+  const params = new URLSearchParams({
+    per_page: String(LEGACY_PER_PAGE),
+    _embed: '1',
+    categories: cat,
+  });
+
+  return fetchLegacyAPI<LegacyPost[]>(`posts?${params.toString()}`);
+};
+
+const fetchLegacyPostById = (id: number | string) => {
+  return fetchLegacyAPI<LegacyPost>(`posts/${id}?_embed=1`);
+};
+
 // Imports dos tipos
 import { news } from '../types/news';
 import { Project } from '../types/projects';
@@ -22,35 +98,148 @@ import { Partner } from '../types/partners';
 import type { Training } from '../types/training';
 
 export function fetchNoticias() {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostsByCategory(LEGACY_CATEGORY_NEWS).then((posts) =>
+      posts.map((post) => ({
+        id: post.id,
+        date: post.date,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        link: post.link,
+      }))
+    );
+  }
   return fetchAPI<news[]>('noticia');
 }
 
 export function fetchProjetos() {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostsByCategory(LEGACY_CATEGORY_PROJECTS).then((posts) =>
+      posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        excerpt: post.excerpt,
+        acf: {
+          impacto: '',
+        },
+      }))
+    );
+  }
   return fetchAPI<Project[]>('projeto');
 }
 
 export function fetchEventos() {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostsByCategory(LEGACY_CATEGORY_EVENTS).then((posts) =>
+      posts.map((post) => ({
+        id: post.id,
+        slug: '',
+        title: post.title,
+        acf: {
+          event_summary: post.excerpt?.rendered || '',
+          event_start_date: toYmd(post.date),
+          event_end_date: '',
+          event_location: '',
+          event_registration_url: '',
+          event_is_featured: false,
+          event_featured_image: getFeaturedImageUrl(post) || undefined,
+        },
+      }))
+    );
+  }
   return fetchAPI<Event[]>('evento');
 }
 
 export function fetchParceiros() {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostsByCategory(LEGACY_CATEGORY_PARTNERS).then((posts) =>
+      posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        acf: {
+          partner_name: post.title?.rendered || '',
+          partner_logo: getFeaturedImageUrl(post) || '',
+          partner_website: post.link || '',
+          partner_status: 'ativo',
+          partner_is_featured: false,
+        },
+      }))
+    );
+  }
   return fetchAPI<Partner[]>('parceria?acf_format=standard');
 }
 
 export function fetchCapacitacoes() {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostsByCategory(LEGACY_CATEGORY_TRAINING).then((posts) =>
+      posts.map((post) => ({
+        id: post.id,
+        title: post.title,
+        acf: {
+          cap_subtitle: '',
+          cap_summary: post.excerpt?.rendered || '',
+          cap_feature_image: getFeaturedImageUrl(post) || '',
+          cap_modality: '',
+          cap_workload: '',
+          cap_start_date: toYmd(post.date),
+          cap_end_date: '',
+          cap_signup_link: '',
+          cap_status: 'Planejada',
+          cap_is_featured: false,
+        },
+      }))
+    );
+  }
   return fetchAPI<Training[]>('capacitacao?acf_format=standard');
 }
 
 // Single-entity fetch helpers for detail pages
 export function fetchNoticia(id: number | string) {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostById(id).then((post) => ({
+      id: post.id,
+      date: post.date,
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      link: post.link,
+    }));
+  }
   return fetchAPI<news>(`noticia/${id}`);
 }
 
 export function fetchProjeto(id: number | string) {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostById(id).then((post) => ({
+      id: post.id,
+      title: post.title,
+      excerpt: post.excerpt,
+      acf: {
+        impacto: '',
+      },
+    }));
+  }
   return fetchAPI<Project>(`projeto/${id}`);
 }
 
 export function fetchEvento(id: number | string) {
+  if (isLegacyEnabled) {
+    return fetchLegacyPostById(id).then((post) => ({
+      id: post.id,
+      slug: '',
+      title: post.title,
+      acf: {
+        event_summary: post.excerpt?.rendered || '',
+        event_start_date: toYmd(post.date),
+        event_end_date: '',
+        event_location: '',
+        event_registration_url: '',
+        event_is_featured: false,
+        event_featured_image: getFeaturedImageUrl(post) || undefined,
+      },
+    }));
+  }
   return fetchAPI<Event>(`evento/${id}`);
 } 
 
