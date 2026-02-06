@@ -1,13 +1,15 @@
 const API_URL = import.meta.env.VITE_WP_API_URL;
-const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || API_URL;
+const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
 const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
 
-const LEGACY_CATEGORY_NEWS = import.meta.env.VITE_WP_LEGACY_CATEGORY_NEWS;
-const LEGACY_CATEGORY_PROJECTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PROJECTS;
-const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS;
-const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS;
-const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING;
+// Valores DEFAULT para modo legado (funcionam com site antigo fundacao193.org.br)
+// Sobrescreva no .env.local se necessário
+const LEGACY_CATEGORY_NEWS = import.meta.env.VITE_WP_LEGACY_CATEGORY_NEWS || '14';       // Blog
+const LEGACY_CATEGORY_PROJECTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PROJECTS || '90';  // Projetos  
+const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS || '9';       // Eventos
+const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS || '';     // Não usado
+const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING || '';     // Não usado
 
 const isLegacyEnabled = import.meta.env.DEV && DATA_SOURCE === 'legacy';
 
