@@ -252,6 +252,24 @@ html {
   animation: scaleIn 0.5s ease-out forwards;
 }
 
+/* Infinite scroll animation for Partners carousel */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 30s linear infinite;
+}
+
+.animate-scroll-left:hover {
+  animation-play-state: paused;
+}
+
 .animate-delay-100 {
   animation-delay: 0.1s;
 }

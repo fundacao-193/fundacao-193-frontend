@@ -1,8 +1,107 @@
-import { useEffect, useState } from 'react';
-import { AlertCircle, RotateCw } from 'lucide-react';
-import { fetchParceiros } from '../services/api';
-import type { Partner } from '../types/partners';
+// import { useEffect, useState } from 'react';
+// import { AlertCircle, RotateCw } from 'lucide-react';
+// import { fetchParceiros } from '../services/api';
+// import type { Partner } from '../types/partners';
 
+// ====================================================================
+// VERSÃO HARDCODED PARA DEMONSTRAÇÃO (Modo Legado)
+// ====================================================================
+// CPT "Parceiros" não existe no site antigo WordPress.
+// Esta versão usa dados estáticos para visualização.
+// 
+// **IMPORTANTE**: Troque os nomes das imagens em assets/images/
+// ====================================================================
+
+type HardcodedPartner = {
+  id: number;
+  name: string;
+  logo: string;
+  website?: string;
+};
+
+// logos em assets/images/
+const HARDCODED_PARTNERS: HardcodedPartner[] = [
+  { id: 1, name: 'Parceiro 1', logo: 'egestor.png', website: 'https://example.com' },
+  { id: 2, name: 'Parceiro 2', logo: 'brasimpex.png', website: 'https://example.com' },
+  { id: 3, name: 'Parceiro 3', logo: 'bonamix.png' },
+  { id: 4, name: 'Parceiro 4', logo: 'hospitalsantamaria.png' },
+  { id: 5, name: 'Parceiro 5', logo: 'instituidor.png' },
+  { id: 6, name: 'Parceiro 6', logo: 'sasbio.png' },
+  { id: 7, name: 'Parceiro 7', logo: 'partner-7.png' },
+  { id: 8, name: 'Parceiro 8', logo: 'partner-8.png' },
+];
+
+export default function Partners() {
+  // Duplica os parceiros para criar efeito de loop infinito
+  const allPartners = [...HARDCODED_PARTNERS, ...HARDCODED_PARTNERS];
+
+  return (
+    <section className="py-16 bg-neutral-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl font-bold text-neutral-900 mb-2">
+            Parceiros e Apoiadores
+          </h2>
+          <p className="text-neutral-600">
+            Instituições que acreditam no nosso propósito
+          </p>
+        </div>
+
+        {/* Container com overflow hidden para o carousel */}
+        <div className="relative overflow-x-hidden overflow-y-visible">
+          {/* Wrapper animado que desliza para a esquerda */}
+          <div className="flex gap-16 animate-scroll-left py-6">
+            {allPartners.map((partner, index) => {
+              const imageSrc = `/src/assets/images/${partner.logo}`;
+              
+              const logoImage = (
+                <img
+                  src={imageSrc}
+                  alt={partner.name}
+                  className="h-20 md:h-24 w-auto object-contain transition-all duration-300 hover:scale-110"
+                  onError={(e) => {
+                    console.error(`Erro ao carregar logo: ${imageSrc}`);
+                    e.currentTarget.src = 'https://via.placeholder.com/150x60?text=Logo';
+                  }}
+                />
+              );
+
+              return (
+                <div
+                  key={`${partner.id}-${index}`}
+                  className="flex-shrink-0 flex items-center justify-center min-w-[200px] py-2"
+                >
+                  {partner.website ? (
+                    <a
+                      href={partner.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                      aria-label={`Visitar site de ${partner.name}`}
+                    >
+                      {logoImage}
+                    </a>
+                  ) : (
+                    logoImage
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ====================================================================
+// CÓDIGO ORIGINAL - Versão com CPT/ACF
+// ====================================================================
+// Descomente este código quando o CPT de Parceiros estiver disponível
+// no WordPress ou quando não estiver em modo legado.
+// ====================================================================
+
+/*
 export default function Partners() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
@@ -154,3 +253,4 @@ export default function Partners() {
     </section>
   );
 }
+*/
