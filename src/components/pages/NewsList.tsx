@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Calendar, ArrowRight } from 'lucide-react';
 
 import { fetchNoticiasByCategories } from '../../services/api';
@@ -32,6 +32,20 @@ export default function NewsList() {
   const [page, setPage] = useState(1);
   const pageSize = 9;
   const hasFetched = useRef(false);
+  const [anim, setAnim] = useState(false);
+  const animTimer = useRef<number | null>(null);
+
+  const triggerAnim = useCallback(() => {
+    setAnim(true);
+    if (animTimer.current) {
+      window.clearTimeout(animTimer.current);
+      animTimer.current = null;
+    }
+    animTimer.current = window.setTimeout(() => {
+      setAnim(false);
+      animTimer.current = null;
+    }, 500);
+  }, []);
 
   const load = async () => {
     setLoading(true);
@@ -78,6 +92,19 @@ export default function NewsList() {
   useEffect(() => {
     setPage(1);
   }, [selectedCategory]);
+
+  useEffect(() => {
+    triggerAnim();
+  }, [page, triggerAnim]);
+
+  useEffect(() => {
+    return () => {
+      if (animTimer.current) {
+        window.clearTimeout(animTimer.current);
+        animTimer.current = null;
+      }
+    };
+  }, []);
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
@@ -159,7 +186,7 @@ export default function NewsList() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className={`grid md:grid-cols-3 gap-8 ${anim ? 'animate-fade-in-up' : ''}`}>
           {pagedItems.map((item) => {
             return (
               <article key={item.id} className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col">

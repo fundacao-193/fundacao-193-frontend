@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { Calendar, ArrowRight, MapPin, Flame } from 'lucide-react';
 import { fetchNoticias, fetchEventos, fetchProjetos } from '../../services/api';
 import type { news } from '../../types/news';
@@ -34,6 +34,18 @@ export default function Activities() {
   const [page, setPage] = useState(1);
   const pageSize = 9;
   const animTimer = useRef<number | null>(null);
+
+  const triggerAnim = useCallback(() => {
+    setAnim(true);
+    if (animTimer.current) {
+      window.clearTimeout(animTimer.current);
+      animTimer.current = null;
+    }
+    animTimer.current = window.setTimeout(() => {
+      setAnim(false);
+      animTimer.current = null;
+    }, 500);
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -101,21 +113,22 @@ export default function Activities() {
   const pagedItems = items.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
-    setAnim(true);
     setPage(1);
-    
-    // Reset animation state after it completes (matches CSS animation duration)
-    animTimer.current = window.setTimeout(() => {
-      setAnim(false);
-    }, 500);
-    
+    triggerAnim();
+  }, [filter]);
+
+  useEffect(() => {
+    triggerAnim();
+  }, [page, triggerAnim]);
+
+  useEffect(() => {
     return () => {
-      if (animTimer.current) { 
-        window.clearTimeout(animTimer.current); 
-        animTimer.current = null; 
+      if (animTimer.current) {
+        window.clearTimeout(animTimer.current);
+        animTimer.current = null;
       }
     };
-  }, [filter]);
+  }, []);
 
   if (loading) return (
     <div className="min-h-screen bg-white flex items-center justify-center">
