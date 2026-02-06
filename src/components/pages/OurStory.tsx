@@ -19,59 +19,85 @@ export default function OurStory() {
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-neutral-900 mb-4">Origem e Fundação</h2>
             <p className="text-neutral-700 leading-relaxed mb-4">
-              A Fundação 193 nasceu em 1993 como resultado do comprometimento de um grupo dedicado de profissionais que reconheciam a necessidade de fortalecer e apoiar o Corpo de Bombeiros Militar do Distrito Federal. O número 193 representa o código de emergência histórico, simbolizando o compromisso com a excelência e a prontidão no atendimento.
+              A Fundação 193 – Fundação de Apoio ao Corpo de Bombeiros Militar do Distrito Federal (CBMDF) nasceu a
+              partir de um sonho institucional aliado a demandas estratégicas da Corporação. Sua criação foi concebida
+              como uma das iniciativas previstas no Plano Estratégico 2017–2024 do CBMDF, com o objetivo de ampliar o
+              apoio às atividades do Corpo de Bombeiros e fortalecer sua relação com a sociedade.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              A Fundação foi oficialmente constituída em 06 de dezembro de 2022, data marcada pela Solenidade de Posse
+              de seus membros e pela aprovação dos documentos constitutivos pelo Ministério Público do Distrito Federal
+              e Territórios (MPDFT). Desde sua origem, foi estabelecida como uma entidade civil, sem fins lucrativos,
+              de direito privado, com autonomia administrativa, financeira e patrimonial.
             </p>
             <p className="text-neutral-700 leading-relaxed">
-              Naquela época, o CBMDF enfrentava desafios significativos em termos de recursos, capacitação e infraestrutura. A fundação foi criada como uma instituição sem fins lucrativos, dedicada a captar recursos e canalizar investimentos para potencializar as operações dos bombeiros.
+              O nome Fundação 193 foi escolhido de forma simbólica, fazendo referência ao número de emergência do Corpo
+              de Bombeiros, reforçando seu compromisso com a prestação de serviços relevantes à sociedade e ao CBMDF.
             </p>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-neutral-900 mb-4">Primeiros Anos (1993-2000)</h2>
+            <h2 className="text-2xl font-bold text-neutral-900 mb-4">Estruturação Institucional (2022–2023)</h2>
             <p className="text-neutral-700 leading-relaxed mb-4">
-              Os primeiros anos foram marcados por solidificação institucional e construção de parcerias estratégicas. Durante essa fase, a Fundação 193 desenvolveu seus primeiros projetos de impacto, focando em:
+              Nos primeiros momentos após sua constituição, a Fundação 193 concentrou esforços na estruturação
+              administrativa, jurídica e institucional, estabelecendo bases sólidas para sua atuação. Esse período foi
+              marcado pela organização interna, definição de diretrizes estratégicas e alinhamento com as finalidades
+              estatutárias.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              Entre as prioridades desse momento destacam-se:
             </p>
             <ul className="list-disc list-inside text-neutral-700 leading-relaxed space-y-2 mb-4">
-              <li>Capacitação de profissionais em técnicas modernas de combate a incêndios</li>
-              <li>Modernização de equipamentos e infraestrutura das corporações</li>
-              <li>Pesquisa e desenvolvimento de métodos inovadores de prevenção</li>
-              <li>Engajamento comunitário e educação preventiva</li>
+              <li>Consolidação da governança institucional;</li>
+              <li>Definição de programas e áreas de atuação;</li>
+              <li>Fortalecimento do vínculo institucional com o CBMDF;</li>
+              <li>Planejamento de ações voltadas ao interesse público e social.</li>
             </ul>
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-neutral-900 mb-4">Consolidação e Expansão (2000-2010)</h2>
+            <h2 className="text-2xl font-bold text-neutral-900 mb-4">Atuação e Desenvolvimento</h2>
             <p className="text-neutral-700 leading-relaxed mb-4">
-              A década de 2000 marcou a consolidação da Fundação como referência na região Centro-Oeste. Expandimos nossas operações e estabelecemos parcerias com instituições internacionais, trazendo expertise global para o contexto local.
+              A Fundação 193 atua no apoio a programas, projetos e ações do CBMDF, com foco em iniciativas de interesse
+              coletivo, especialmente nas áreas de:
             </p>
+            <ul className="list-disc list-inside text-neutral-700 leading-relaxed space-y-2 mb-4">
+              <li>Preservação e conservação do meio ambiente;</li>
+              <li>
+                Prevenção de incêndios e acidentes, por meio do desenvolvimento da consciência comunitária;
+              </li>
+              <li>Difusão do conhecimento científico e tecnológico;</li>
+              <li>
+                Preservação, recuperação e divulgação da história, tradição e valores do Corpo de Bombeiros;
+              </li>
+              <li>Promoção da qualidade de vida dos bombeiros militares e de seus familiares;</li>
+              <li>Desenvolvimento de atividades culturais, educacionais, sociais e desportivas.</li>
+            </ul>
             <p className="text-neutral-700 leading-relaxed">
-              Nesse período, realizamos as primeiras missões internacionais de capacitação, enviando profissionais para aprender com os melhores centros de treinamento do mundo. Também iniciamos programas robustos de responsabilidade social, impactando diretamente as comunidades carentes do Distrito Federal.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-neutral-900 mb-4">Modernização (2010-2020)</h2>
-            <p className="text-neutral-700 leading-relaxed mb-4">
-              O terceiro decênio foi marcado por uma transformação digital e modernização de processos. Investimos em tecnologia, dados e inovação para melhorar a tomada de decisão e a efetividade das operações.
-            </p>
-            <p className="text-neutral-700 leading-relaxed mb-4">
-              Criamos centros de treinamento especializados, implementamos sistemas de gerenciamento avançados e expandimos nossos programas de prevenção de incêndios em escolas e comunidades vulneráveis.
+              Sua atuação busca sempre complementar e fortalecer as atividades institucionais do CBMDF, respeitando os
+              princípios da legalidade, transparência e responsabilidade social.
             </p>
           </section>
 
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-neutral-900 mb-4">Presente e Futuro</h2>
             <p className="text-neutral-700 leading-relaxed mb-4">
-              Hoje, após mais de três décadas de atuação, a Fundação 193 se consolidou como uma instituição estratégica para o CBMDF e para a sociedade civil. Continuamos inovando e expandindo nosso impacto através de:
+              Atualmente, a Fundação 193 consolida-se como um elo estratégico entre o Corpo de Bombeiros Militar do
+              Distrito Federal e a sociedade, contribuindo para o fortalecimento da Corporação e para a promoção da
+              cidadania.
+            </p>
+            <p className="text-neutral-700 leading-relaxed mb-4">
+              Com foco no futuro, a Fundação mantém o compromisso de ampliar seu impacto social por meio de:
             </p>
             <ul className="list-disc list-inside text-neutral-700 leading-relaxed space-y-2 mb-4">
-              <li>Pesquisa e desenvolvimento de novas metodologias</li>
-              <li>Parcerias internacionais com organismos especializados</li>
-              <li>Investimento em sustentabilidade e responsabilidade social</li>
-              <li>Programas de inclusão e desenvolvimento comunitário</li>
+              <li>Desenvolvimento de novos projetos e parcerias institucionais;</li>
+              <li>Incentivo a ações de prevenção e educação comunitária;</li>
+              <li>Promoção da sustentabilidade e da responsabilidade socioambiental;</li>
+              <li>Valorização dos profissionais do CBMDF e de sua história.</li>
             </ul>
             <p className="text-neutral-700 leading-relaxed">
-              Olhamos para o futuro com otimismo e compromisso de continuar sendo um agente transformador, promovendo excelência, inovação e segurança para o Distrito Federal e suas comunidades.
+              Guiada por princípios como ética, transparência, solidariedade e responsabilidade social, a Fundação 193
+              segue comprometida em apoiar o CBMDF e contribuir para uma sociedade mais segura, consciente e integrada.
             </p>
           </section>
         </div>

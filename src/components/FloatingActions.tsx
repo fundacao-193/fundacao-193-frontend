@@ -63,7 +63,7 @@ export default function FloatingActions() {
           </a>
 
           <a
-            href="https://wa.me/5561987654321"
+            href="https://wa.me/5561993823763"
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-3 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}

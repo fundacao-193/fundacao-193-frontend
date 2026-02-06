@@ -198,7 +198,7 @@ export default function Edits() {
 
         <div className="mt-12 bg-neutral-100 rounded-xl p-6">
           <p className="text-neutral-700 font-medium mb-4">Para mais informações sobre editais:</p>
-          <p className="text-neutral-600">Email: editais@fundacao193.org.br | Telefone: (61) 3321-3000</p>
+          <p className="text-neutral-600">Email: contato@fundacao193.org.br | Telefone: (61) 99557-8286</p>
         </div>
       </div>
     </div>

@@ -165,12 +165,7 @@ export default function Accounts() {
             <div>
               <p className="font-semibold text-neutral-900 mb-2">Departamento Financeiro</p>
               <p className="text-neutral-600 mb-2">Email: financeiro@fundacao193.org.br</p>
-              <p className="text-neutral-600">Telefone: (61) 3321-3000 ramal 105</p>
-            </div>
-            <div>
-              <p className="font-semibold text-neutral-900 mb-2">Assessoria Jurídica e Conformidade</p>
-              <p className="text-neutral-600 mb-2">Email: juridico@fundacao193.org.br</p>
-              <p className="text-neutral-600">Telefone: (61) 3321-3000 ramal 110</p>
+              <p className="text-neutral-600">Telefone: (61) 99557-8286</p>
             </div>
           </div>
         </section>

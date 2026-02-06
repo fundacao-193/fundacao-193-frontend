@@ -5,32 +5,32 @@ export default function MissionValues() {
     {
       icon: Target,
       title: 'Excelência',
-      description: 'Buscamos a excelência em todas as nossas ações, estabelecendo padrões elevados de qualidade e desempenho.',
+      description: 'Buscamos a excelência em todas as nossas ações, apoiando iniciativas que elevem a qualidade dos serviços prestados e fortaleçam a atuação do Corpo de Bombeiros Militar do Distrito Federal.',
     },
     {
       icon: Heart,
       title: 'Humanidade',
-      description: 'Colocamos as pessoas no centro de nossas decisões, promovendo dignidade, respeito e solidariedade.',
+      description: 'Colocamos as pessoas no centro das decisões, valorizando a vida, a dignidade humana, o respeito e a solidariedade em todas as nossas iniciativas.',
     },
     {
       icon: Lightbulb,
       title: 'Inovação',
-      description: 'Estimulamos a criatividade e a busca contínua por soluções inovadoras e transformadoras.',
+      description: 'Incentivamos a criatividade e a busca contínua por soluções que contribuam para a prevenção, o desenvolvimento institucional e o aprimoramento das atividades apoiadas.',
     },
     {
       icon: Users,
       title: 'Colaboração',
-      description: 'Acreditamos no poder da parceria e trabalho em equipe para alcançar objetivos maiores.',
+      description: 'Acreditamos na força das parcerias e do trabalho conjunto entre sociedade, instituições e o Corpo de Bombeiros Militar do Distrito Federal para alcançar resultados relevantes.',
     },
     {
       icon: Shield,
       title: 'Segurança',
-      description: 'Priorizamos a segurança das pessoas e comunidades, implementando as melhores práticas e protocolos.',
+      description: 'Priorizamos a segurança das pessoas e das comunidades, apoiando ações baseadas em boas práticas, prevenção de riscos e protocolos adequados.',
     },
     {
       icon: Zap,
       title: 'Eficiência',
-      description: 'Otimizamos recursos e processos para maximizar o impacto de nossas operações e investimentos.',
+      description: 'Atuamos com responsabilidade e planejamento, buscando a melhor aplicação dos recursos para maximizar o impacto social e institucional de nossas ações.',
     },
   ];
 
@@ -52,7 +52,7 @@ export default function MissionValues() {
           <h2 className="text-3xl font-bold text-neutral-900 mb-6">Nossa Missão</h2>
           <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-primary">
             <p className="text-lg text-neutral-700 leading-relaxed">
-              Apoiar, fortalecer e potencializar as atividades do Corpo de Bombeiros Militar do Distrito Federal através de investimentos em capacitação profissional, modernização de infraestrutura, pesquisa e inovação, promovendo segurança e bem-estar para a população e comunidades do Distrito Federal.
+            Apoiar, fortalecer e potencializar as atividades do Corpo de Bombeiros Militar do Distrito Federal, por meio do desenvolvimento de projetos e ações institucionais nas áreas socioambiental, preventiva, cultural, educacional e desportiva, contribuindo para a segurança, a prevenção e o bem-estar da sociedade.
             </p>
           </div>
         </section>
@@ -61,8 +61,7 @@ export default function MissionValues() {
           <h2 className="text-3xl font-bold text-neutral-900 mb-6">Nossa Visão</h2>
           <div className="bg-white rounded-2xl p-8 shadow-md border-l-4 border-primary">
             <p className="text-lg text-neutral-700 leading-relaxed">
-              Ser reconhecida como a instituição de apoio mais inovadora, eficiente e comprometida com a excelência operacional dos bombeiros, sendo referência em prevenção, resposta e gestão de risco no Brasil e na América Latina.
-            </p>
+            Ser reconhecida como uma instituição de apoio estratégica e confiável ao Corpo de Bombeiros Militar do Distrito Federal, fortalecendo a integração com a sociedade e ampliando o impacto social de ações voltadas à prevenção, à cidadania e à valorização da Corporação.            </p>
           </div>
         </section>
 
