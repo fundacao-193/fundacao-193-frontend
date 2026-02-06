@@ -1,5 +1,5 @@
 import { Shield, Target, Eye } from 'lucide-react';
-import aboutImage from '../assets/images/about.jpg';
+import aboutImage from '../assets/images/lineandFlag.jpg';
 
 export default function About() {
   return (

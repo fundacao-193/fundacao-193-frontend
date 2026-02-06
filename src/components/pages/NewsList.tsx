@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, ChevronDown, Check } from 'lucide-react';
 
 import { fetchNoticiasByCategories } from '../../services/api';
 import type { news } from '../../types/news';
@@ -34,6 +34,8 @@ export default function NewsList() {
   const hasFetched = useRef(false);
   const [anim, setAnim] = useState(false);
   const animTimer = useRef<number | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const triggerAnim = useCallback(() => {
     setAnim(true);
@@ -91,7 +93,8 @@ export default function NewsList() {
   // Reset page when filter changes
   useEffect(() => {
     setPage(1);
-  }, [selectedCategory]);
+    triggerAnim();
+  }, [selectedCategory, triggerAnim]);
 
   useEffect(() => {
     triggerAnim();
@@ -105,6 +108,27 @@ export default function NewsList() {
       }
     };
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleCategorySelect = (category: CategoryId | 'all') => {
+    setSelectedCategory(category);
+    setIsDropdownOpen(false);
+  };
+
+  const getCategoryLabel = () => {
+    if (selectedCategory === 'all') return 'Todas as categorias';
+    return CATEGORIES[selectedCategory]?.name || 'Categoria';
+  };
 
   // Pagination
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
@@ -149,40 +173,76 @@ export default function NewsList() {
           <h1 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-4">Todas as Notícias</h1>
           <p className="text-neutral-600 mb-6">Filtre por tema para encontrar o que procura</p>
 
-          {/* Filter select - melhor UX para muitas categorias */}
-          <div className="inline-flex items-center gap-3 bg-gradient-to-br from-neutral-50 to-neutral-100 px-6 py-4 rounded-xl border-2 border-neutral-200 shadow-sm hover:shadow-md transition-shadow">
-            <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            <div className="flex flex-col gap-1">
-              <label htmlFor="category-filter" className="text-xs font-medium text-neutral-500 uppercase tracking-wider">Filtrar por tema</label>
-              <select
-                id="category-filter"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value as CategoryId | 'all')}
-                className="text-base font-semibold text-neutral-900 bg-transparent border-none outline-none cursor-pointer -ml-1 pr-8"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233d685d'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right 0 center',
-                  backgroundSize: '1.5rem',
-                  appearance: 'none',
-                }}
-              >
-              <option value="all">Todas as categorias ({items.length})</option>
-              {Object.entries(CATEGORIES).map(([id, cat]) => {
-                // Pula Blog e Diversos do filtro
-                if (id === '14' || id === '18') return null;
-                const count = items.filter(item => item.category_ids.includes(Number(id))).length;
-                if (count === 0) return null;
-                return (
-                  <option key={id} value={id} style={{ padding: '8px 12px' }}>
-                    {cat.name} ({count})
-                  </option>
-                );
-              })}
-              </select>
-            </div>
+          {/* Custom Dropdown com animação */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="inline-flex items-center gap-3 bg-gradient-to-br from-neutral-50 to-neutral-100 px-6 py-4 rounded-xl border-2 border-neutral-200 shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer"
+            >
+              <svg className="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              <div className="flex flex-col gap-1">
+                <span className="text-xs font-medium text-neutral-500 uppercase tracking-wider">Filtrar por tema</span>
+                <span className="text-base font-semibold text-neutral-900">{getCategoryLabel()}</span>
+              </div>
+              <ChevronDown 
+                size={20} 
+                className={`text-primary ml-2 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+              />
+            </button>
+
+            {/* Dropdown menu */}
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl border-2 border-neutral-200 shadow-2xl z-50 animate-fade-in-up overflow-hidden">
+                <div className="max-h-96 overflow-y-auto">
+                  {/* Todas as categorias */}
+                  <button
+                    onClick={() => handleCategorySelect('all')}
+                    className={`w-full px-4 py-3 flex items-center justify-between hover:bg-neutral-50 transition-colors ${
+                      selectedCategory === 'all' ? 'bg-primary/5' : ''
+                    }`}
+                  >
+                    <span className="font-medium text-neutral-900">Todas as categorias</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-neutral-500 font-semibold bg-neutral-100 px-2 py-1 rounded-full">
+                        {items.length}
+                      </span>
+                      {selectedCategory === 'all' && <Check size={16} className="text-primary" />}
+                    </div>
+                  </button>
+
+                  <div className="border-t border-neutral-200" />
+
+                  {/* Categorias específicas */}
+                  {Object.entries(CATEGORIES).map(([id, cat]) => {
+                    if (id === '14' || id === '18') return null;
+                    const count = items.filter(item => item.category_ids.includes(Number(id))).length;
+                    if (count === 0) return null;
+                    return (
+                      <button
+                        key={id}
+                        onClick={() => handleCategorySelect(id as CategoryId)}
+                        className={`w-full px-4 py-3 flex items-center justify-between hover:bg-neutral-50 transition-colors ${
+                          selectedCategory === id ? 'bg-primary/5' : ''
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`inline-block w-3 h-3 rounded-full ${cat.color.split(' ')[0]}`} />
+                          <span className="font-medium text-neutral-900">{cat.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-neutral-500 font-semibold bg-neutral-100 px-2 py-1 rounded-full">
+                            {count}
+                          </span>
+                          {selectedCategory === id && <Check size={16} className="text-primary" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
