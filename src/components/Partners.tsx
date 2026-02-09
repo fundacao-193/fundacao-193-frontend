@@ -27,8 +27,6 @@ const HARDCODED_PARTNERS: HardcodedPartner[] = [
   { id: 4, name: 'Parceiro 4', logo: 'hospitalsantamaria.png' },
   { id: 5, name: 'Parceiro 5', logo: 'instituidor.png' },
   { id: 6, name: 'Parceiro 6', logo: 'sasbio.png' },
-  { id: 7, name: 'Parceiro 7', logo: 'partner-7.png' },
-  { id: 8, name: 'Parceiro 8', logo: 'partner-8.png' },
 ];
 
 export default function Partners() {

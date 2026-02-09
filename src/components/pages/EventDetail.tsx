@@ -47,7 +47,28 @@ export default function EventDetail({ id }: Props) {
     load();
   }, [id]);
 
-  if (loading) return (<div className="min-h-screen py-20 bg-white"><div className="max-w-5xl mx-auto px-4">Carregando...</div></div>);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-3 text-primary mb-3">
+            <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+            <div
+              className="w-3 h-3 bg-primary rounded-full animate-pulse"
+              style={{ animationDelay: '0.2s' }}
+            />
+            <div
+              className="w-3 h-3 bg-primary rounded-full animate-pulse"
+              style={{ animationDelay: '0.4s' }}
+            />
+          </div>
+          <p className="text-sm font-medium text-neutral-600">
+            Carregando evento...
+          </p>
+        </div>
+      </div>
+    );
+  }
   if (error || !item) return (<div className="min-h-screen py-20 bg-white"><div className="max-w-5xl mx-auto px-4 text-center text-red-600">{error || 'Evento não encontrado'}</div></div>);
 
   const start = parseYmdToDateStr(item.acf.event_start_date);
