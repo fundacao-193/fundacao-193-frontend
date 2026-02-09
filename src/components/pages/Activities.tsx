@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
-import { Calendar, ArrowRight, MapPin, Flame } from 'lucide-react';
+import { Calendar, ArrowRight, MapPin } from 'lucide-react';
 import { fetchNoticias, fetchEventos, fetchProjetos } from '../../services/api';
 import type { news } from '../../types/news';
 import type { Event } from '../../types/events';
 import type { Project } from '../../types/projects';
+import ImageWithPlaceholder from '../ImageWithPlaceholder';
 
 type Filter = 'all' | 'news' | 'events' | 'projects';
 
@@ -33,6 +34,7 @@ export default function Activities() {
   const [anim, setAnim] = useState(false);
   const [page, setPage] = useState(1);
   const pageSize = 9;
+  const preloadCount = 6;
   const animTimer = useRef<number | null>(null);
 
   const triggerAnim = useCallback(() => {
@@ -107,6 +109,15 @@ export default function Activities() {
     if (filter === 'projects') return all.filter(i => i.type === 'project');
     return all;
   }, [newsItems, events, projects, filter]);
+
+  useEffect(() => {
+    const targets = items.slice(0, preloadCount);
+    targets.forEach((item) => {
+      if (!item.image) return;
+      const img = new Image();
+      img.src = item.image;
+    });
+  }, [items, preloadCount]);
 
   // pagination
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
@@ -199,15 +210,10 @@ export default function Activities() {
         <div className={`grid md:grid-cols-3 gap-8 ${anim ? 'animate-fade-in-up' : ''}`} key={filter}>
           {pagedItems.map((it) => (
             <article key={it.id} className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col">
-              {it.image ? (
-                <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
-                  <img src={it.image} alt={it.title.replace(/<[^>]*>/g, '')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                </div>
-              ) : it.type === 'project' ? (
-                <div className="aspect-[16/10] bg-primary/10 flex items-center justify-center">
-                  <Flame size={48} className="text-primary" />
-                </div>
-              ) : null}
+              <ImageWithPlaceholder
+                src={it.image}
+                alt={it.title.replace(/<[^>]*>/g, '')}
+              />
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex items-center justify-between mb-3">
                   <div className="text-sm text-neutral-500 inline-flex items-center gap-2">

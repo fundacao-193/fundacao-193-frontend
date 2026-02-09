@@ -4,6 +4,7 @@ import { Calendar, ArrowRight, AlertCircle, RotateCw, MapPin } from 'lucide-reac
 import { fetchNoticias, fetchEventos } from '../services/api';
 import type { news } from '../types/news';
 import type { Event } from '../types/events';
+import ImageWithPlaceholder from './ImageWithPlaceholder';
 
 // Extract first image from HTML
 function extractImageFromHtml(html?: string): string | null {
@@ -91,6 +92,14 @@ export default function News() {
     return result;
   }, [newsItems, events]);
 
+  useEffect(() => {
+    mixedCards.forEach((item) => {
+      if (!item.image) return;
+      const img = new Image();
+      img.src = item.image;
+    });
+  }, [mixedCards]);
+
   // Estados visuais basicos
   if (loading) {
     return (
@@ -169,13 +178,10 @@ export default function News() {
               key={item.id}
               className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col"
             >
-              {item.image ? (
-                <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
-                  <img src={item.image} alt={item.title.replace(/<[^>]*>/g, '')} className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                </div>
-              ) : (
-                <div className="aspect-[16/10] bg-neutral-200" />
-              )}
+              <ImageWithPlaceholder
+                src={item.image}
+                alt={item.title.replace(/<[^>]*>/g, '')}
+              />
 
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex items-center justify-between mb-3">

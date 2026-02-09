@@ -3,6 +3,7 @@ import { Calendar, ArrowRight, ChevronDown, Check } from 'lucide-react';
 
 import { fetchNoticiasByCategories } from '../../services/api';
 import type { news } from '../../types/news';
+import ImageWithPlaceholder from '../ImageWithPlaceholder';
 
 // Category mapping (ID → name)
 const CATEGORIES = {
@@ -31,6 +32,7 @@ export default function NewsList() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
   const [page, setPage] = useState(1);
   const pageSize = 9;
+  const preloadCount = 6;
   const hasFetched = useRef(false);
   const [anim, setAnim] = useState(false);
   const animTimer = useRef<number | null>(null);
@@ -91,6 +93,15 @@ export default function NewsList() {
     });
     return counts;
   }, [preparedItems]);
+
+  useEffect(() => {
+    const targets = preparedItems.slice(0, preloadCount);
+    targets.forEach((item) => {
+      if (!item.imageUrl) return;
+      const img = new Image();
+      img.src = item.imageUrl;
+    });
+  }, [preparedItems, preloadCount]);
 
   // Reset page when filter changes
   useEffect(() => {
@@ -252,17 +263,10 @@ export default function NewsList() {
           {pagedItems.map((item) => {
             return (
               <article key={item.id} className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col">
-                {item.imageUrl && (
-                  <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
-                    <img 
-                      src={item.imageUrl} 
-                      alt={item.title.rendered.replace(/<[^>]*>/g, '')} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                      loading="lazy" 
-                      decoding="async" 
-                    />
-                  </div>
-                )}
+                <ImageWithPlaceholder
+                  src={item.imageUrl}
+                  alt={item.title.rendered.replace(/<[^>]*>/g, '')}
+                />
 
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex items-center justify-between mb-3">
