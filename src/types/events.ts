@@ -4,6 +4,9 @@ export type Event = {
   title: {
     rendered: string;
   };
+  content?: {
+    rendered: string;
+  };
   acf: {
     event_summary?: string;
     event_start_date?: string; // YYYY-MM-DD

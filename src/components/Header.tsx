@@ -123,7 +123,16 @@ export default function Header() {
     <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Navegação principal">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-3 header-logo-animate">
+            <a 
+              href="#" 
+              className="flex items-center gap-3 header-logo-animate hover:opacity-80 transition-opacity focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
+              aria-label="Voltar para a página inicial"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
               <img
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
@@ -135,7 +144,7 @@ export default function Header() {
                 <h1 className="text-xl font-bold text-neutral-900">Fundação 193</h1>
                 <p className="text-xs text-neutral-600">Instituição de Apoio ao CBMDF</p>
               </div>
-            </div>
+            </a>
 
             <div className="hidden lg:flex items-center space-x-6">
               {navItems.map((item) => (
