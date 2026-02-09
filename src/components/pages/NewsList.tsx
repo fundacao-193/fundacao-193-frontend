@@ -54,19 +54,6 @@ export default function NewsList() {
     setError(null);
     try {
       const data = await fetchNoticiasByCategories(Object.keys(CATEGORIES));
-      
-      // Log de distribuição por categoria (posts podem ter múltiplas categorias)
-      const distribution: Record<string, number> = {};
-      data.forEach(item => {
-        item.category_ids.forEach(catId => {
-          const catIdStr = String(catId);
-          distribution[catIdStr] = (distribution[catIdStr] || 0) + 1;
-        });
-      });
-      
-      console.log('Distribuição de posts por categoria:', distribution);
-      console.log('Total de posts únicos:', data.length);
-      
       setItems(data);
     } catch (err) {
       console.error(err);
@@ -82,13 +69,28 @@ export default function NewsList() {
     load();
   }, []);
 
+  const preparedItems = useMemo(() => {
+    return items.map((item) => ({
+      ...item,
+      imageUrl: extractImageFromHtml(item.content?.rendered),
+    }));
+  }, [items]);
+
   const filteredItems = useMemo(() => {
-    if (selectedCategory === 'all') return items;
-    // Filtro inclusivo: mostra posts que contêm a categoria selecionada
-    return items.filter(item => 
-      item.category_ids.includes(Number(selectedCategory))
-    );
-  }, [items, selectedCategory]);
+    if (selectedCategory === 'all') return preparedItems;
+    return preparedItems.filter(item => item.category_ids.includes(Number(selectedCategory)));
+  }, [preparedItems, selectedCategory]);
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    preparedItems.forEach((item) => {
+      item.category_ids.forEach((catId) => {
+        const key = String(catId);
+        counts[key] = (counts[key] || 0) + 1;
+      });
+    });
+    return counts;
+  }, [preparedItems]);
 
   // Reset page when filter changes
   useEffect(() => {
@@ -217,7 +219,7 @@ export default function NewsList() {
                   {/* Categorias específicas */}
                   {Object.entries(CATEGORIES).map(([id, cat]) => {
                     if (id === '14' || id === '18') return null;
-                    const count = items.filter(item => item.category_ids.includes(Number(id))).length;
+                    const count = categoryCounts[id] || 0;
                     if (count === 0) return null;
                     return (
                       <button
@@ -250,10 +252,10 @@ export default function NewsList() {
           {pagedItems.map((item) => {
             return (
               <article key={item.id} className="group bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-xl transition-all hover:-translate-y-1 card-anim flex flex-col">
-                {extractImageFromHtml(item.content?.rendered) && (
+                {item.imageUrl && (
                   <div className="aspect-[16/10] bg-neutral-200 overflow-hidden">
                     <img 
-                      src={extractImageFromHtml(item.content?.rendered)!} 
+                      src={item.imageUrl} 
                       alt={item.title.rendered.replace(/<[^>]*>/g, '')} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                       loading="lazy" 

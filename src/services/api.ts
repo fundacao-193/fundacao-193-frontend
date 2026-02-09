@@ -2,6 +2,7 @@ const API_URL = import.meta.env.VITE_WP_API_URL;
 const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
 const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
+const CACHE_TTL_MS = Number(import.meta.env.VITE_API_CACHE_TTL_MS || 60000);
 
 // Valores DEFAULT para modo legado (funcionam com site antigo fundacao193.org.br)
 // Sobrescreva no .env.local se necessário
@@ -22,23 +23,46 @@ if (DATA_SOURCE === 'legacy' && !import.meta.env.DEV) {
  */
 
 async function fetchAPI<T>(endpoint: string): Promise<T> {
-  const response = await fetch(`${API_URL}/${endpoint}`);
-
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar ${endpoint}`);
-  }
-
-  return response.json();
+  const url = `${API_URL}/${endpoint}`;
+  return fetchJsonWithCache<T>(url, endpoint);
 }
 
 async function fetchLegacyAPI<T>(endpoint: string): Promise<T> {
-  const response = await fetch(`${LEGACY_API_URL}/${endpoint}`);
+  const url = `${LEGACY_API_URL}/${endpoint}`;
+  return fetchJsonWithCache<T>(url, endpoint);
+}
 
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar ${endpoint}`);
+type CacheEntry = {
+  expiry: number;
+  value: unknown;
+};
+
+const responseCache = new Map<string, CacheEntry>();
+
+async function fetchJsonWithCache<T>(url: string, label: string): Promise<T> {
+  if (CACHE_TTL_MS > 0) {
+    const cached = responseCache.get(url);
+    if (cached && cached.expiry > Date.now()) {
+      return cached.value as T;
+    }
   }
 
-  return response.json();
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar ${label}`);
+  }
+
+  const data = (await response.json()) as T;
+
+  if (CACHE_TTL_MS > 0) {
+    responseCache.set(url, {
+      expiry: Date.now() + CACHE_TTL_MS,
+      value: data,
+    });
+  }
+
+  return data;
 }
 
 type LegacyPost = {
@@ -119,35 +143,37 @@ export function fetchNoticias() {
 export async function fetchNoticiasByCategories(categoryIds: string[]): Promise<(news & { category_ids: number[] })[]> {
   if (isLegacyEnabled) {
     const postsMap = new Map<number, news & { category_ids: number[] }>();
-    
-    for (const catId of categoryIds) {
-      if (!catId) continue;
-      try {
-        const posts = await fetchLegacyPostsByCategory(catId);
-        for (const post of posts) {
-          const existing = postsMap.get(post.id);
-          if (existing) {
-            // Post já existe, adiciona categoria
-            if (!existing.category_ids.includes(Number(catId))) {
-              existing.category_ids.push(Number(catId));
-            }
-          } else {
-            // Novo post
-            postsMap.set(post.id, {
-              id: post.id,
-              date: post.date,
-              title: post.title,
-              excerpt: post.excerpt,
-              content: post.content,
-              link: post.link,
-              category_ids: [Number(catId)],
-            });
-          }
-        }
-      } catch (err) {
-        console.warn(`Failed to fetch category ${catId}:`, err);
+    const categoryList = categoryIds.filter(Boolean);
+    const results = await Promise.allSettled(
+      categoryList.map((catId) => fetchLegacyPostsByCategory(catId))
+    );
+
+    results.forEach((result, index) => {
+      if (result.status !== 'fulfilled') {
+        console.warn(`Failed to fetch category ${categoryList[index]}:`, result.reason);
+        return;
       }
-    }
+
+      const catId = categoryList[index];
+      for (const post of result.value) {
+        const existing = postsMap.get(post.id);
+        if (existing) {
+          if (!existing.category_ids.includes(Number(catId))) {
+            existing.category_ids.push(Number(catId));
+          }
+        } else {
+          postsMap.set(post.id, {
+            id: post.id,
+            date: post.date,
+            title: post.title,
+            excerpt: post.excerpt,
+            content: post.content,
+            link: post.link,
+            category_ids: [Number(catId)],
+          });
+        }
+      }
+    });
     
     // Converte Map para array e ordena por data
     const allPosts = Array.from(postsMap.values());
