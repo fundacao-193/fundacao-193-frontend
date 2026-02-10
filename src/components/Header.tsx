@@ -39,17 +39,44 @@ export default function Header() {
     if (href === '#colabore' || href === '#noticias') {
       return;
     }
-    
+
     if (!href.startsWith('#')) return;
 
     const targetId = href.slice(1);
     const targetElement = document.getElementById(targetId);
 
+    // Caso já estejamos na página que contém a seção, apenas faz o scroll suave
     if (targetElement) {
       event.preventDefault();
       targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       window.history.pushState(null, '', href);
+      return;
     }
+
+    // Se a seção ainda não existe no DOM (ex.: estamos em uma página interna como "nossa-historia"),
+    // primeiro navegamos para a home e, depois que ela renderizar, rolamos até a seção desejada.
+    event.preventDefault();
+
+    const scrollToTargetAfterHome = () => {
+      // Dá um pequeno tempo para o React renderizar a home com todas as seções
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Atualiza a URL para o hash correto sem disparar outro hashchange
+          window.history.replaceState(null, '', href);
+        }
+      }, 250);
+    };
+
+    const onHashChangeOnce = () => {
+      window.removeEventListener('hashchange', onHashChangeOnce);
+      scrollToTargetAfterHome();
+    };
+
+    window.addEventListener('hashchange', onHashChangeOnce);
+    // Força a navegação para a home; App.tsx trata hash vazio como "home"
+    window.location.hash = '';
   };
 
   type NavItem =
