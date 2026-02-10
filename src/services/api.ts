@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_WP_API_URL;
+const API_URL = import.meta.env.VITE_WP_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
 const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
