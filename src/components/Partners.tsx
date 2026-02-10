@@ -57,6 +57,8 @@ export default function Partners() {
                   src={imageSrc}
                   alt={partner.name}
                   className="h-20 md:h-24 w-auto object-contain transition-all duration-300 hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                   onError={(e) => {
                     console.error(`Erro ao carregar logo: ${imageSrc}`);
                     e.currentTarget.src = 'https://via.placeholder.com/150x60?text=Logo';
