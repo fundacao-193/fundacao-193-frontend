@@ -50,7 +50,7 @@ export default function Partners() {
           {/* Wrapper animado que desliza para a esquerda */}
           <div className="flex gap-16 animate-scroll-left py-6">
             {allPartners.map((partner, index) => {
-              const imageSrc = `/src/assets/images/${partner.logo}`;
+              const imageSrc = `/images/${partner.logo}`;
               
               const logoImage = (
                 <img

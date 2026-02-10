@@ -1,0 +1,53 @@
+# Configuração de build do Netlify para Fundação 193 Frontend
+
+[build]
+  # Comando para gerar o build de produção
+  command = "npm run build"
+  
+  # Diretório onde o build será gerado (Vite usa dist/ por padrão)
+  publish = "dist"
+  
+  # Defina Node.js versão 18+ para compatibilidade com Vite 5
+  environment = { NODE_VERSION = "18" }
+
+# Configuração de variáveis de ambiente
+# ⚠️ IMPORTANTE: Configure VITE_WP_API_URL no painel do Netlify também!
+# Site Settings > Build & Deploy > Environment variables
+# 
+# Exemplo de valores:
+# VITE_WP_API_URL = https://fundacao193.org.br/wp-json/wp/v2
+# VITE_DATA_SOURCE = legacy (se usar site antigo) ou deixar vazio (CPT/ACF)
+
+# Redirecionamento para SPA (Single Page Application)
+# Como usamos hash routing (#nossa-historia, etc), isso garante
+# que todas as rotas sejam tratadas pelo index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de segurança e performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Segurança
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Cache para assets (imagens, JS, CSS)
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    # Não fazer cache do HTML principal
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+# Otimização de imagens (Netlify Large Media ou Image CDN)
+# Descomente se ativar Netlify Image CDN:
+# [build.processing.images]
+#   compress = true
