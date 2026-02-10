@@ -35,12 +35,16 @@ export default function Header() {
   }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Deixa esses hashs irem direto para a página (App.tsx renderiza)
-    if (href === '#colabore' || href === '#noticias') {
+    if (!href.startsWith('#')) return;
+
+    // Hashes que representam SEÇÕES na página inicial
+    const sectionHashes = new Set(['#inicio', '#quem-somos', '#impacto', '#contato', '#areas']);
+
+    // Se não for uma seção da home, deixamos o comportamento padrão do link:
+    // o hash muda e o App.tsx cuida de renderizar a página correta (nossa-historia, projetos, lgpd, etc.).
+    if (!sectionHashes.has(href)) {
       return;
     }
-
-    if (!href.startsWith('#')) return;
 
     const targetId = href.slice(1);
     const targetElement = document.getElementById(targetId);
