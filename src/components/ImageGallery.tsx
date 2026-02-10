@@ -8,6 +8,7 @@ interface ImageGalleryProps {
 
 export default function ImageGallery({ images }: ImageGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
 
   if (images.length === 0) return null;
 
@@ -23,12 +24,18 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
 
   const goToPrevious = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((selectedIndex - 1 + images.length) % images.length);
+    const newIndex = (selectedIndex - 1 + images.length) % images.length;
+    setSelectedIndex(newIndex);
   };
 
   const goToNext = () => {
     if (selectedIndex === null) return;
-    setSelectedIndex((selectedIndex + 1) % images.length);
+    const newIndex = (selectedIndex + 1) % images.length;
+    setSelectedIndex(newIndex);
+  };
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => new Set(prev).add(index));
   };
 
   // Grid responsivo baseado na quantidade de imagens
@@ -52,12 +59,30 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
               className="relative aspect-video overflow-hidden rounded-lg group cursor-pointer focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               aria-label={`Ver imagem ${index + 1} em tamanho real`}
             >
+              {/* Placeholder */}
+              {!loadedImages.has(index) && (
+                <div className="absolute inset-0 flex items-center justify-center bg-neutral-100">
+                  <img
+                    src="/logo-reduzida.png"
+                    alt="Fundação 193 Logo"
+                    className="h-8 w-auto"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              )}
+              
               <img
                 src={img}
                 alt={`Imagem ${index + 1}`}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                className={`w-full h-full object-cover transition-all duration-300 ${
+                  loadedImages.has(index)
+                    ? 'opacity-100 group-hover:scale-110'
+                    : 'opacity-0'
+                }`}
                 loading="lazy"
                 decoding="async"
+                onLoad={() => handleImageLoad(index)}
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
             </button>

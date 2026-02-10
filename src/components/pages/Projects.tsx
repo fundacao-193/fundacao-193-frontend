@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Flame, AlertCircle, RotateCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, AlertCircle, RotateCw } from 'lucide-react';
 
 import { fetchProjetos } from '../../services/api';
 import type { Project } from '../../types/projects';
+import ImageWithPlaceholder from '../ImageWithPlaceholder';
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -94,30 +95,17 @@ export default function Projects() {
         {/* Lista de projetos */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {projects.map((project) => (
-            <a
+            <div
               key={project.id}
-              href={`#projeto-${project.id}`}
-              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-1 group"
+              className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-1 group flex flex-col h-full"
             >
-              {project.acf?.project_image && (
-                <div className="aspect-[16/9] bg-neutral-200 overflow-hidden">
-                  <img 
-                    src={project.acf.project_image} 
-                    alt={project.title.rendered.replace(/<[^>]*>/g, '')} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
-                    loading="lazy" 
-                    decoding="async" 
-                  />
-                </div>
-              )}
+              <ImageWithPlaceholder
+                src={project.acf?.project_image}
+                alt={project.title.rendered.replace(/<[^>]*>/g, '')}
+                containerClassName="aspect-[16/9]"
+              />
 
-              <div className="p-8">
-                {!project.acf?.project_image && (
-                  <div className="w-16 h-16 bg-icon-bg/10 text-icon-fg rounded-lg flex items-center justify-center mb-4">
-                    <Flame size={32} />
-                  </div>
-                )}
-
+              <div className="p-8 flex flex-col flex-grow">
                 {/* Titulo */}
                 <h3
                   className="text-2xl font-bold text-neutral-900 mb-3 group-hover:text-primary transition-colors"
@@ -138,14 +126,24 @@ export default function Projects() {
 
                 {/* Impacto */}
                 {project.acf?.impacto && (
-                  <div className="border-t border-neutral-200 pt-4 mt-4">
+                  <div className="border-t border-neutral-200 pt-4 mt-4 mb-6">
                     <p className="text-primary font-semibold">
                       {project.acf.impacto}
                     </p>
                   </div>
                 )}
+
+                {/* Saiba Mais Link */}
+                <a
+                  href={`#projeto-${project.id}`}
+                  className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all mt-auto"
+                  aria-label={`Saiba mais sobre ${project.title.rendered.replace(/<[^>]*>/g, '')}`}
+                >
+                  Saiba Mais
+                  <ArrowRight size={16} />
+                </a>
               </div>
-            </a>
+            </div>
           ))}
         </div>
 

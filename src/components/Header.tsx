@@ -120,7 +120,7 @@ export default function Header() {
   ];
 
   return (
-    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
+    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 animate-slide-down ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Navegação principal">
           <div className="flex items-center justify-between h-20">
             <a 

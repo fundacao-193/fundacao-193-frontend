@@ -1,4 +1,5 @@
 import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
+import { useState } from 'react';
 
 interface TeamMember {
   id: string;
@@ -17,6 +18,9 @@ interface Department {
 }
 
 function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 'large' | 'normal' | 'small' }) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [hasImageError, setHasImageError] = useState(false);
+
   const sizeClasses = {
     large: 'w-72',
     normal: 'w-60',
@@ -33,10 +37,27 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
     <div className={`group ${sizeClasses[size]} mx-auto`}>
       <article className="bg-white rounded-xl overflow-hidden shadow-lg border-2 border-slate-200 hover:border-primary transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
         <div className={`relative overflow-hidden bg-gradient-to-br from-slate-200 to-slate-300 ${imageHeightClasses[size]}`}>
+          {/* Placeholder */}
+          {!isImageLoaded && !hasImageError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300">
+              <img
+                src="/logo-reduzida.png"
+                alt="Fundação 193 Logo"
+                className="h-8 w-auto"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          )}
+          
           <img
             src={member.image}
             alt={member.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className={`w-full h-full object-cover transition-all duration-500 ${
+              isImageLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
+            }`}
+            onLoad={() => setIsImageLoaded(true)}
+            onError={() => setHasImageError(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         </div>

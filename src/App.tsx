@@ -11,6 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import ThemeToggle from './components/ThemeToggle';
+import BackToTopButton from './components/BackToTopButton';
 import OurStory from './components/pages/OurStory';
 import MissionValues from './components/pages/MissionValues';
 import Team from './components/pages/Team';
@@ -201,6 +202,7 @@ function App() {
           {renderPage()}
         </div>
         <Footer />
+        <BackToTopButton />
         <FloatingActions />
         <ThemeToggle />
       </div>
