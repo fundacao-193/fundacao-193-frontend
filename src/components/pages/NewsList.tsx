@@ -4,8 +4,6 @@ import { Calendar, ArrowRight, ChevronDown, Check } from 'lucide-react';
 import { fetchNoticiasByCategories } from '../../services/api';
 import type { news } from '../../types/news';
 import ImageWithPlaceholder from '../ImageWithPlaceholder';
-import BackToTopButton from '../BackToTopButton';
-
 // Category mapping (ID → name)
 const CATEGORIES = {
   '14': { name: 'Blog', color: 'bg-blue-100 text-blue-800' },
@@ -348,8 +346,6 @@ export default function NewsList() {
             </button>
           </div>
         )}
-
-        <BackToTopButton />
       </div>
     </div>
   );

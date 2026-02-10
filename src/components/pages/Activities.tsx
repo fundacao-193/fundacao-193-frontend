@@ -5,7 +5,6 @@ import type { news } from '../../types/news';
 import type { Event } from '../../types/events';
 import type { Project } from '../../types/projects';
 import ImageWithPlaceholder from '../ImageWithPlaceholder';
-import BackToTopButton from '../BackToTopButton';
 
 type Filter = 'all' | 'news' | 'events' | 'projects';
 
@@ -258,8 +257,6 @@ export default function Activities() {
           <span className="text-neutral-500">Página {page} de {totalPages}</span>
           <button className="px-4 py-2 rounded bg-neutral-100" onClick={() => setPage((p) => Math.min(totalPages, p + 1))} disabled={page === totalPages}>Próxima</button>
         </div>
-
-        <BackToTopButton />
       </div>
     </div>
   );
