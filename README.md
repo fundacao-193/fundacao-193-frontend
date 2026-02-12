@@ -91,6 +91,46 @@ Atualize `VITE_WP_API_URL` para o domínio do WordPress em produção:
 VITE_WP_API_URL=https://api.fundacao193.org.br/wp-json/wp/v2
 ```
 
+### 4. (Opcional) Modo Legado - API Antiga
+
+O projeto suporta **dois modos de operação**:
+
+1. **Modo Padrão (CPT/ACF)** - Consome Custom Post Types do WordPress novo ✅ *Recomendado*
+2. **Modo Legado (Posts + Categorias)** - Consome posts com categorias do site antigo 🔄 *Desenvolvimento*
+
+#### Como ativar o Modo Legado:
+
+**Opção 1: Sem criar arquivo .env** *(mais rápido)*
+
+```powershell
+# Windows PowerShell
+$env:VITE_DATA_SOURCE='legacy'; npm run dev
+
+# Linux/Mac  
+VITE_DATA_SOURCE=legacy npm run dev
+```
+
+⚡ **Valores DEFAULT já funcionam!** O código usa automaticamente:
+- API: `https://fundacao193.org.br/wp-json/wp/v2`
+- Categoria Notícias: `14` (Blog)
+- Categoria Eventos: `9` (Eventos)
+- Categoria Projetos: `90` (Projetos)
+
+**Opção 2: Criar .env.local** *(para customizar)*
+
+```ini
+# .env.local
+VITE_DATA_SOURCE=legacy
+
+# Opcional - só se quiser customizar:
+# VITE_WP_LEGACY_API_URL=https://fundacao193.org.br/wp-json/wp/v2
+# VITE_WP_LEGACY_CATEGORY_NEWS=14
+# VITE_WP_LEGACY_CATEGORY_EVENTS=9  
+# VITE_WP_LEGACY_CATEGORY_PROJECTS=90
+```
+
+> **⚠️ Importante:** Modo legado só funciona em `desenvolvimento`. Em produção, sempre usa CPT/ACF.
+
 ## Como Executar
 
 ### Modo Desenvolvimento
@@ -420,7 +460,7 @@ Este projeto é propriedade da Fundação 193. Todos os direitos reservados.
 **Fundação 193**
 - Website: [fundacao193.org.br]
 - Email: contato@fundacao193.org.br
-- Telefone: (61) 3321-3000
+- Telefone: (61) 99557-8286
 - Endereço: SHS Quadra 6, Conjunto A, Bloco A, Sala 501 - Brasília-DF
 
 ## Equipe de Desenvolvimento

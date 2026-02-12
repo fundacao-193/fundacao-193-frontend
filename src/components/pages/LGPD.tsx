@@ -200,7 +200,7 @@ export default function LGPD() {
             </div>
             <div>
               <p className="font-semibold text-neutral-900 mb-2">Telefone</p>
-              <p className="text-neutral-600">(61) 3321-3000 ramal 125</p>
+              <p className="text-neutral-600">(61) 99557-8286</p>
             </div>
           </div>
           <div className="mt-6 p-4 bg-neutral-50 rounded-lg">

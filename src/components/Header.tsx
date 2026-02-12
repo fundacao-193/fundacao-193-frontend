@@ -35,20 +35,52 @@ export default function Header() {
   }, []);
 
   const handleNavClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href === '#colabore') {
-      return; // manda pro hashchange do App.tsx lidar
-    }
-    
     if (!href.startsWith('#')) return;
+
+    // Hashes que representam SEÇÕES na página inicial
+    const sectionHashes = new Set(['#inicio', '#quem-somos', '#impacto', '#contato', '#areas']);
+
+    // Se não for uma seção da home, deixamos o comportamento padrão do link:
+    // o hash muda e o App.tsx cuida de renderizar a página correta (nossa-historia, projetos, lgpd, etc.).
+    if (!sectionHashes.has(href)) {
+      return;
+    }
 
     const targetId = href.slice(1);
     const targetElement = document.getElementById(targetId);
 
+    // Caso já estejamos na página que contém a seção, apenas faz o scroll suave
     if (targetElement) {
       event.preventDefault();
       targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       window.history.pushState(null, '', href);
+      return;
     }
+
+    // Se a seção ainda não existe no DOM (ex.: estamos em uma página interna como "nossa-historia"),
+    // primeiro navegamos para a home e, depois que ela renderizar, rolamos até a seção desejada.
+    event.preventDefault();
+
+    const scrollToTargetAfterHome = () => {
+      // Dá um pequeno tempo para o React renderizar a home com todas as seções
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Atualiza a URL para o hash correto sem disparar outro hashchange
+          window.history.replaceState(null, '', href);
+        }
+      }, 250);
+    };
+
+    const onHashChangeOnce = () => {
+      window.removeEventListener('hashchange', onHashChangeOnce);
+      scrollToTargetAfterHome();
+    };
+
+    window.addEventListener('hashchange', onHashChangeOnce);
+    // Força a navegação para a home; App.tsx trata hash vazio como "home"
+    window.location.hash = '';
   };
 
   type NavItem =
@@ -119,10 +151,19 @@ export default function Header() {
   ];
 
   return (
-    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
+    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-200 animate-slide-down ${isScrolled ? 'shadow-lg' : 'shadow-md'}`}>
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Navegação principal">
           <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-3 header-logo-animate">
+            <a 
+              href="#" 
+              className="flex items-center gap-3 header-logo-animate hover:opacity-80 transition-opacity focus:outline-2 focus:outline-offset-2 focus:outline-institutional"
+              aria-label="Voltar para a página inicial"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
               <img
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
@@ -134,7 +175,7 @@ export default function Header() {
                 <h1 className="text-xl font-bold text-neutral-900">Fundação 193</h1>
                 <p className="text-xs text-neutral-600">Instituição de Apoio ao CBMDF</p>
               </div>
-            </div>
+            </a>
 
             <div className="hidden lg:flex items-center space-x-6">
               {navItems.map((item) => (

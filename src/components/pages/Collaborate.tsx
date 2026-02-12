@@ -26,16 +26,19 @@ export default function Collaborate() {
               <h2 className="text-3xl font-bold text-neutral-900 mb-6">Doações</h2>
               <div className="space-y-4 text-neutral-700 leading-relaxed">
                 <p>
-                  Desenvolva o hábito de doar e faça a diferença na vida do planeta e das outras pessoas. Isso está relacionado à quantidade doada, mas sim ao incentivo de práticas de consumo consciente e empatia que podem ser desenvolvidas em nós mesmos e em nossas relações.
+                  Desenvolver o hábito de doar é uma forma concreta de contribuir para um futuro mais justo e solidário. Mais do que a quantidade ou o tipo de doação, esse gesto está relacionado ao incentivo de práticas de consumo consciente, empatia e responsabilidade social, valores que podem ser cultivados em nós e transmitidos às próximas gerações.
                 </p>
                 <p>
-                  Todos podem fazer doações para o benefício do meio-ambiente ou da coletividade. Se estiver em dúvida, podemos elencar algumas possibilidades: você pode doar tempo, capital intelectual, sangue, leite materno, roupas, alimentos, dinheiro, trabalho, dentro e outros.
+                  Todos podem contribuir para o benefício do meio ambiente e da coletividade. As doações podem assumir diferentes formas, como tempo, conhecimento, trabalho voluntário, sangue, leite materno, roupas, agasalhos, brinquedos, alimentos ou recursos financeiros, entre outras possibilidades.
                 </p>
                 <p>
-                  A doação é uma atitude que contribui diretamente para um futuro mais promissor e justo para todos.
+                  A doação é uma atitude que impacta diretamente a sociedade, fortalecendo ações voltadas à prevenção, à cidadania e ao cuidado com as pessoas em situação de vulnerabilidade.
                 </p>
                 <p>
-                  O CBMDF desenvolve alguns projetos para auxiliar pessoas em vulnerabilidade, como a Campanha do Agasalho, o Natal Solidário e outros para sanar problemas específicos. Você poderá contribuir nestes e em outros projetos. Mas você também pode fazer a doação de dinheiro. Nesse caso, o CBMDF não tem condições de receber diretamente o recurso, mas a Fundação 193 tem, pois é uma entidade sem fins lucrativos e todo o recurso arrecadado é destinado a apoiar o Corpo de Bombeiros Militar do Distrito Federal no desenvolvimento de alguns de seus projetos.
+                  O Corpo de Bombeiros Militar do Distrito Federal (CBMDF) desenvolve projetos sociais que auxiliam pessoas em situação de vulnerabilidade, como a Campanha do Agasalho, o Natal Solidário, além de outras iniciativas voltadas à solução de demandas específicas. Sempre que oportuno, é possível contribuir diretamente com essas ações.
+                </p>
+                <p>
+                  No caso de doações financeiras, o CBMDF não possui meios legais para receber diretamente os recursos. Nesses casos, a Fundação 193 atua como entidade sem fins lucrativos habilitada para receber as doações, garantindo que todo o valor arrecadado seja integralmente destinado ao apoio de projetos e ações do Corpo de Bombeiros Militar do Distrito Federal, de forma transparente e responsável.
                 </p>
               </div>
             </div>
@@ -44,23 +47,23 @@ export default function Collaborate() {
               <h3 className="text-2xl font-bold text-neutral-900 mb-6">Sua doação estará contribuindo para:</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl">•</span>
+                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
                   <span className="text-neutral-700">Preservar o meio ambiente</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl">•</span>
+                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
                   <span className="text-neutral-700">Prevenir acidentes</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl">•</span>
+                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
                   <span className="text-neutral-700">Prevenir incêndios</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl">•</span>
+                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
                   <span className="text-neutral-700">Preservar a memória do CBMDF</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-primary font-bold text-xl">•</span>
+                  <span className="text-[#1d4f42] font-bold text-xl">•</span>
                   <span className="text-neutral-700">Incentivar a pesquisa em incêndios e explosões</span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -122,7 +125,7 @@ export default function Collaborate() {
               <div className="bg-white rounded-xl p-8 shadow-lg border border-neutral-200 qr-card">
                 <QrCode size={32} className="text-neutral-400 mb-4 mx-auto" />
                 <img
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=000201260936049201099FUNDACAO193000520166360014br.gov.bcb.brcode01051.0.052023621390011br.com.mercadolibre06072.4012.0231230ABDCDEF123456789012345670123456789012345635400520540010BR5913FUNDACAO19360009SAO PAULO6009SAO PAULO62090505TESTE63041D21"
+                  src="/qrcode-pix-300x300.png"
                   alt="QR Code PIX"
                   className="w-64 h-64 rounded-lg"
                   loading="lazy"

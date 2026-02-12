@@ -18,10 +18,10 @@ export default function Hero() {
 
   return (
     <section id="inicio" className="relative bg-gradient-to-br from-hero-start via-hero-mid to-hero-end text-white overflow-hidden">
-      {/* Background image */}
+      {/* Background image - otimizado */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url(${lineImage})` }}
+        className="absolute inset-0 bg-cover bg-center opacity-20 will-change-auto"
+        style={{ backgroundImage: `url(${lineImage})`, backgroundAttachment: 'fixed', backgroundSize: 'cover' }}
       ></div>
       
       {/* Directional gradient overlay - darker left (text), lighter right (helicopter action) */}

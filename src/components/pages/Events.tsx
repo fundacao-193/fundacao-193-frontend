@@ -142,7 +142,7 @@ export default function Events() {
         {/* Upcoming events */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-neutral-900 mb-8">
-            Proximos Eventos
+            Próximos Eventos
           </h2>
 
           {upcomingEvents.length === 0 && (
@@ -150,6 +150,54 @@ export default function Events() {
           )}
 
           <div className="space-y-6">
+            {/* DEMONSTRAÇÃO: Evento hardcoded com inscrição - COMENTAR EM PRODUÇÃO */}
+             
+            <div className={cardClass}>
+              <div className="p-6">
+                <div className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                  Inscrições Abertas
+                </div>
+                <h3 className="text-2xl font-bold text-neutral-900 mb-2">
+                  Capacitação em Salvamento Aquático
+                </h3>
+
+                <p className="text-neutral-600 leading-relaxed mb-4">
+                  Curso especializado em técnicas de salvamento aquático para ambientes urbanos e naturais. Módulos práticos e teóricos ministrados por especialistas certificados.
+                </p>
+
+                <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={18} className="text-icon-fg" />
+                    <span>15/03/2026</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <MapPin size={18} className="text-icon-fg" />
+                    <span>Centro de Treinamento CBMDF</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <a
+                    href="https://forms.gle/exemplo-inscricao"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+                  >
+                    Inscrever-se
+                  </a>
+                  <a
+                    href="#evento-demo-1"
+                    className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all px-4 py-2"
+                  >
+                    Saiba mais
+                    <ArrowRight size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+
             {upcomingEvents.map(event => (
               <div key={event.id} className={cardClass}>
                 <div className="p-6">
@@ -159,10 +207,10 @@ export default function Events() {
                   />
 
                   <p className="text-neutral-600 leading-relaxed mb-4">
-                    {event.acf?.event_summary || 'Descricao nao informada.'}
+                    {event.acf?.event_summary || 'Descrição não informada.'}
                   </p>
 
-                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
+                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
                     <div className="flex items-center gap-2">
                       <Calendar size={18} className="text-icon-fg" />
                       <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
@@ -174,26 +222,27 @@ export default function Events() {
                     </div>
                   </div>
 
-                  {event.acf?.event_registration_url && (
-                    <a
-                      href={event.acf.event_registration_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-6 inline-block px-6 py-2 mr-4 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
-                    >
-                      Inscrever-se
-                    </a>
-                  )}
+                  <div className="flex gap-3">
+                    {event.acf?.event_registration_url && (
+                      <a
+                        href={event.acf.event_registration_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+                      >
+                        Inscrever-se
+                      </a>
+                    )}
 
-                  {/* Leia / Saiba mais to event detail */}
-                  <a
-                    href={`#evento-${event.id}`}
-                    className="mt-8 inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all"
-                    aria-label={`Saiba mais sobre ${event.title.rendered.replace(/<[^>]*>/g, '')}`}
-                  >
-                    Saiba mais
-                    <ArrowRight size={16} />
-                  </a>
+                    <a
+                      href={`#evento-${event.id}`}
+                      className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all px-4 py-2"
+                      aria-label={`Saiba mais sobre ${event.title.rendered.replace(/<[^>]*>/g, '')}`}
+                    >
+                      Saiba mais
+                      <ArrowRight size={16} />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
@@ -220,10 +269,10 @@ export default function Events() {
                   />
 
                   <p className="text-neutral-600 mb-4">
-                    {event.acf?.event_summary || 'Descricao nao informada.'}
+                    {event.acf?.event_summary || 'Descrição não informada.'}
                   </p>
 
-                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600">
+                  <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
                     <div className="flex items-center gap-2">
                       <Calendar size={18} className="text-icon-fg" />
                       <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
@@ -236,6 +285,15 @@ export default function Events() {
                       </div>
                     )}
                   </div>
+
+                  <a
+                    href={`#evento-${event.id}`}
+                    className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all"
+                    aria-label={`Saiba mais sobre ${event.title.rendered.replace(/<[^>]*>/g, '')}`}
+                  >
+                    Saiba mais
+                    <ArrowRight size={16} />
+                  </a>
                 </div>
               </div>
             ))}

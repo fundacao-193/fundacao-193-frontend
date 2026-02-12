@@ -1,6 +1,8 @@
 import { GraduationCap, Flame, Users, Lightbulb } from 'lucide-react';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export default function Services() {
+  const { elementRef, isVisible } = useScrollAnimation(0.15);
   const services = [
     {
       icon: Flame,
@@ -44,11 +46,14 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div ref={elementRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-white rounded-xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              className={`group bg-white rounded-xl p-8 hover:shadow-2xl transition-all hover:-translate-y-2 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 50}ms` : '0ms', transitionDuration: '500ms' }}
             >
               <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                 <service.icon className="text-white" size={32} />

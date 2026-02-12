@@ -6,7 +6,11 @@ export interface Project {
   excerpt?: {
     rendered: string;
   };
+  content?: {
+    rendered: string;
+  };
   acf?: {
     impacto?: string;
+    project_image?: string;
   };
 }

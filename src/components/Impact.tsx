@@ -1,6 +1,9 @@
 import { TrendingUp, Users, Award, Calendar } from 'lucide-react';
+import impactImage from '../assets/images/impact.jpg';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export default function Impact() {
+  const { elementRef, isVisible } = useScrollAnimation(0.15);
   const stats = [
     {
       icon: Calendar,
@@ -22,7 +25,7 @@ export default function Impact() {
     },
     {
       icon: TrendingUp,
-      value: '30+',
+      value: '3+',
       label: 'Anos de Atuação',
       description: 'Apoiando quem salva vidas',
     },
@@ -30,10 +33,15 @@ export default function Impact() {
 
   return (
     <section id="impacto" className="relative py-20 bg-gradient-to-br from-impact-start to-impact-end text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/5198239/pexels-photo-5198239.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-10"></div>
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{ backgroundImage: `url(${impactImage})` }}
+      ></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div ref={elementRef} className={`text-center max-w-3xl mx-auto mb-16 transition-all duration-500 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}>
           <div className="inline-block bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
             Nosso Impacto
           </div>
@@ -50,7 +58,10 @@ export default function Impact() {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all hover:scale-105"
+              className={`bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-8 hover:bg-white/20 transition-all hover:scale-105 ${
+                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ transitionDelay: isVisible ? `${index * 50}ms` : '0ms', transitionDuration: '500ms' }}
             >
               <div className="w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center mb-4">
                 <stat.icon size={28} />
