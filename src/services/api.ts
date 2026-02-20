@@ -1,4 +1,26 @@
-const API_URL = import.meta.env.VITE_WP_API_URL;
+// Detecta se está em desenvolvimento local
+const isDev = import.meta.env.DEV;
+const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+
+// URL da API: usa proxy do Vite em desenvolvimento local, senão usa a URL configurada
+const getAPIUrl = () => {
+  const envUrl = import.meta.env.VITE_WP_API_URL;
+  
+  // Se está em desenvolvimento local e a URL é localhost, tenta usar proxy relativo
+  // Mas se VITE_USE_PRODUCTION_API estiver definido, usa produção mesmo em dev
+  if (import.meta.env.VITE_USE_PRODUCTION_API === 'true') {
+    return envUrl || 'https://fundacao193.org.br/wp-json/wp/v2';
+  }
+  
+  if (isDev && isLocalhost && envUrl?.includes('localhost')) {
+    return '/wp-json/wp/v2';
+  }
+  
+  // Caso contrário, usa a URL completa do .env ou o default
+  return envUrl || 'https://fundacao193.org.br/wp-json/wp/v2';
+};
+
+const API_URL = getAPIUrl();
 const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
 const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
@@ -12,11 +34,7 @@ const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS ||
 const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS || '';     // Não usado
 const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING || '';     // Não usado
 
-const isLegacyEnabled = import.meta.env.DEV && DATA_SOURCE === 'legacy';
-
-if (DATA_SOURCE === 'legacy' && !import.meta.env.DEV) {
-  console.warn('[data] DATA_SOURCE=legacy ignorado em produção. Usando CPT/ACF.');
-}
+const isLegacyEnabled = DATA_SOURCE === 'legacy';
 
 /**
  * Funcao base generica para requisicoes na API
