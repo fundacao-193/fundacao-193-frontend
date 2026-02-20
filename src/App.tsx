@@ -29,6 +29,7 @@ import NewsDetail from './components/pages/NewsDetail';
 import ProjectDetail from './components/pages/ProjectDetail';
 import EventDetail from './components/pages/EventDetail';
 import Activities from './components/pages/Activities';
+import SearchPage from './components/pages/Search';
 
 // logica para currentPage
 function App() {
@@ -79,6 +80,12 @@ function App() {
   useEffect(() => {
     const baseTitle = 'Fundação 193';
 
+    if (currentPage.startsWith('busca/')) {
+      const query = decodeURIComponent(currentPage.replace('busca/', ''));
+      document.title = `Busca: "${query}" - ${baseTitle}`;
+      return;
+    }
+
     switch (currentPage) {
       case 'nossa-historia':
         document.title = `Nossa História - ${baseTitle}`;
@@ -123,6 +130,11 @@ function App() {
 
   // Renderiza a pagina com base no hash atual
   const renderPage = () => {
+    if (currentPage.startsWith('busca/')) {
+      const query = decodeURIComponent(currentPage.replace('busca/', ''));
+      return <SearchPage query={query} />;
+    }
+
     if (currentPage.startsWith('noticia-')) {
       const idStr = currentPage.replace('noticia-', '');
       const id = Number(idStr);

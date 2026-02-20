@@ -1,5 +1,6 @@
 import { MouseEvent, useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
+import SearchBar from './SearchBar';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -243,6 +244,7 @@ export default function Header() {
                   </a>
                 )
               ))}
+              <SearchBar onResultClick={() => setIsMenuOpen(false)} />
               <a
                 href="#colabore"
                 className="bg-primary text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-hover transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-white"
@@ -251,15 +253,20 @@ export default function Header() {
               </a>
             </div>
 
-            <button
-              className="lg:hidden p-2 focus:outline-2 focus:outline-offset-2 focus:outline-institutional rounded"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="lg:hidden flex items-center gap-2">
+              <SearchBar onResultClick={() => setIsMenuOpen(false)} />
+              <button
+                className={`p-2 rounded focus:outline-2 focus:outline-offset-2 focus:outline-institutional hover:bg-neutral-100 ${
+                  isMenuOpen ? 'text-primary' : 'text-neutral-700 hover:text-institutional'
+                }`}
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+                aria-expanded={isMenuOpen}
+                aria-controls="mobile-menu"
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </nav>
 

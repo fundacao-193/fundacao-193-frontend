@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Flame } from 'lucide-react';
 
 type ImageWithPlaceholderProps = {
   src?: string | null;
