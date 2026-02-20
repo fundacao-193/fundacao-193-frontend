@@ -6,7 +6,7 @@
 const API_URL = import.meta.env.VITE_WP_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
-const isLegacyEnabled = import.meta.env.DEV && DATA_SOURCE === 'legacy';
+const isLegacyEnabled = DATA_SOURCE === 'legacy';
 
 // Cache para evitar múltiplas requisições
 const searchCache = new Map<string, { timestamp: number; results: SearchResults }>();

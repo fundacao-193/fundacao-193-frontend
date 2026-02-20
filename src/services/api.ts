@@ -12,13 +12,7 @@ const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS ||
 const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS || '';     // Não usado
 const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING || '';     // Não usado
 
-// const isLegacyEnabled = DATA_SOURCE === 'legacy'; linha comentada
-
-const isLegacyEnabled = import.meta.env.DEV && DATA_SOURCE === 'legacy';
-
-if (DATA_SOURCE === 'legacy' && !import.meta.env.DEV) {
-  console.warn('[data] DATA_SOURCE=legacy ignorado em produção. Usando CPT/ACF.');
-}
+const isLegacyEnabled = DATA_SOURCE === 'legacy';
 
 /**
  * Funcao base generica para requisicoes na API
