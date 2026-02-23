@@ -1,0 +1,11 @@
+name = "fundacao-193-legacy"
+compatibility_date = "2026-02-23"
+type = "javascript"
+
+# Servir arquivos estáticos do diretório dist
+[site]
+bucket = "./dist"
+
+# Variáveis de ambiente
+[vars]
+VITE_DATA_SOURCE = "legacy"
