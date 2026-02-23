@@ -1,0 +1,14 @@
+name = "fundacao-193-legacy"
+type = "javascript"
+compatibility_date = "2026-02-23"
+
+# Configuração para servir SPA estática
+[site]
+bucket = "./dist"
+
+# Variáveis de ambiente
+[env.production]
+vars = { VITE_DATA_SOURCE = "legacy" }
+
+# Build info
+build = { command = "npm run build", cwd = "." }
