@@ -1,5 +1,5 @@
 name = "fundacao-193-legacy"
-main = "dist/index.html"
+main = "worker.js"
 compatibility_date = "2026-02-23"
 
 # Configuração para servir SPA estática
@@ -9,3 +9,5 @@ bucket = "./dist"
 # Variáveis de ambiente
 [env.production]
 vars = { VITE_DATA_SOURCE = "legacy" }
+
+
