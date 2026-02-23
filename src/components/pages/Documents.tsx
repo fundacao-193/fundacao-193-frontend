@@ -1,6 +1,51 @@
+// import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, FileText, Download, Folder } from 'lucide-react';
+// import { fetchDocumentos } from '../../services/api';
+// import type { Document, DocumentCategory } from '../../types/documents';
+// import { formatFileSize } from '../../utils/format';
 
 export default function Documents() {
+  // ============================================================================
+  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
+  // ============================================================================
+  // const [documents, setDocuments] = useState<Document[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const hasFetched = useRef(false);
+
+  // useEffect(() => {
+  //   if (hasFetched.current) return;
+  //   hasFetched.current = true;
+  //   
+  //   async function loadDocuments() {
+  //     try {
+  //       const data = await fetchDocumentos();
+  //       setDocuments(data);
+  //     } catch (err) {
+  //       setError('Não conseguimos carregar os documentos. Tente novamente mais tarde.');
+  //       console.error('Erro ao carregar documentos:', err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   loadDocuments();
+  // }, []);
+
+  // // Agrupar documentos por categoria
+  // const groupedByCategory = documents.reduce((acc, doc) => {
+  //   const category = doc.acf?.doc_category || 'Outros';
+  //   if (!acc[category]) acc[category] = [];
+  //   acc[category].push(doc);
+  //   return acc;
+  // }, {} as Record<DocumentCategory | 'Outros', Document[]>);
+
+  // // Ordenar dentro de cada categoria
+  // Object.values(groupedByCategory).forEach(docs => {
+  //   docs.sort((a, b) => (a.acf?.doc_order || 0) - (b.acf?.doc_order || 0));
+  // });
+  // ============================================================================
+
+  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
   const documentCategories = [
     {
       name: 'Documentos Institucionais',
@@ -61,6 +106,34 @@ export default function Documents() {
           Acesso a documentos, manuais, normas e procedimentos da Fundação 193.
         </p>
 
+        {/* ====================================================================== */}
+        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {loading && (
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+              <p className="text-neutral-600">Carregando documentos...</p>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
+            <p className="text-red-600 mb-4 font-medium">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        )} */}
+
+        {/* ====================================================================== */}
+        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+
         <div className="space-y-12">
           {documentCategories.map((category) => {
             const Icon = category.icon;
@@ -101,6 +174,66 @@ export default function Documents() {
             );
           })}
         </div>
+
+        {/* ====================================================================== */}
+        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {!loading && !error && (
+          <div className="space-y-12">
+            {Object.entries(groupedByCategory).map(([category, docs]) => (
+              <section key={category}>
+                <div className="flex items-center gap-3 mb-6">
+                  <Folder size={28} className="text-icon-fg" />
+                  <h2 className="text-2xl font-bold text-neutral-900">{category}</h2>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {docs.map((doc) => {
+                    const file = doc.acf?.doc_file;
+                    const fileSize = file?.filesize 
+                      ? formatFileSize(file.filesize)
+                      : doc.acf?.doc_size || 'N/A';
+                    
+                    return (
+                      <div
+                        key={doc.id}
+                        className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                          <FileText size={20} className="text-icon-fg flex-shrink-0" />
+                          <div className="min-w-0">
+                            <p className="font-semibold text-neutral-900 truncate">
+                              {doc.title.rendered}
+                            </p>
+                            <p className="text-xs text-neutral-500">
+                              {fileSize} • {doc.acf?.doc_year || 'N/A'}
+                            </p>
+                          </div>
+                        </div>
+                        {file?.url ? (
+                          <a
+                            href={file.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:text-primary-hover transition-colors flex-shrink-0 ml-3"
+                            aria-label={`Baixar ${doc.title.rendered}`}
+                            title="Baixar documento"
+                          >
+                            <Download size={20} />
+                          </a>
+                        ) : (
+                          <span className="text-neutral-400 opacity-60 flex-shrink-0 ml-3" title="Arquivo não disponível">
+                            <Download size={20} />
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        )} */}
 
         <section className="mt-16 grid md:grid-cols-2 gap-8">
           <div className="bg-white rounded-2xl p-8 shadow-md">

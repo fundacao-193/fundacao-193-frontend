@@ -118,6 +118,9 @@ import { Project } from '../types/projects';
 import type { Event } from '../types/events';
 import { Partner } from '../types/partners';
 import type { Training } from '../types/training';
+import type { Document } from '../types/documents';
+import type { Edit } from '../types/edits';
+import type { Account } from '../types/accounts';
 
 export function fetchNoticias() {
   if (isLegacyEnabled) {
@@ -176,9 +179,33 @@ export async function fetchNoticiasByCategories(categoryIds: string[]): Promise<
     return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
   
-  // For CPT/ACF, just fetch all noticias (no multi-category support needed)
-  const posts = await fetchAPI<news[]>('noticia');
-  return posts.map(p => ({ ...p, category_ids: [0] }));
+  // ========================================================================
+  // API NOVA: Buscar notícias com categorias da Taxonomy
+  // Usa ?_embed=wp:term para incluir dados de categorias
+  // ========================================================================
+  const posts = await fetchAPI<news[]>('noticia?_embed=wp:term');
+  
+  return posts.map((post) => {
+    // Extrair IDs das categorias do _embedded
+    const categoryIds: number[] = [];
+    if (post._embedded?.['wp:term'] && Array.isArray(post._embedded['wp:term'][0])) {
+      post._embedded['wp:term'][0].forEach((term) => {
+        if (term.taxonomy === 'noticia_category' && typeof term.id === 'number') {
+          categoryIds.push(term.id);
+        }
+      });
+    }
+    
+    // Fallback: usar noticia_category se _embedded não estiver disponível
+    if (categoryIds.length === 0 && post.noticia_category) {
+      categoryIds.push(...post.noticia_category);
+    }
+
+    return {
+      ...post,
+      category_ids: categoryIds,
+    };
+  }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function fetchProjetos() {
@@ -315,5 +342,67 @@ export function fetchEvento(id: number | string) {
     }));
   }
   return fetchAPI<Event>(`evento/${id}`);
-} 
+}
+
+// ============================================================================
+// DOCUMENTOS, EDITAIS E PRESTAÇÃO DE CONTAS
+// ============================================================================
+// NOTA: Estas funções retornam arrays vazios em modo legacy, pois esses
+// CPTs não existiam no WordPress antigo. Ative quando o novo WP estiver pronto.
+// ============================================================================
+
+/**
+ * Busca todos os documentos (CPT: documento)
+ * Usado na página Documents.tsx
+ */
+export function fetchDocumentos() {
+  if (isLegacyEnabled) {
+    // Legacy mode não tem esses documentos
+    return Promise.resolve([]);
+  }
+  return fetchAPI<Document[]>('documento?acf_format=standard');
+}
+
+/**
+ * Busca todos os editais (CPT: edital)
+ * Usado na página Edits.tsx
+ */
+export function fetchEditais() {
+  if (isLegacyEnabled) {
+    return Promise.resolve([]);
+  }
+  return fetchAPI<Edit[]>('edital?acf_format=standard');
+}
+
+/**
+ * Busca todas as prestações de contas (CPT: prestacao_conta)
+ * Usado na página Accounts.tsx
+ */
+export function fetchPrestacaoContas() {
+  if (isLegacyEnabled) {
+    return Promise.resolve([]);
+  }
+  return fetchAPI<Account[]>('prestacao-conta?acf_format=standard');
+}
+
+// ============================================================================
+// CATEGORIAS DE NOTÍCIAS (Taxonomy: noticia_category)
+// ============================================================================
+
+/**
+ * Busca todas as categorias de notícias da Taxonomy
+ * Usado em NewsList.tsx para popular o dropdown de filtros
+ */
+export async function fetchNoticiasCategories() {
+  if (isLegacyEnabled) {
+    // Legacy retorna vazio - categorias são hardcoded
+    return Promise.resolve([]);
+  }
+  return fetchAPI<Array<{
+    id: number;
+    name: string;
+    slug: string;
+    count: number;
+  }>>('noticia_category');
+}  
 

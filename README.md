@@ -26,11 +26,16 @@ Este website foi desenvolvido para:
 
 ### CMS & Backend
 O website utiliza **WordPress como CMS headless** com uma custom theme e ACF (Advanced Custom Fields) para gerenciar:
-- **Notícias** (CPT: `noticia`)
-- **Projetos** (CPT: `projeto`)
-- **Parceiros** (CPT: `parceria`)
-- **Eventos** (CPT: `evento`)
-- **Capacitações** (CPT: `capacitacao`)
+
+**Custom Post Types (CPTs):**
+- **Notícias** (CPT: `noticia`) - Com categorias dinâmicas via Taxonomy `noticia_category`
+- **Projetos** (CPT: `projeto`) - Projetos e iniciativas
+- **Parceiros** (CPT: `parceria`) - Parcerias institucionais
+- **Eventos** (CPT: `evento`) - Eventos e treinamentos
+- **Capacitações** (CPT: `capacitacao`) - Programas de capacitação
+- **Documentos** (CPT: `documento`) - Documentos institucionais
+- **Editais** (CPT: `edital`) - Chamadas públicas e editais
+- **Prestação de Contas** (CPT: `prestacao_conta`) - Relatórios financeiros
 
 A API do WordPress é consumida via `VITE_WP_API_URL`.
 
@@ -190,14 +195,64 @@ fundacao-193/
 │   │   │   ├── Training.tsx
 │   │   │   ├── Events.tsx
 │   │   │   ├── OurPartnerships.tsx
-│   │   │   ├── Accounts.tsx
-│   │   │   ├── Edits.tsx
-│   │   │   ├── Documents.tsx
+│   │   │   ├── Accounts.tsx         # Prestação de Contas
+│   │   │   ├── Edits.tsx            # Editais
+│   │   │   ├── Documents.tsx        # Documentos
+│   │   │   ├── NewsList.tsx         # Listagem de Notícias com filtros
+│   │   │   ├── NewsDetail.tsx       # Detalhes da Notícia
+│   │   │   ├── ProjectDetail.tsx    # Detalhes do Projeto
+│   │   │   ├── EventDetail.tsx      # Detalhes do Evento
+│   │   │   ├── Search.tsx           # Página de Busca
 │   │   │   └── LGPD.tsx
-│   │   ├── Hero.tsx       # Seção hero/banner
-│   │   ├── About.tsx      # Seção sobre
-│   │   ├── Services.tsx   # Áreas de atuação
-│   │   ├── Impact.tsx     # Números de impacto
+│   │   ├── Hero.tsx                 # Seção hero/banner
+│   │   ├── About.tsx                # Seção sobre
+│   │   ├── Services.tsx             # Áreas de atuação
+│   │   ├── Impact.tsx               # Números de impacto
+│   │   ├── News.tsx                 # Widget de notícias/eventos
+│   │   ├── Partners.tsx             # Parceiros
+│   │   ├── Contact.tsx              # Formulário de contato
+│   │   ├── Header.tsx               # Cabeçalho
+│   │   ├── Footer.tsx               # Rodapé
+│   │   ├── ErrorBoundary.tsx        # Error handling global
+│   │   ├── FloatingActions.tsx      # Botões flutuantes (WhatsApp, Instagram, etc)
+│   │   ├── SearchBar.tsx            # Barra de busca
+│   │   ├── BackToTopButton.tsx      # Botão voltar para topo
+│   │   ├── ImageWithPlaceholder.tsx # Lazy loading de imagens
+│   │   ├── ImageGallery.tsx         # Galeria de imagens
+│   │   ├── ShareButtons.tsx         # Botões de compartilhamento
+│   │   ├── ThemeToggle.tsx          # Seletor de temas
+│   │   └── DetailLayout.tsx         # Layout para páginas de detalhe
+│   ├── services/
+│   │   ├── api.ts                   # Funções de fetch da API WordPress
+│   │   └── search.ts                # Serviço de busca integrado
+│   ├── types/                       # Tipos TypeScript
+│   │   ├── news.ts                  # news + NewsCategory (Taxonomy)
+│   │   ├── projects.ts              # Project
+│   │   ├── partners.ts              # Partner
+│   │   ├── events.ts                # Event
+│   │   ├── training.ts              # Training
+│   │   ├── documents.ts             # Document + DocumentCategory
+│   │   ├── edits.ts                 # Edit
+│   │   └── accounts.ts              # Account
+│   ├── utils/
+│   │   └── format.ts                # Funções utilitárias (formatFileSize, formatDate, getFileExtension)
+│   ├── hooks/                       # Custom React hooks
+│   │   ├── useScrollAnimation.ts    # Animações ao scroll
+│   │   └── useBackToTop.ts          # Lógica de scroll to top
+│   ├── constants/
+│   │   └── ui.ts                    # Design tokens (cores, spacing, typography)
+│   ├── App.tsx                      # Componente principal
+│   ├── main.tsx                     # Ponto de entrada
+│   ├── index.css                    # Estilos globais
+│   └── vite-env.d.ts                # Tipos do Vite
+├── index.html                       # HTML principal
+├── package.json                     # Dependências e scripts
+├── tsconfig.json                    # Configuração TypeScript
+├── tailwind.config.js               # Configuração Tailwind
+├── vite.config.ts                   # Configuração Vite
+├── eslint.config.js                 # Configuração ESLint
+└── postcss.config.js                # Configuração PostCSS
+```
 │   │   ├── News.tsx       # Notícias e eventos
 │   │   ├── Partners.tsx   # Parceiros
 │   │   ├── Contact.tsx    # Formulário de contato
@@ -249,17 +304,21 @@ O site utiliza navegação baseada em hash (#), permitindo:
    - Parcerias
 
 4. **Transparência**
-   - Prestação de Contas
-   - Editais
-   - Documentos
+   - Prestação de Contas (por ano)
+   - Editais (por ano, com status)
+   - Documentos (por categoria)
    - LGPD
 
 ### Funcionalidades Interativas
 
+- **Busca Integrada**: SearchBar para buscar notícias, projetos, eventos, capacitações e parceiros
+- **Filtro de Notícias**: Filtragem dinâmica por categorias (Blog, Incêndio, Meio Ambiente, etc)
 - **Botões Flutuantes**: Acesso rápido a Instagram, WhatsApp e Rádio CBMDF
 - **Menu Dropdown**: Navegação organizada por categorias
 - **Formulário de Contato**: Para dúvidas e propostas
 - **Design Responsivo**: Adaptado para desktop, tablet e mobile
+- **Compartilhamento Social**: Botões para compartilhar notícias
+- **Back to Top**: Botão de retorno para topo em páginas longas
 
 ## Configurações Adicionais
 
@@ -363,6 +422,63 @@ As cores dos temas estão definidas em [src/index.css](src/index.css) usando CSS
 ```
 
 O sistema de temas é integrado ao Tailwind via [tailwind.config.js](tailwind.config.js) usando classes como `bg-primary`, `text-primary`, etc.
+
+### Tipagem TypeScript
+
+O projeto utiliza **TypeScript strict mode** com tipos completos definidos em `src/types/`:
+
+**Tipos Disponíveis:**
+- `news.ts` - News, NewsCategory (para categorização dinâmica)
+- `projects.ts` - Project
+- `events.ts` - Event
+- `training.ts` - Training
+- `partners.ts` - Partner
+- `documents.ts` - Document, DocumentCategory (para gerenciar documentos por categoria)
+- `edits.ts` - Edit (para gerenciar editais por ano)
+- `accounts.ts` - Account (para prestação de contas por ano)
+
+**Exemplo de Uso:**
+```tsx
+import { News, NewsCategory } from '@/types/news';
+import { Document, DocumentCategory } from '@/types/documents';
+
+const loadNews = async (): Promise<News[]> => {
+  const data = await fetchAPI<News[]>(`${API_URL}/noticia?_embed=wp:term`);
+  return data;
+};
+
+const loadDocuments = async (): Promise<Document[]> => {
+  const data = await fetchAPI<Document[]>(`${API_URL}/documento?_embed`);
+  return data;
+};
+```
+
+### Utilitários
+
+O projeto inclui funções utilitárias em `src/utils/format.ts`:
+
+**formatFileSize(bytes: number): string**
+- Converte bytes para formato legível (KB, MB, GB)
+- Exemplo: `formatFileSize(1048576)` → `"1 MB"`
+
+**getFileExtension(filename: string): string**
+- Extrai extensão do arquivo em maiúsculas
+- Exemplo: `getFileExtension("document.pdf")` → `"PDF"`
+
+**formatDate(dateString: string): string**
+- Formata data para formato brasileiro (dd/mm/yyyy)
+- Exemplo: `formatDate("2024-01-15")` → `"15/01/2024"`
+
+**Funções de API em `src/services/api.ts`:**
+- `fetchNoticias()` - Carrega todas as notícias com categorias
+- `fetchNoticiasCategories()` - Carrega lista de categorias de notícias
+- `fetchProjetos()` - Carrega todos os projetos
+- `fetchEventos()` - Carrega todos os eventos
+- `fetchCapacitacoes()` - Carrega todos os programas de capacitação
+- `fetchParceiros()` - Carrega todos os parceiros
+- `fetchDocumentos()` - Carrega todos os documentos institucionais
+- `fetchEditais()` - Carrega todos os editais
+- `fetchPrestacaoContas()` - Carrega relatórios de prestação de contas
 
 ### Alterar Cores
 

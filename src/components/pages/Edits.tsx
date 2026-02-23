@@ -1,6 +1,54 @@
+// import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Calendar, FileText, Download } from 'lucide-react';
+// import { fetchEditais } from '../../services/api';
+// import type { Edit } from '../../types/edits';
+// import { formatFileSize, formatDate } from '../../utils/format';
 
 export default function Edits() {
+  // ============================================================================
+  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
+  // ============================================================================
+  // const [editais, setEditais] = useState<Edit[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const hasFetched = useRef(false);
+
+  // useEffect(() => {
+  //   if (hasFetched.current) return;
+  //   hasFetched.current = true;
+  //   
+  //   async function loadEditais() {
+  //     try {
+  //       const data = await fetchEditais();
+  //       setEditais(data);
+  //     } catch (err) {
+  //       setError('Não conseguimos carregar os editais. Tente novamente mais tarde.');
+  //       console.error('Erro ao carregar editais:', err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   loadEditais();
+  // }, []);
+
+  // // Agrupar editais por ano
+  // const groupedByYear = editais.reduce((acc, edital) => {
+  //   const year = edital.acf?.edital_year || new Date().getFullYear();
+  //   if (!acc[year]) acc[year] = [];
+  //   acc[year].push(edital);
+  //   return acc;
+  // }, {} as Record<number, Edit[]>);
+
+  // // Ordenar anos em ordem decrescente
+  // const sortedYears = Object.keys(groupedByYear)
+  //   .map(Number)
+  //   .sort((a, b) => b - a);
+
+  // // Encontrar edital em destaque (Featured)
+  // const featuredEdit = editais.find(e => e.acf?.edital_is_featured && e.acf?.edital_status === 'Aberto');
+  // ============================================================================
+
+  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
   const edits = [
     {
       year: 2024,
@@ -85,7 +133,144 @@ export default function Edits() {
           Chamadas públicas, seleções e oportunidades de participação em programas da Fundação 193.
         </p>
 
+        {/* ====================================================================== */}
+        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {loading && (
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+              <p className="text-neutral-600">Carregando editais...</p>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
+            <p className="text-red-600 mb-4 font-medium">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        )} */}
+
+        {/* ====================================================================== */}
+        {/* EDITAL EM DESTAQUE - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {!loading && !error && featuredEdit && (
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-8 bg-white rounded-xl p-6 shadow-md">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <span className="text-green-700 font-bold">!</span>
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-neutral-900">{featuredEdit.title.rendered}</p>
+                <p className="text-sm text-neutral-600">{featuredEdit.acf?.edital_description}</p>
+              </div>
+              {featuredEdit.acf?.edital_file?.url && (
+                <a
+                  href={featuredEdit.acf.edital_file.url}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+                >
+                  Acessar
+                </a>
+              )}
+            </div>
+          </div>
+        )} */}
+
+        {/* ====================================================================== */}
+        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+
         <div className="mb-12">
+        {/* ====================================================================== */}
+        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {!loading && !error && (
+          <div className="space-y-12">
+            {sortedYears.map((year) => {
+              const yearEdits = groupedByYear[year];
+              return (
+                <section key={year}>
+                  <h2 className="text-3xl font-bold text-neutral-900 mb-6 flex items-center gap-2">
+                    <Calendar size={28} className="text-icon-fg" />
+                    Ano {year}
+                  </h2>
+                  <div className="space-y-4">
+                    {yearEdits.map((edital) => {
+                      const file = edital.acf?.edital_file;
+                      const status = edital.acf?.edital_status || 'Encerrado';
+                      const publishDate = edital.acf?.edital_publish_date 
+                        ? `Publicado em: ${formatDate(edital.acf.edital_publish_date)}`
+                        : '';
+
+                      return (
+                        <div
+                          key={edital.id}
+                          className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
+                        >
+                          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <FileText size={20} className="text-icon-fg" />
+                                <h4 className="text-lg font-bold text-neutral-900">
+                                  {edital.title.rendered}
+                                </h4>
+                              </div>
+                              <p className="text-neutral-600 mb-3">
+                                {edital.acf?.edital_description || 
+                                 edital.content?.rendered?.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
+                              </p>
+                              {publishDate && (
+                                <p className="text-sm text-neutral-500">{publishDate}</p>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span
+                                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
+                                  status === 'Aberto' 
+                                    ? 'bg-green-100 text-green-700' 
+                                    : 'bg-neutral-100 text-neutral-600'
+                                }`}
+                              >
+                                {status}
+                              </span>
+                              {file?.url ? (
+                                <a
+                                  href={file.url}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-primary hover:text-primary-hover transition-colors"
+                                  aria-label={`Baixar ${edital.title.rendered}`}
+                                  title="Baixar edital"
+                                >
+                                  <Download size={20} />
+                                </a>
+                              ) : (
+                                <span className="text-neutral-400 opacity-60" title="Arquivo não disponível">
+                                  <Download size={20} />
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        )} */}
+
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
               <span className="text-green-700 font-bold">!</span>

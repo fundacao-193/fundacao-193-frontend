@@ -1,6 +1,56 @@
+// import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Download, TrendingUp, BarChart3 } from 'lucide-react';
+// import { fetchPrestacaoContas } from '../../services/api';
+// import type { Account } from '../../types/accounts';
+// import { formatFileSize } from '../../utils/format';
 
 export default function Accounts() {
+  // ============================================================================
+  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
+  // ============================================================================
+  // const [contas, setContas] = useState<Account[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState<string | null>(null);
+  // const hasFetched = useRef(false);
+
+  // useEffect(() => {
+  //   if (hasFetched.current) return;
+  //   hasFetched.current = true;
+  //   
+  //   async function loadContas() {
+  //     try {
+  //       const data = await fetchPrestacaoContas();
+  //       setContas(data);
+  //     } catch (err) {
+  //       setError('Não conseguimos carregar os relatórios. Tente novamente mais tarde.');
+  //       console.error('Erro ao carregar prestação de contas:', err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   loadContas();
+  // }, []);
+
+  // // Agrupar prestações de contas por ano
+  // const groupedByYear = contas.reduce((acc, conta) => {
+  //   const year = conta.acf?.pc_year || new Date().getFullYear();
+  //   if (!acc[year]) acc[year] = [];
+  //   acc[year].push(conta);
+  //   return acc;
+  // }, {} as Record<number, Account[]>);
+
+  // // Ordenar dentro de cada ano por ordem
+  // Object.values(groupedByYear).forEach(docs => {
+  //   docs.sort((a, b) => (a.acf?.pc_order || 0) - (b.acf?.pc_order || 0));
+  // });
+
+  // // Ordenar anos em ordem decrescente
+  // const sortedYears = Object.keys(groupedByYear)
+  //   .map(Number)
+  //   .sort((a, b) => b - a);
+  // ============================================================================
+
+  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
   const reports = [
     {
       year: 2023,
@@ -55,6 +105,34 @@ export default function Accounts() {
           Transparência financeira e prestação de contas de todas as atividades da Fundação 193.
         </p>
 
+        {/* ====================================================================== */}
+        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {loading && (
+          <div className="flex items-center justify-center py-16">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+              <p className="text-neutral-600">Carregando relatórios...</p>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
+            <p className="text-red-600 mb-4 font-medium">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        )} */}
+
+        {/* ====================================================================== */}
+        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {financialMetrics.map((metric) => (
             <div key={metric.label} className="bg-white rounded-xl p-6 shadow-md">
@@ -67,6 +145,68 @@ export default function Accounts() {
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <BarChart3 size={28} className="text-icon-fg" />
+        {/* ====================================================================== */}
+        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
+        {/* ====================================================================== */}
+        {/* {!loading && !error && (
+          <section className="mb-16">
+            <div className="flex items-center gap-3 mb-8">
+              <BarChart3 size={28} className="text-icon-fg" />
+              <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
+            </div>
+
+            <div className="space-y-8">
+              {sortedYears.map((year) => {
+                const yearDocs = groupedByYear[year];
+                return (
+                  <div key={year} className="bg-white rounded-xl p-8 shadow-md">
+                    <h3 className="text-2xl font-bold text-neutral-900 mb-6">Ano {year}</h3>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {yearDocs.map((doc) => {
+                        const file = doc.acf?.pc_file;
+                        const fileSize = file?.filesize 
+                          ? formatFileSize(file.filesize)
+                          : doc.acf?.pc_size || 'N/A';
+
+                        return (
+                          <div
+                            key={doc.id}
+                            className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-neutral-900 truncate">
+                                {doc.title.rendered}
+                              </p>
+                              <p className="text-sm text-neutral-500">{fileSize}</p>
+                            </div>
+                            {file?.url ? (
+                              <a
+                                href={file.url}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:text-primary-hover transition-colors ml-3 flex-shrink-0"
+                                aria-label={`Baixar ${doc.title.rendered}`}
+                                title="Baixar relatório"
+                              >
+                                <Download size={22} />
+                              </a>
+                            ) : (
+                              <span className="text-neutral-400 opacity-60 ml-3 flex-shrink-0" title="Arquivo não disponível">
+                                <Download size={22} />
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )} */}
+
             <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
           </div>
 
