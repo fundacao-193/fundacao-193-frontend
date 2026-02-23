@@ -1,6 +1,5 @@
 import { Shield, Target, Eye } from 'lucide-react';
 import { useState } from 'react';
-import aboutImage from '../assets/images/lineandFlag.jpg';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export default function About() {
@@ -48,17 +47,20 @@ export default function About() {
                 </div>
               )}
               
-              <img
-                src={aboutImage}
-                alt="Bombeiros em treinamento"
-                className={`w-full h-full object-cover transition-opacity duration-500 ${
-                  isImageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                loading="lazy"
-                decoding="async"
-                onLoad={() => setIsImageLoaded(true)}
-                onError={() => setHasImageError(true)}
-              />
+              <picture>
+                <source srcSet="/images/lineandFlag.webp" type="image/webp" />
+                <img
+                  src="/images/lineandFlag.jpg"
+                  alt="Bombeiros em treinamento"
+                  className={`w-full h-full object-cover transition-opacity duration-500 ${
+                    isImageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  loading="lazy"
+                  decoding="async"
+                  onLoad={() => setIsImageLoaded(true)}
+                  onError={() => setHasImageError(true)}
+                />
+              </picture>
             </div>
             <div className="absolute -bottom-6 -left-6 bg-institutional text-white p-6 rounded-xl shadow-xl">
               <p className="text-4xl font-bold mb-1">3+</p>

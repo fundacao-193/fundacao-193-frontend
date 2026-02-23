@@ -1,6 +1,5 @@
 import { MouseEvent } from 'react';
 import { ArrowRight, Heart } from 'lucide-react';
-import lineImage from '../assets/images/HeroImgLine.jpg';
 
 export default function Hero() {
   const handleScrollClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -18,10 +17,14 @@ export default function Hero() {
 
   return (
     <section id="inicio" className="relative bg-gradient-to-br from-hero-start via-hero-mid to-hero-end text-white overflow-hidden">
-      {/* Background image - otimizado */}
+      {/* Background image - otimizado com WebP */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20 will-change-auto"
-        style={{ backgroundImage: `url(${lineImage})`, backgroundAttachment: 'fixed', backgroundSize: 'cover' }}
+        style={{ 
+          backgroundImage: `url('/images/HeroImgLine.webp')`,
+          backgroundAttachment: 'fixed', 
+          backgroundSize: 'cover' 
+        }}
       ></div>
       
       {/* Directional gradient overlay - darker left (text), lighter right (helicopter action) */}

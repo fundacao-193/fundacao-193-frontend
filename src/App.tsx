@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -12,24 +12,36 @@ import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import ThemeToggle from './components/ThemeToggle';
 import BackToTopButton from './components/BackToTopButton';
-import OurStory from './components/pages/OurStory';
-import MissionValues from './components/pages/MissionValues';
-import Team from './components/pages/Team';
-import Projects from './components/pages/Projects';
-import Training from './components/pages/Training';
-import Events from './components/pages/Events';
-import OurPartnerships from './components/pages/OurPartnerships';
-import Accounts from './components/pages/Accounts';
-import Edits from './components/pages/Edits';
-import Documents from './components/pages/Documents';
-import LGPD from './components/pages/LGPD';
-import Collaborate from './components/pages/Collaborate';
-import NewsList from './components/pages/NewsList';
-import NewsDetail from './components/pages/NewsDetail';
-import ProjectDetail from './components/pages/ProjectDetail';
-import EventDetail from './components/pages/EventDetail';
-import Activities from './components/pages/Activities';
-import SearchPage from './components/pages/Search';
+
+// Code splitting: lazy load páginas internas
+const OurStory = lazy(() => import('./components/pages/OurStory'));
+const MissionValues = lazy(() => import('./components/pages/MissionValues'));
+const Team = lazy(() => import('./components/pages/Team'));
+const Projects = lazy(() => import('./components/pages/Projects'));
+const Training = lazy(() => import('./components/pages/Training'));
+const Events = lazy(() => import('./components/pages/Events'));
+const OurPartnerships = lazy(() => import('./components/pages/OurPartnerships'));
+const Accounts = lazy(() => import('./components/pages/Accounts'));
+const Edits = lazy(() => import('./components/pages/Edits'));
+const Documents = lazy(() => import('./components/pages/Documents'));
+const LGPD = lazy(() => import('./components/pages/LGPD'));
+const Collaborate = lazy(() => import('./components/pages/Collaborate'));
+const NewsList = lazy(() => import('./components/pages/NewsList'));
+const NewsDetail = lazy(() => import('./components/pages/NewsDetail'));
+const ProjectDetail = lazy(() => import('./components/pages/ProjectDetail'));
+const EventDetail = lazy(() => import('./components/pages/EventDetail'));
+const Activities = lazy(() => import('./components/pages/Activities'));
+const SearchPage = lazy(() => import('./components/pages/Search'));
+
+// Loading component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="text-center">
+      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent mb-4"></div>
+      <p className="text-neutral-600">Carregando...</p>
+    </div>
+  </div>
+);
 
 // logica para currentPage
 function App() {
@@ -206,13 +218,15 @@ function App() {
     <ErrorBoundary>
       <div className="min-h-screen bg-white">
         <Header />
-        <div 
-          className={`transition-opacity duration-300 ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
-          {renderPage()}
-        </div>
+        <Suspense fallback={<PageLoader />}>
+          <div 
+            className={`transition-opacity duration-300 ${
+              isTransitioning ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            {renderPage()}
+          </div>
+        </Suspense>
         <Footer />
         <BackToTopButton />
         <FloatingActions />

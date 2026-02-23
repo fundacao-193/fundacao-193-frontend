@@ -1,5 +1,4 @@
 import { TrendingUp, Users, Award, Calendar } from 'lucide-react';
-import impactImage from '../assets/images/impact.jpg';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export default function Impact() {
@@ -33,9 +32,12 @@ export default function Impact() {
 
   return (
     <section id="impacto" className="relative py-20 bg-gradient-to-br from-impact-start to-impact-end text-white overflow-hidden">
+      {/* Background com WebP otimizado */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: `url(${impactImage})` }}
+        style={{ 
+          backgroundImage: `url('/images/impact.webp')`,
+        }}
       ></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
