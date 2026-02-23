@@ -1,4 +1,5 @@
 name = "fundacao-193-legacy"
+main = "worker.js"
 compatibility_date = "2026-02-23"
 
 # Configuração para servir SPA estática
