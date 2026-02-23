@@ -5,6 +5,7 @@ compatibility_date = "2026-02-23"
 # Configuração para servir SPA estática
 [site]
 bucket = "./dist"
+entry-point = "worker.js"
 
 # Variáveis de ambiente
 [env.production]
