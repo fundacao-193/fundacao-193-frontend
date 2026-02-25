@@ -8,8 +8,7 @@
 // ====================================================================
 // CPT "Parceiros" não existe no site antigo WordPress.
 // Esta versão usa dados estáticos para visualização.
-// 
-// **IMPORTANTE**: Troque os nomes das imagens em assets/images/
+// Descomente a versão original quando o CPT estiver disponível ou quando não estiver mais em modo legado.
 // ====================================================================
 
 type HardcodedPartner = {
@@ -21,12 +20,12 @@ type HardcodedPartner = {
 
 // logos em assets/images/
 const HARDCODED_PARTNERS: HardcodedPartner[] = [
-  { id: 1, name: 'Parceiro 1', logo: 'egestor.png', website: 'https://example.com' },
-  { id: 2, name: 'Parceiro 2', logo: 'brasimpex.png', website: 'https://example.com' },
-  { id: 3, name: 'Parceiro 3', logo: 'bonamix.png' },
-  { id: 4, name: 'Parceiro 4', logo: 'hospitalsantamaria.png' },
+  { id: 1, name: 'Parceiro 1', logo: 'egestor.png', website: 'https://www.ugestor.com.br/' },
+  { id: 2, name: 'Parceiro 2', logo: 'brasimpex.png' },
+  { id: 3, name: 'Parceiro 3', logo: 'bonamix.png', website: 'https://bonamixatacarejo.com.br/' },
+  { id: 4, name: 'Parceiro 4', logo: 'hospitalsantamaria.png', website: 'https://www.hospitalsantamarta.com.br/' },
   { id: 5, name: 'Parceiro 5', logo: 'instituidor.png' },
-  { id: 6, name: 'Parceiro 6', logo: 'sasbio.png' },
+  { id: 6, name: 'Parceiro 6', logo: 'sasbio.png', website: 'https://www.sasbio.com.br/' },
 ];
 
 export default function Partners() {

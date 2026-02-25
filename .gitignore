@@ -22,6 +22,6 @@ dist-ssr
 *.sw?
 .env
 
-# Ignore all markdown files except README.md
+# Markdown files (except README.md)
 *.md
 !README.md

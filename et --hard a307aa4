@@ -1,0 +1,34 @@
+[33mbd56139[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/legacy-api-adapter[m[33m, [m[1;31morigin/feature/legacy-api-adapter[m[33m)[m HEAD@{0}: merge origin/develop: Merge made by the 'ort' strategy.
+[33ma307aa4[m HEAD@{1}: reset: moving to HEAD
+[33ma307aa4[m HEAD@{2}: merge origin/develop: updating HEAD
+[33ma307aa4[m HEAD@{3}: commit: feat:adapter para consumo da API legacy(WP v2)
+[33ma273ab9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{4}: checkout: moving from develop to feature/legacy-api-adapter
+[33ma273ab9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{5}: merge main: Fast-forward
+[33m4bb7f43[m HEAD@{6}: checkout: moving from main to develop
+[33ma273ab9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdevelop[m[33m)[m HEAD@{7}: commit: ajustes tema vermelho nas paginas Team e Collaborate
+[33m4bb7f43[m HEAD@{8}: merge develop: Fast-forward
+[33mfac9442[m HEAD@{9}: checkout: moving from develop to main
+[33m4bb7f43[m HEAD@{10}: commit: Nova Imagem Hero
+[33m6459cca[m HEAD@{11}: commit: feat: implementar sistema de temas completo e outros ajustes UI/UX
+[33m1fbdd65[m HEAD@{12}: pull origin develop: Fast-forward
+[33mfab5aa8[m HEAD@{13}: reset: moving to HEAD
+[33mfab5aa8[m HEAD@{14}: commit: Novas páginas singulares para cada categoria; Novo Hero com nova opacidade; Páginas de lista para Noticias/Eventos; Ajustes de layout nos cards;
+[33m2b87d32[m HEAD@{15}: commit: Tratamento de links mortos
+[33m99cc487[m HEAD@{16}: commit: Fix
+[33md463f8d[m HEAD@{17}: commit: padronizacao de codigo e remocao de erros
+[33mae55352[m HEAD@{18}: commit: Melhorias de UX, acessibilidade e estrutura do projeto
+[33m5acbfee[m HEAD@{19}: commit: Implementacoes Front - Misael e ajustes gerais
+[33mfac9442[m HEAD@{20}: checkout: moving from main to develop
+[33mfac9442[m HEAD@{21}: merge develop: Fast-forward
+[33m39080a1[m HEAD@{22}: pull origin main: Fast-forward
+[33m6ae5738[m HEAD@{23}: checkout: moving from develop to main
+[33mfac9442[m HEAD@{24}: commit (merge): Merge remote-tracking branch 'origin/main' into develop
+[33m0a7500f[m HEAD@{25}: checkout: moving from develop to develop
+[33m0a7500f[m HEAD@{26}: commit: integração de CPTS Parceiros, Eventos e Capacitações
+[33m8c1ce77[m HEAD@{27}: commit: Refatoracao: padroniza navegaco por hash e remove onNavigate
+[33mc2095f9[m HEAD@{28}: commit: Refatoracao: Tipagem da API e centralizacao dos CPTS types
+[33mbf907cf[m HEAD@{29}: commit: Feat: integração da API do WP e refatoração do componente Notícias
+[33m6ae5738[m HEAD@{30}: checkout: moving from main to develop
+[33m6ae5738[m HEAD@{31}: Branch: renamed refs/heads/main to refs/heads/main
+[33m6ae5738[m HEAD@{33}: Branch: renamed refs/heads/master to refs/heads/main
+[33m6ae5738[m HEAD@{35}: commit (initial): Initial commit - Fundação 193 frontend

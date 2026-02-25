@@ -103,13 +103,14 @@ const fetchLegacyPostsByCategory = async (category?: string): Promise<LegacyPost
     per_page: String(LEGACY_PER_PAGE),
     _embed: '1',
     categories: cat,
+    _fields: 'id,date,title,excerpt,content,link,featured_media,_embedded',
   });
 
   return fetchLegacyAPI<LegacyPost[]>(`posts?${params.toString()}`);
 };
 
 const fetchLegacyPostById = (id: number | string) => {
-  return fetchLegacyAPI<LegacyPost>(`posts/${id}?_embed=1`);
+  return fetchLegacyAPI<LegacyPost>(`posts/${id}?_embed=1&_fields=id,date,title,excerpt,content,link,featured_media,_embedded`);
 };
 
 // Imports dos tipos
@@ -135,7 +136,7 @@ export function fetchNoticias() {
       }))
     );
   }
-  return fetchAPI<news[]>('noticia');
+  return fetchAPI<news[]>('noticia?per_page=10&_fields=id,date,title,excerpt,content,acf,noticia_category');
 }
 
 // Fetch news from multiple categories with category info
@@ -181,9 +182,9 @@ export async function fetchNoticiasByCategories(categoryIds: string[]): Promise<
   
   // ========================================================================
   // API NOVA: Buscar notícias com categorias da Taxonomy
-  // Usa ?_embed=wp:term para incluir dados de categorias
+  // Usa ?_embed=wp:term para incluir dados de categorias (limitado com _fields)
   // ========================================================================
-  const posts = await fetchAPI<news[]>('noticia?_embed=wp:term');
+  const posts = await fetchAPI<news[]>('noticia?per_page=20&_fields=id,date,title,excerpt,content,acf,noticia_category,_embedded&_embed=wp:term');
   
   return posts.map((post) => {
     // Extrair IDs das categorias do _embedded
@@ -223,7 +224,7 @@ export function fetchProjetos() {
       }))
     );
   }
-  return fetchAPI<Project[]>('projeto');
+  return fetchAPI<Project[]>('projeto?per_page=10&_fields=id,date,title,excerpt,content,acf');
 }
 
 export function fetchEventos() {
@@ -246,7 +247,7 @@ export function fetchEventos() {
       }))
     );
   }
-  return fetchAPI<Event[]>('evento');
+  return fetchAPI<Event[]>('evento?per_page=10&_fields=id,date,title,slug,content,acf');
 }
 
 export function fetchParceiros() {
@@ -265,7 +266,7 @@ export function fetchParceiros() {
       }))
     );
   }
-  return fetchAPI<Partner[]>('parceria?acf_format=standard');
+  return fetchAPI<Partner[]>('parceria?per_page=20&acf_format=standard&_fields=id,title,acf');
 }
 
 export function fetchCapacitacoes() {
@@ -289,7 +290,7 @@ export function fetchCapacitacoes() {
       }))
     );
   }
-  return fetchAPI<Training[]>('capacitacao?acf_format=standard');
+  return fetchAPI<Training[]>('capacitacao?per_page=10&acf_format=standard&_fields=id,date,title,acf');
 }
 
 // Single-entity fetch helpers for detail pages
@@ -304,7 +305,7 @@ export function fetchNoticia(id: number | string) {
       link: post.link,
     }));
   }
-  return fetchAPI<news>(`noticia/${id}`);
+  return fetchAPI<news>(`noticia/${id}?_fields=id,date,title,excerpt,content,acf,noticia_category`);
 }
 
 export function fetchProjeto(id: number | string) {
@@ -320,7 +321,7 @@ export function fetchProjeto(id: number | string) {
       },
     }));
   }
-  return fetchAPI<Project>(`projeto/${id}`);
+  return fetchAPI<Project>(`projeto/${id}?_fields=id,date,title,excerpt,content,acf`);
 }
 
 export function fetchEvento(id: number | string) {
@@ -341,7 +342,7 @@ export function fetchEvento(id: number | string) {
       },
     }));
   }
-  return fetchAPI<Event>(`evento/${id}`);
+  return fetchAPI<Event>(`evento/${id}?_fields=id,date,title,slug,content,acf`);
 }
 
 // ============================================================================
@@ -360,7 +361,7 @@ export function fetchDocumentos() {
     // Legacy mode não tem esses documentos
     return Promise.resolve([]);
   }
-  return fetchAPI<Document[]>('documento?acf_format=standard');
+  return fetchAPI<Document[]>('documento?per_page=20&acf_format=standard&_fields=id,date,title,acf');
 }
 
 /**
@@ -371,7 +372,7 @@ export function fetchEditais() {
   if (isLegacyEnabled) {
     return Promise.resolve([]);
   }
-  return fetchAPI<Edit[]>('edital?acf_format=standard');
+  return fetchAPI<Edit[]>('edital?per_page=20&acf_format=standard&_fields=id,date,title,acf');
 }
 
 /**
@@ -382,7 +383,7 @@ export function fetchPrestacaoContas() {
   if (isLegacyEnabled) {
     return Promise.resolve([]);
   }
-  return fetchAPI<Account[]>('prestacao-conta?acf_format=standard');
+  return fetchAPI<Account[]>('prestacao-conta?per_page=20&acf_format=standard&_fields=id,date,title,acf');
 }
 
 // ============================================================================

@@ -230,7 +230,7 @@ function App() {
         <Footer />
         <BackToTopButton />
         <FloatingActions />
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </div>
     </ErrorBoundary>
   );
