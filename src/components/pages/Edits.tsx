@@ -1,14 +1,17 @@
+// ==============================================================================
+// IMPORTS - Descomentar quando ativar API
+// ==============================================================================
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Calendar, FileText, Download } from 'lucide-react';
 // import { fetchEditais } from '../../services/api';
-// import type { Edit } from '../../types/edits';
+// import type { Documento } from '../../types/documents';
 // import { formatFileSize, formatDate } from '../../utils/format';
 
 export default function Edits() {
   // ============================================================================
-  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
+  // CÓDIGO PRONTO PARA API - DESCOMENTAR QUANDO WORDPRESS ESTIVER PRONTO
   // ============================================================================
-  // const [editais, setEditais] = useState<Edit[]>([]);
+  // const [editais, setEditais] = useState<Documento[]>([]);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
@@ -19,7 +22,7 @@ export default function Edits() {
   //   
   //   async function loadEditais() {
   //     try {
-  //       const data = await fetchEditais();
+  //       const data = await fetchEditais();  // Já filtra por tipo_documento = 'edital'
   //       setEditais(data);
   //     } catch (err) {
   //       setError('Não conseguimos carregar os editais. Tente novamente mais tarde.');
@@ -31,21 +34,31 @@ export default function Edits() {
   //   loadEditais();
   // }, []);
 
-  // // Agrupar editais por ano
+  // // Agrupar editais por ano (extrai ano da data de publicação)
   // const groupedByYear = editais.reduce((acc, edital) => {
-  //   const year = edital.acf?.edital_year || new Date().getFullYear();
+  //   const dateStr = edital.acf?.data_publicacao || edital.date;
+  //   const year = dateStr ? parseInt(dateStr.substring(0, 4)) : new Date().getFullYear();
   //   if (!acc[year]) acc[year] = [];
   //   acc[year].push(edital);
   //   return acc;
-  // }, {} as Record<number, Edit[]>);
+  // }, {} as Record<number, Documento[]>);
 
   // // Ordenar anos em ordem decrescente
   // const sortedYears = Object.keys(groupedByYear)
   //   .map(Number)
   //   .sort((a, b) => b - a);
 
-  // // Encontrar edital em destaque (Featured)
-  // const featuredEdit = editais.find(e => e.acf?.edital_is_featured && e.acf?.edital_status === 'Aberto');
+  // // Encontrar edital em destaque (primeiro com status Aberto)
+  // const featuredEdit = editais.find(e => e.acf?.status_edital === 'Aberto');
+
+  // // Helper para formatar data Ymd → dd/mm/yyyy
+  // const formatYmdDate = (ymd?: string): string => {
+  //   if (!ymd || ymd.length !== 8) return '';
+  //   const year = ymd.substring(0, 4);
+  //   const month = ymd.substring(4, 6);
+  //   const day = ymd.substring(6, 8);
+  //   return `${day}/${month}/${year}`;
+  // };
   // ============================================================================
 
   // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
@@ -168,11 +181,13 @@ export default function Edits() {
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-neutral-900">{featuredEdit.title.rendered}</p>
-                <p className="text-sm text-neutral-600">{featuredEdit.acf?.edital_description}</p>
+                <p className="text-sm text-neutral-600">
+                  {featuredEdit.acf?.descricao_curta || ''}
+                </p>
               </div>
-              {featuredEdit.acf?.edital_file?.url && (
+              {featuredEdit.acf?.arquivo_pdf?.url && (
                 <a
-                  href={featuredEdit.acf.edital_file.url}
+                  href={featuredEdit.acf.arquivo_pdf.url}
                   download
                   target="_blank"
                   rel="noopener noreferrer"
@@ -205,10 +220,10 @@ export default function Edits() {
                   </h2>
                   <div className="space-y-4">
                     {yearEdits.map((edital) => {
-                      const file = edital.acf?.edital_file;
-                      const status = edital.acf?.edital_status || 'Encerrado';
-                      const publishDate = edital.acf?.edital_publish_date 
-                        ? `Publicado em: ${formatDate(edital.acf.edital_publish_date)}`
+                      const file = edital.acf?.arquivo_pdf; // Arquivo principal documento
+                      const status = edital.acf?.status_edital || 'Encerrado';
+                      const publishDate = edital.acf?.data_publicacao
+                        ? `Publicado em: ${formatYmdDate(edital.acf.data_publicacao)}`
                         : '';
 
                       return (
@@ -224,10 +239,9 @@ export default function Edits() {
                                   {edital.title.rendered}
                                 </h4>
                               </div>
-                              <p className="text-neutral-600 mb-3">
-                                {edital.acf?.edital_description || 
-                                 edital.content?.rendered?.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
-                              </p>
+                              {edital.acf?.descricao_curta && (
+                                <p className="text-neutral-600 mb-3">{edital.acf.descricao_curta}</p>
+                              )}
                               {publishDate && (
                                 <p className="text-sm text-neutral-500">{publishDate}</p>
                               )}

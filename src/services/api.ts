@@ -1,5 +1,19 @@
-const API_URL = import.meta.env.VITE_WP_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
-const LEGACY_API_URL = import.meta.env.VITE_WP_LEGACY_API_URL || 'https://fundacao193.org.br/wp-json/wp/v2';
+import type { news } from '../types/news';
+import type { Project } from '../types/projects';
+import type { Event } from '../types/events';
+import type { Partner } from '../types/partners';
+import type { Training } from '../types/training';
+import type { Documento } from '../types/documents';
+
+// API URL: usa localhost em dev, produção em build
+const API_URL = import.meta.env.VITE_WP_API_URL || (
+  import.meta.env.PROD 
+    ? 'https://api.fundacao193.org.br/wp-json/wp/v2'
+    : 'http://localhost:10003/wp-json/wp/v2'
+);
+
+// Legacy API: sempre aponta para site antigo
+const LEGACY_API_URL = 'https://fundacao193.org.br/wp-json/wp/v2';
 const DATA_SOURCE = import.meta.env.VITE_DATA_SOURCE;
 const LEGACY_PER_PAGE = Number(import.meta.env.VITE_WP_LEGACY_PER_PAGE || 50);
 const CACHE_TTL_MS = Number(import.meta.env.VITE_API_CACHE_TTL_MS || 60000);
@@ -119,9 +133,7 @@ import { Project } from '../types/projects';
 import type { Event } from '../types/events';
 import { Partner } from '../types/partners';
 import type { Training } from '../types/training';
-import type { Document } from '../types/documents';
-import type { Edit } from '../types/edits';
-import type { Account } from '../types/accounts';
+import type { Documento } from '../types/documents';
 
 export function fetchNoticias() {
   if (isLegacyEnabled) {
@@ -346,44 +358,73 @@ export function fetchEvento(id: number | string) {
 }
 
 // ============================================================================
-// DOCUMENTOS, EDITAIS E PRESTAÇÃO DE CONTAS
+// DOCUMENTOS (CPT UNIFICADO)
 // ============================================================================
-// NOTA: Estas funções retornam arrays vazios em modo legacy, pois esses
-// CPTs não existiam no WordPress antigo. Ative quando o novo WP estiver pronto.
+// CPT: documento (unificado)
+// Taxonomies: tipo_documento (hierarchical), ano_documento (tags)
+// Filtragem feita por taxonomy query parameters
 // ============================================================================
 
 /**
- * Busca todos os documentos (CPT: documento)
+ * Busca documentos filtrados por tipo (taxonomy tipo_documento)
+ * Usa filtro por slug direto - sem buscar ID antes (mais performático)
+ * @param tipoSlug - Slug do tipo ('edital', 'prestacao-contas', 'documentos-institucionais', etc.)
+ * @param perPage - Quantidade de resultados por página (padrão: 20)
+ * @returns Array de documentos
+ */
+async function fetchDocumentosPorTipo(tipoSlug: string, perPage: number = 20): Promise<Documento[]> {
+  if (isLegacyEnabled) {
+    return Promise.resolve([]);
+  }
+
+  // Filtro direto por slug - WordPress REST aceita slug na query
+  // Reduz de 2 requisições para 1, eliminando latência
+  return fetchAPI<Documento[]>(
+    `documento?tipo_documento=${tipoSlug}&per_page=${perPage}&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+  );
+}
+
+/**
+ * Busca todos os documentos (sem filtro de tipo)
  * Usado na página Documents.tsx
  */
-export function fetchDocumentos() {
+export function fetchDocumentos(perPage: number = 20) {
   if (isLegacyEnabled) {
-    // Legacy mode não tem esses documentos
     return Promise.resolve([]);
   }
-  return fetchAPI<Document[]>('documento?per_page=20&acf_format=standard&_fields=id,date,title,acf');
+  return fetchAPI<Documento[]>(
+    `documento?per_page=${perPage}&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+  );
 }
 
 /**
- * Busca todos os editais (CPT: edital)
+ * Busca apenas editais (filtra por tipo_documento = 'edital')
  * Usado na página Edits.tsx
  */
-export function fetchEditais() {
-  if (isLegacyEnabled) {
-    return Promise.resolve([]);
-  }
-  return fetchAPI<Edit[]>('edital?per_page=20&acf_format=standard&_fields=id,date,title,acf');
+export function fetchEditais(perPage: number = 20) {
+  return fetchDocumentosPorTipo('edital', perPage);
 }
 
 /**
- * Busca todas as prestações de contas (CPT: prestacao_conta)
+ * Busca apenas prestações de contas (filtra por tipo_documento = 'prestacao-contas')
  * Usado na página Accounts.tsx
  */
-export function fetchPrestacaoContas() {
+export function fetchPrestacaoContas(perPage: number = 20) {
+  return fetchDocumentosPorTipo('prestacao-contas', perPage);
+}
+
+/**
+ * Busca documento individual por ID
+ * @param id - ID do documento
+ * @returns Documento completo
+ */
+export function fetchDocumento(id: number | string) {
   if (isLegacyEnabled) {
-    return Promise.resolve([]);
+    return Promise.resolve(null);
   }
-  return fetchAPI<Account[]>('prestacao-conta?per_page=20&acf_format=standard&_fields=id,date,title,acf');
+  return fetchAPI<Documento>(
+    `documento/${id}?_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+  );
 }
 
 // ============================================================================

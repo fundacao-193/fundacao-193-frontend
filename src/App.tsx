@@ -10,7 +10,7 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
-import ThemeToggle from './components/ThemeToggle';
+// import ThemeToggle from './components/ThemeToggle';  // Desabilitado temporariamente
 import BackToTopButton from './components/BackToTopButton';
 
 // Code splitting: lazy load páginas internas

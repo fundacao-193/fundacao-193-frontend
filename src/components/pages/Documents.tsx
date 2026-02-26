@@ -1,14 +1,18 @@
+// ==============================================================================
+// IMPORTS - Descomentar quando ativar API
+// ==============================================================================
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, FileText, Download, Folder } from 'lucide-react';
 // import { fetchDocumentos } from '../../services/api';
-// import type { Document, DocumentCategory } from '../../types/documents';
+// import type { Documento } from '../../types/documents';
+// import { isDocumentoInstitucional } from '../../types/documents';
 // import { formatFileSize } from '../../utils/format';
 
 export default function Documents() {
   // ============================================================================
-  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
+  // CÓDIGO PRONTO PARA API - DESCOMENTAR QUANDO WORDPRESS ESTIVER PRONTO
   // ============================================================================
-  // const [documents, setDocuments] = useState<Document[]>([]);
+  // const [documents, setDocuments] = useState<Documento[]>([]);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
@@ -20,7 +24,9 @@ export default function Documents() {
   //   async function loadDocuments() {
   //     try {
   //       const data = await fetchDocumentos();
-  //       setDocuments(data);
+  //       // Filtra apenas documentos institucionais (exclui editais e prestação de contas)
+  //       const docsInstitucionais = data.filter(doc => isDocumentoInstitucional(doc));
+  //       setDocuments(docsInstitucionais);
   //     } catch (err) {
   //       setError('Não conseguimos carregar os documentos. Tente novamente mais tarde.');
   //       console.error('Erro ao carregar documentos:', err);
@@ -31,18 +37,37 @@ export default function Documents() {
   //   loadDocuments();
   // }, []);
 
-  // // Agrupar documentos por categoria
-  // const groupedByCategory = documents.reduce((acc, doc) => {
-  //   const category = doc.acf?.doc_category || 'Outros';
+  // // Agrupar documentos por tipo (usando taxonomy _embedded)
+  // const groupedByType = documents.reduce((acc, doc) => {
+  //   const tipoTerm = doc._embedded?.['wp:term']?.[0]?.find(
+  //     term => term.taxonomy === 'tipo_documento'
+  //   );
+  //   const category = tipoTerm?.name || 'Outros';
   //   if (!acc[category]) acc[category] = [];
   //   acc[category].push(doc);
   //   return acc;
-  // }, {} as Record<DocumentCategory | 'Outros', Document[]>);
+  // }, {} as Record<string, Documento[]>);
 
-  // // Ordenar dentro de cada categoria
-  // Object.values(groupedByCategory).forEach(docs => {
-  //   docs.sort((a, b) => (a.acf?.doc_order || 0) - (b.acf?.doc_order || 0));
+  // // Ordenar dentro de cada categoria por data (mais recentes primeiro)
+  // Object.values(groupedByType).forEach(docs => {
+  //   docs.sort((a, b) => {
+  //     const aDate = a.acf?.data_publicacao || '';
+  //     const bDate = b.acf?.data_publicacao || '';
+  //     return bDate.localeCompare(aDate);
+  //   });
   // });
+  //
+  // // Ordenar grupos por ano em ordem decrescente (2026 → 2023)
+  // const sortedByYear = Object.entries(groupedByType)
+  //   .sort(([yearA], [yearB]) => {
+  //     const numA = Number(yearA) || 0;
+  //     const numB = Number(yearB) || 0;
+  //     return numB - numA;
+  //   })
+  //   .reduce((acc, [year, docs]) => {
+  //     acc[year] = docs;
+  //     return acc;
+  //   }, {} as Record<string, Documento[]>);
   // ============================================================================
 
   // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
@@ -180,7 +205,7 @@ export default function Documents() {
         {/* ====================================================================== */}
         {/* {!loading && !error && (
           <div className="space-y-12">
-            {Object.entries(groupedByCategory).map(([category, docs]) => (
+            {Object.entries(groupedByType).map(([category, docs]) => (
               <section key={category}>
                 <div className="flex items-center gap-3 mb-6">
                   <Folder size={28} className="text-icon-fg" />
@@ -188,10 +213,13 @@ export default function Documents() {
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   {docs.map((doc) => {
-                    const file = doc.acf?.doc_file;
-                    const fileSize = file?.filesize 
+                    const file = doc.acf?.arquivo_pdf;
+                    const fileSize = file?.filesize
                       ? formatFileSize(file.filesize)
-                      : doc.acf?.doc_size || 'N/A';
+                      : 'N/A';
+                    const year = doc.acf?.data_publicacao
+                      ? doc.acf.data_publicacao.substring(0, 4)
+                      : 'N/A';
                     
                     return (
                       <div
@@ -204,8 +232,13 @@ export default function Documents() {
                             <p className="font-semibold text-neutral-900 truncate">
                               {doc.title.rendered}
                             </p>
+                            {doc.acf?.descricao_curta && (
+                              <p className="text-sm text-neutral-600 line-clamp-1">
+                                {doc.acf.descricao_curta}
+                              </p>
+                            )}
                             <p className="text-xs text-neutral-500">
-                              {fileSize} • {doc.acf?.doc_year || 'N/A'}
+                              {fileSize} • {year}
                             </p>
                           </div>
                         </div>

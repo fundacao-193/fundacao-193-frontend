@@ -1,14 +1,14 @@
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Download, TrendingUp, BarChart3 } from 'lucide-react';
 // import { fetchPrestacaoContas } from '../../services/api';
-// import type { Account } from '../../types/accounts';
+// import type { Documento } from '../../types/documents';
 // import { formatFileSize } from '../../utils/format';
 
 export default function Accounts() {
   // ============================================================================
   // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
   // ============================================================================
-  // const [contas, setContas] = useState<Account[]>([]);
+  // const [contas, setContas] = useState<Documento[]>([]);
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
@@ -31,18 +31,14 @@ export default function Accounts() {
   //   loadContas();
   // }, []);
 
-  // // Agrupar prestações de contas por ano
+  // // Agrupar prestações de contas por ano (extrair de data_publicacao Ymd)
   // const groupedByYear = contas.reduce((acc, conta) => {
-  //   const year = conta.acf?.pc_year || new Date().getFullYear();
+  //   const dateStr = conta.acf?.data_publicacao;
+  //   const year = dateStr ? parseInt(dateStr.substring(0, 4)) : new Date().getFullYear();
   //   if (!acc[year]) acc[year] = [];
   //   acc[year].push(conta);
   //   return acc;
-  // }, {} as Record<number, Account[]>);
-
-  // // Ordenar dentro de cada ano por ordem
-  // Object.values(groupedByYear).forEach(docs => {
-  //   docs.sort((a, b) => (a.acf?.pc_order || 0) - (b.acf?.pc_order || 0));
-  // });
+  // }, {} as Record<number, Documento[]>);
 
   // // Ordenar anos em ordem decrescente
   // const sortedYears = Object.keys(groupedByYear)
@@ -165,12 +161,12 @@ export default function Accounts() {
                 return (
                   <div key={year} className="bg-white rounded-xl p-8 shadow-md">
                     <h3 className="text-2xl font-bold text-neutral-900 mb-6">Ano {year}</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-4">
                       {yearDocs.map((doc) => {
-                        const file = doc.acf?.pc_file;
-                        const fileSize = file?.filesize 
+                        const file = doc.acf?.arquivo_pdf;
+                        const fileSize = file?.filesize
                           ? formatFileSize(file.filesize)
-                          : doc.acf?.pc_size || 'N/A';
+                          : 'N/A';
 
                         return (
                           <div
