@@ -100,51 +100,52 @@ export default function Projects() {
               className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all hover:-translate-y-1 group flex flex-col h-full"
             >
               <ImageWithPlaceholder
-                src={project.acf?.project_image}
+                src={project.acf?.project_featured_image}
                 alt={project.title.rendered.replace(/<[^>]*>/g, '')}
                 containerClassName="aspect-[16/9]"
               />
 
-              <div className="p-8 flex flex-col flex-grow">
-                {/* Titulo */}
-                <h3
-                  className="text-2xl font-bold text-neutral-900 mb-3 group-hover:text-primary transition-colors"
-                  dangerouslySetInnerHTML={{
-                    __html: project.title.rendered,
-                  }}
-                />
-
-                {/* Resumo */}
-                {project.excerpt?.rendered && (
-                  <p
-                    className="text-neutral-600 leading-relaxed mb-4 line-clamp-3"
+                <div className="p-8 flex flex-col flex-grow">
+                  {/* Titulo */}
+                  <h3
+                    className="text-2xl font-bold text-neutral-900 mb-3 group-hover:text-primary transition-colors"
                     dangerouslySetInnerHTML={{
-                      __html: project.excerpt.rendered,
+                      __html: project.title.rendered,
                     }}
                   />
-                )}
 
-                {/* Impacto */}
-                {project.acf?.impacto && (
-                  <div className="border-t border-neutral-200 pt-4 mt-4 mb-6">
-                    <p className="text-primary font-semibold">
-                      {project.acf.impacto}
-                    </p>
-                  </div>
-                )}
+                  {/* Resumo */}
+                  {project.excerpt?.rendered && (
+                    <p
+                      className="text-neutral-600 leading-relaxed mb-4 line-clamp-3"
+                      dangerouslySetInnerHTML={{
+                        __html: project.excerpt.rendered,
+                      }}
+                    />
+                  )}
 
-                {/* Saiba Mais Link */}
-                <a
-                  href={`#projeto-${project.id}`}
-                  className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all mt-auto"
-                  aria-label={`Saiba mais sobre ${project.title.rendered.replace(/<[^>]*>/g, '')}`}
-                >
-                  Saiba Mais
-                  <ArrowRight size={16} />
-                </a>
+                  {/* Impacto */}
+                  {project.acf?.impacto && (
+                    <div className="border-t border-neutral-200 pt-4 mt-4 mb-6">
+                      <p className="text-primary font-semibold">
+                        {project.acf.impacto}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Saiba Mais Link */}
+                  <a
+                    href={`#projeto-${project.id}`}
+                    className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all mt-auto"
+                    aria-label={`Saiba mais sobre ${project.title.rendered.replace(/<[^>]*>/g, '')}`}
+                  >
+                    Saiba Mais
+                    <ArrowRight size={16} />
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          )}
         </div>
 
         {/* Projetos em desenvolvimento */}

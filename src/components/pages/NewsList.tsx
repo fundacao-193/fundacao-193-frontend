@@ -1,21 +1,44 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Calendar, ArrowRight, ChevronDown, Check } from 'lucide-react';
 
-import { fetchNoticiasByCategories } from '../../services/api';
+import { fetchNoticiasByCategories, fetchNoticiasCategories } from '../../services/api';
 import type { news } from '../../types/news';
 import ImageWithPlaceholder from '../ImageWithPlaceholder';
-// Category mapping (ID → name)
-const CATEGORIES = {
-  '14': { name: 'Blog', color: 'bg-blue-100 text-blue-800' },
-  '17': { name: 'Datas Comemorativas', color: 'bg-purple-100 text-purple-800' },
-  '16': { name: 'Educação Financeira', color: 'bg-green-100 text-green-800' },
-  '15': { name: 'Incêndio', color: 'bg-red-100 text-red-800' },
-  '8': { name: 'Meio Ambiente', color: 'bg-emerald-100 text-emerald-800' },
-  '56': { name: 'História', color: 'bg-amber-100 text-amber-800' },
-  '18': { name: 'Diversos', color: 'bg-gray-100 text-gray-800' },
-} as const;
 
-type CategoryId = keyof typeof CATEGORIES;
+// Cores específicas por categoria ID (matching versão legada)
+const CATEGORY_COLORS_MAP: Record<number, string> = {
+  15: 'bg-red-100 text-red-900',          // Incêndio - Vermelho
+  23: 'bg-amber-100 text-amber-900',      // Datas Comemorativas - Ouro/Amarelo
+  26: 'bg-blue-100 text-blue-900',        // História - Azul escuro
+  13: 'bg-green-100 text-green-900',      // Meio Ambiente - Verde
+  22: 'bg-purple-100 text-purple-900',    // Educação Financeira - Púrpura
+  20: 'bg-orange-100 text-orange-900',    // Eventos - Laranja
+  25: 'bg-teal-100 text-teal-900',        // Projetos - Teal
+  1: 'bg-gray-100 text-gray-900',         // Uncategorized - Cinza
+};
+
+// Cores fallback para categorias não mapeadas
+const CATEGORY_COLORS_FALLBACK = [
+  'bg-red-100 text-red-900',
+  'bg-blue-100 text-blue-900',
+  'bg-green-100 text-green-900',
+  'bg-amber-100 text-amber-900',
+  'bg-purple-100 text-purple-900',
+  'bg-pink-100 text-pink-900',
+  'bg-teal-100 text-teal-900',
+  'bg-orange-100 text-orange-900',
+] as const;
+
+type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+};
+
+function getCategoryColor(id: number) {
+  return CATEGORY_COLORS_MAP[id] || CATEGORY_COLORS_FALLBACK[id % CATEGORY_COLORS_FALLBACK.length];
+}
 
 // Extract first image URL from HTML
 function extractImageFromHtml(html?: string): string | null {
@@ -26,16 +49,17 @@ function extractImageFromHtml(html?: string): string | null {
 
 export default function NewsList() {
   const [items, setItems] = useState<(news & { category_ids: number[] })[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
+  const [selectedCategory, setSelectedCategory] = useState<number | 'all'>('all');
   const [page, setPage] = useState(1);
   const pageSize = 9;
   const preloadCount = 6;
   const hasFetched = useRef(false);
   const [anim, setAnim] = useState(false);
-  const animTimer = useRef<number | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const animTimer = useRef<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const triggerAnim = useCallback(() => {
@@ -54,7 +78,9 @@ export default function NewsList() {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchNoticiasByCategories(Object.keys(CATEGORIES));
+      const cats = await fetchNoticiasCategories();
+      setCategories(cats);
+      const data = await fetchNoticiasByCategories(cats.map((cat) => String(cat.id)));
       setItems(data);
     } catch (err) {
       console.error(err);
@@ -79,7 +105,7 @@ export default function NewsList() {
 
   const filteredItems = useMemo(() => {
     if (selectedCategory === 'all') return preparedItems;
-    return preparedItems.filter(item => item.category_ids.includes(Number(selectedCategory)));
+    return preparedItems.filter((item) => item.category_ids.includes(selectedCategory));
   }, [preparedItems, selectedCategory]);
 
   const categoryCounts = useMemo(() => {
@@ -132,14 +158,15 @@ export default function NewsList() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleCategorySelect = (category: CategoryId | 'all') => {
+  const handleCategorySelect = (category: number | 'all') => {
     setSelectedCategory(category);
     setIsDropdownOpen(false);
   };
 
   const getCategoryLabel = () => {
     if (selectedCategory === 'all') return 'Todas as categorias';
-    return CATEGORIES[selectedCategory]?.name || 'Categoria';
+    const match = categories.find((cat) => cat.id === selectedCategory);
+    return match?.name || 'Categoria';
   };
 
   // Pagination
@@ -227,27 +254,27 @@ export default function NewsList() {
                   <div className="border-t border-neutral-200" />
 
                   {/* Categorias específicas */}
-                  {Object.entries(CATEGORIES).map(([id, cat]) => {
-                    if (id === '14' || id === '18') return null;
-                    const count = categoryCounts[id] || 0;
+                  {categories.map((cat) => {
+                    if (cat.slug === 'blog' || cat.slug === 'diversos') return null;
+                    const count = categoryCounts[String(cat.id)] || 0;
                     if (count === 0) return null;
                     return (
                       <button
-                        key={id}
-                        onClick={() => handleCategorySelect(id as CategoryId)}
+                        key={cat.id}
+                        onClick={() => handleCategorySelect(cat.id)}
                         className={`w-full px-4 py-3 flex items-center justify-between hover:bg-neutral-50 transition-colors ${
-                          selectedCategory === id ? 'bg-primary/5' : ''
+                          selectedCategory === cat.id ? 'bg-primary/5' : ''
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className={`inline-block w-3 h-3 rounded-full ${cat.color.split(' ')[0]}`} />
+                          <span className={`inline-block w-3 h-3 rounded-full ${getCategoryColor(cat.id).split(' ')[0]}`} />
                           <span className="font-medium text-neutral-900">{cat.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-500 font-semibold bg-neutral-100 px-2 py-1 rounded-full">
                             {count}
                           </span>
-                          {selectedCategory === id && <Check size={16} className="text-primary" />}
+                          {selectedCategory === cat.id && <Check size={16} className="text-primary" />}
                         </div>
                       </button>
                     );
@@ -281,11 +308,11 @@ export default function NewsList() {
                         // Se ainda tiver mais de 2, limita a 2
                         displayCats = displayCats.slice(0, 2);
                         
-                        return displayCats.map(catId => {
-                          const catInfo = CATEGORIES[String(catId) as CategoryId];
+                        return displayCats.map((catId) => {
+                          const catInfo = categories.find((cat) => cat.id === catId);
                           if (!catInfo) return null;
                           return (
-                            <span key={catId} className={`inline-block text-xs font-semibold px-2 py-1 rounded-full ${catInfo.color}`}>
+                            <span key={catId} className={`inline-block text-xs font-semibold px-2 py-1 rounded-full ${getCategoryColor(catId)}`}>
                               {catInfo.name}
                             </span>
                           );

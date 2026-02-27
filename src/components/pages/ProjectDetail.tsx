@@ -57,6 +57,21 @@ export default function ProjectDetail({ id }: Props) {
   const { galleryImages, cleanContent } = useMemo(() => {
     if (!item) return { galleryImages: [], cleanContent: '' };
 
+    // Prioriza galeria ACF se existir
+    if (item.acf?.project_gallery && Array.isArray(item.acf.project_gallery)) {
+      const acfImages = item.acf.project_gallery
+        .map(img => typeof img === 'object' && img.url ? img.url : '')
+        .filter(Boolean);
+      
+      if (acfImages.length > 0) {
+        return {
+          galleryImages: acfImages,
+          cleanContent: item.content?.rendered || item.excerpt?.rendered || '',
+        };
+      }
+    }
+
+    // Fallback: extrai imagens do conteúdo HTML
     const contentHtml = item.content?.rendered || item.excerpt?.rendered || '';
     const images = extractImagesFromHtml(contentHtml);
     
@@ -108,7 +123,7 @@ export default function ProjectDetail({ id }: Props) {
 
   const currentUrl = window.location.href;
   const title = item.title.rendered.replace(/<[^>]*>/g, '');
-  const heroImage = item.acf?.project_image;
+  const heroImage = item.acf?.project_featured_image;
 
   return (
     <DetailLayout

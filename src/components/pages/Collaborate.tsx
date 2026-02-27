@@ -1,6 +1,9 @@
 import { ArrowLeft, Heart, QrCode } from 'lucide-react';
+import { useState } from 'react';
 
 export default function Collaborate() {
+  const [isHovering, setIsHovering] = useState(false);
+  
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -76,15 +79,54 @@ export default function Collaborate() {
 
           <div className="relative">
             <div className="sticky top-8">
-              <div className="bg-red-600 rounded-xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] hover:shadow-lg">
+              <div 
+                className="relative rounded-xl overflow-hidden aspect-[3/4] cursor-pointer group"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              >
+                {/* Imagem de fundo */}
                 <img
-                  src="https://images.pexels.com/photos/3683065/pexels-photo-3683065.jpeg?auto=compress&cs=tinysrgb&w=600"
-                  alt="Coração na mão"
-                  className="w-full h-full object-cover"
+                  src="/images/colabore.jpg"
+                  alt="Colabore com a Fundação 193"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
+                
+                {/* Overlay escurecido (aparece no hover) */}
+                <div 
+                  className={`absolute inset-0 bg-black/70 transition-opacity duration-300 ${
+                    isHovering ? 'opacity-100' : 'opacity-0'
+                  }`}
+                />
+                
+                {/* QR Code (aparece no hover) */}
+                <div 
+                  className={`absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 ${
+                    isHovering 
+                      ? 'opacity-100 scale-100 translate-y-0' 
+                      : 'opacity-0 scale-95 translate-y-4 pointer-events-none'
+                  }`}
+                >
+                  <div className="bg-white rounded-2xl p-6 shadow-2xl">
+                    <div className="flex items-center gap-2 mb-4 justify-center">
+                      <QrCode size={24} className="text-primary" />
+                      <span className="font-bold text-lg text-neutral-900">Doe via PIX</span>
+                    </div>
+                    <img
+                      src="/qrcode-pix-300x300.png"
+                      alt="QR Code PIX para doação"
+                      className="w-48 h-48 rounded-lg"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <p className="text-center text-sm text-neutral-600 mt-4 font-medium">
+                      Escaneie com seu app de banco
+                    </p>
+                  </div>
+                </div>
               </div>
+              
               <div className="mt-6 flex items-center gap-2 text-primary font-semibold text-sm">
                 <Heart size={16} />
                 <span>Ajude-nos a salvar vidas</span>

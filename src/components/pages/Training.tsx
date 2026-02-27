@@ -48,6 +48,48 @@ const STATUS_MAP: Record<
   },
 };
 
+const USE_HARDCODED_TRAINING = true;
+
+const HARDCODED_TRAININGS: Training[] = [
+  {
+    id: 1,
+    title: { rendered: 'Primeiros Socorros e Atendimento Inicial' },
+    acf: {
+      cap_summary:
+        'Formacao basica para resposta rapida e suporte a vitimas em situacoes de emergencia.',
+      cap_workload: '20h',
+      cap_start_date: '2026-03-10',
+      cap_end_date: '2026-03-14',
+      cap_status: 'Inscricoes abertas',
+      cap_signup_link: 'https://fundacao193.org.br',
+    },
+  },
+  {
+    id: 2,
+    title: { rendered: 'Gestao de Riscos e Prevencao de Incendios' },
+    acf: {
+      cap_summary:
+        'Curso focado em analise de riscos, planos de contingencia e protocolos operacionais.',
+      cap_workload: '32h',
+      cap_start_date: '2026-04-05',
+      cap_end_date: '2026-04-12',
+      cap_status: 'Planejada',
+    },
+  },
+  {
+    id: 3,
+    title: { rendered: 'Operacoes Integradas em Desastres' },
+    acf: {
+      cap_summary:
+        'Treinamento avancado para coordenacao de equipes em cenarios complexos.',
+      cap_workload: '40h',
+      cap_start_date: '2026-05-18',
+      cap_end_date: '2026-05-25',
+      cap_status: 'Inscricoes encerradas',
+    },
+  },
+];
+
 const formatFriendlyDate = (start?: string, end?: string) => {
   if (!start) return '';
 
@@ -110,8 +152,10 @@ const extractImageUrl = (value: unknown): string => {
 ===================== */
 
 export default function Training() {
-  const [trainings, setTrainings] = useState<Training[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [trainings, setTrainings] = useState<Training[]>(
+    USE_HARDCODED_TRAINING ? HARDCODED_TRAININGS : []
+  );
+  const [loading, setLoading] = useState(!USE_HARDCODED_TRAINING);
   const [error, setError] = useState<string | null>(null);
 
   const loadCapacitacoes = async () => {
@@ -129,6 +173,9 @@ export default function Training() {
   };
 
   useEffect(() => {
+    if (USE_HARDCODED_TRAINING) {
+      return;
+    }
     loadCapacitacoes();
   }, []);
 
@@ -189,6 +236,7 @@ export default function Training() {
           internacionais e metodologias inovadoras.
         </p>
 
+        {/* CARDS DE CAPACITAÇÕES - Comentado até que o CPT seja implementado
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {trainings.map(training => {
             const acf = training.acf;
@@ -231,7 +279,6 @@ export default function Training() {
                     {acf?.cap_summary}
                   </p>
 
-                  {/* Linha inferior */}
                   <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
                     <div className="flex items-center gap-4 flex-wrap">
                       {acf?.cap_workload && (
@@ -283,6 +330,7 @@ export default function Training() {
             );
           })}
         </div>
+        */}
 
         {/* Blocos estáticos */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">

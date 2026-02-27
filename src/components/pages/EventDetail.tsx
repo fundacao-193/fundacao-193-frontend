@@ -179,9 +179,10 @@ export default function EventDetail({ id }: Props) {
     >
       {item.acf.event_summary && (
         <div className="mb-8">
-          <p className="text-lg text-neutral-700 leading-relaxed font-medium">
-            {item.acf.event_summary}
-          </p>
+          <div 
+            className="text-lg text-neutral-700 leading-relaxed font-medium"
+            dangerouslySetInnerHTML={{ __html: item.acf.event_summary }}
+          />
         </div>
       )}
 

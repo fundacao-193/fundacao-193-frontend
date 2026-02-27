@@ -19,11 +19,18 @@ function parseYmdToDate(ymd?: string): Date | null {
 }
 
 /**
- * Format Ymd to BR date
+ * Format event date: prefer ACF event_start_date, fallback to post date
  */
-function formatYmdToBr(ymd?: string): string {
-  const d = parseYmdToDate(ymd);
-  return d ? d.toLocaleDateString('pt-BR') : 'Data a definir';
+function formatEventDate(eventStartDate?: string, postDate?: string): string {
+  if (eventStartDate) {
+    const d = parseYmdToDate(eventStartDate);
+    return d ? d.toLocaleDateString('pt-BR') : 'Data a definir';
+  }
+  if (postDate) {
+    const d = new Date(postDate);
+    return d.toLocaleDateString('pt-BR');
+  }
+  return 'Data a definir';
 }
 
 /**
@@ -95,26 +102,27 @@ export default function Events() {
 
   const today = startOfDay(new Date());
 
+  // Separa eventos por data: usa event_start_date se disponível, senão usa post date
   const upcomingEvents = events
     .filter(event => {
-      const d = parseYmdToDate(event.acf?.event_start_date);
-      return d && startOfDay(d) >= today;
+      const eventDate = event.acf?.event_start_date ? parseYmdToDate(event.acf.event_start_date) : new Date(event.date);
+      return eventDate && startOfDay(eventDate) >= today;
     })
     .sort((a, b) => {
-      const aDate = parseYmdToDate(a.acf?.event_start_date)?.getTime() ?? 0;
-      const bDate = parseYmdToDate(b.acf?.event_start_date)?.getTime() ?? 0;
-      return aDate - bDate;
+      const aDate = a.acf?.event_start_date ? parseYmdToDate(a.acf?.event_start_date) : new Date(a.date);
+      const bDate = b.acf?.event_start_date ? parseYmdToDate(b.acf?.event_start_date) : new Date(b.date);
+      return (bDate?.getTime() || 0) - (aDate?.getTime() || 0);
     });
 
   const pastEvents = events
     .filter(event => {
-      const d = parseYmdToDate(event.acf?.event_start_date);
-      return d && startOfDay(d) < today;
+      const eventDate = event.acf?.event_start_date ? parseYmdToDate(event.acf.event_start_date) : new Date(event.date);
+      return eventDate && startOfDay(eventDate) < today;
     })
     .sort((a, b) => {
-      const aDate = parseYmdToDate(a.acf?.event_start_date)?.getTime() ?? 0;
-      const bDate = parseYmdToDate(b.acf?.event_start_date)?.getTime() ?? 0;
-      return bDate - aDate;
+      const aDate = a.acf?.event_start_date ? parseYmdToDate(a.acf?.event_start_date) : new Date(a.date);
+      const bDate = b.acf?.event_start_date ? parseYmdToDate(b.acf?.event_start_date) : new Date(b.date);
+      return (bDate?.getTime() || 0) - (aDate?.getTime() || 0);
     });
 
   const cardClass =
@@ -145,59 +153,26 @@ export default function Events() {
             Próximos Eventos
           </h2>
 
-          {upcomingEvents.length === 0 && (
-            <p className="text-neutral-500">Nenhum evento programado.</p>
-          )}
-
-          <div className="space-y-6">
-            {/* DEMONSTRAÇÃO: Evento hardcoded com inscrição - COMENTAR EM PRODUÇÃO */}
-             
-            <div className={cardClass}>
-              <div className="p-6">
-                <div className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                  Inscrições Abertas
-                </div>
-                <h3 className="text-2xl font-bold text-neutral-900 mb-2">
-                  Capacitação em Salvamento Aquático
+          {upcomingEvents.length === 0 ? (
+            <div className="flex items-center justify-center py-16 px-4">
+              <div className="text-center max-w-md">
+                <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  Nenhum evento próximo no momento
                 </h3>
-
-                <p className="text-neutral-600 leading-relaxed mb-4">
-                  Curso especializado em técnicas de salvamento aquático para ambientes urbanos e naturais. Módulos práticos e teóricos ministrados por especialistas certificados.
+                <p className="text-neutral-600 mb-6">
+                  Estamos preparando novidades. Acompanhe nossa página para saber quando os próximos eventos serão anunciados.
                 </p>
-
-                <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
-                  <div className="flex items-center gap-2">
-                    <Calendar size={18} className="text-icon-fg" />
-                    <span>15/03/2026</span>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <MapPin size={18} className="text-icon-fg" />
-                    <span>Centro de Treinamento CBMDF</span>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <a
-                    href="https://forms.gle/exemplo-inscricao"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
-                  >
-                    Inscrever-se
-                  </a>
-                  <a
-                    href="#evento-demo-1"
-                    className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:gap-3 transition-all px-4 py-2"
-                  >
-                    Saiba mais
-                    <ArrowRight size={16} />
-                  </a>
-                </div>
+                <a
+                  href="mailto:contato@fundacao193.org.br"
+                  className="inline-block text-primary font-medium hover:underline"
+                >
+                  Entre em contato para mais informações
+                </a>
               </div>
             </div>
-            
+          ) : null}
 
+          <div className="space-y-6">
             {upcomingEvents.map(event => (
               <div key={event.id} className={cardClass}>
                 <div className="p-6">
@@ -213,7 +188,7 @@ export default function Events() {
                   <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
                     <div className="flex items-center gap-2">
                       <Calendar size={18} className="text-icon-fg" />
-                      <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
+                      <span>{formatEventDate(event.acf?.event_start_date, event.date)}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
@@ -255,9 +230,18 @@ export default function Events() {
             Eventos Realizados
           </h2>
 
-          {pastEvents.length === 0 && (
-            <p className="text-neutral-500">Nenhum evento anterior.</p>
-          )}
+          {pastEvents.length === 0 ? (
+            <div className="flex items-center justify-center py-16 px-4">
+              <div className="text-center max-w-md">
+                <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                  Histórico de eventos em breve
+                </h3>
+                <p className="text-neutral-600">
+                  Aqui você acompanhará todos os eventos que já realizamos e o impacto que geramos na comunidade.
+                </p>
+              </div>
+            </div>
+          ) : null}
 
           <div className="space-y-6">
             {pastEvents.map(event => (
@@ -275,7 +259,7 @@ export default function Events() {
                   <div className="flex flex-col md:flex-row gap-6 text-neutral-600 mb-6">
                     <div className="flex items-center gap-2">
                       <Calendar size={18} className="text-icon-fg" />
-                      <span>{formatYmdToBr(event.acf?.event_start_date)}</span>
+                      <span>{formatEventDate(event.acf?.event_start_date, event.date)}</span>
                     </div>
 
                     {event.acf?.event_location && (
