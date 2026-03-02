@@ -138,6 +138,7 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
       evento: 'bg-badge-event-bg text-badge-event-text',
       capacitacao: 'bg-purple-500 text-white',
       parceiro: 'bg-pink-500 text-white',
+      pagina: 'bg-neutral-200 text-neutral-800',
     };
     return colors[type] || 'bg-neutral-500 text-white';
   };

@@ -16,15 +16,196 @@ export interface SearchResultItem {
   id: number;
   title: string;
   excerpt?: string;
-  type: 'noticia' | 'projeto' | 'evento' | 'capacitacao' | 'parceiro';
+  type: 'noticia' | 'projeto' | 'evento' | 'capacitacao' | 'parceiro' | 'pagina';
   link?: string;
   image?: string;
+  /** Opcional: lista de palavras-chave para melhorar a busca local */
+  keywords?: string[];
 }
 
 export interface SearchResults {
   query: string;
   results: SearchResultItem[];
   total: number;
+}
+
+// ---------------------------------------------------------------------------
+// Conteúdo local (fallback) - usado quando a API estiver fora do ar
+// ---------------------------------------------------------------------------
+
+const LOCAL_CONTENT: SearchResultItem[] = [
+  {
+    id: 1,
+    type: 'pagina',
+    title: 'Quem Somos',
+    excerpt:
+      'Conheça a Fundação 193, instituição sem fins lucrativos de apoio ao Corpo de Bombeiros Militar do Distrito Federal.',
+    link: '#quem-somos',
+    keywords: ['institucional', 'quem somos', 'fundação 193', 'sobre a fundação', 'apresentação'],
+  },
+  {
+    id: 2,
+    type: 'pagina',
+    title: 'Nossa História',
+    excerpt:
+      'Linha do tempo e trajetória da Fundação 193 na promoção da prevenção, segurança e bem-estar da população.',
+    link: '#nossa-historia',
+    keywords: ['história', 'linha do tempo', 'trajetória', 'fundação', 'origem'],
+  },
+  {
+    id: 3,
+    type: 'pagina',
+    title: 'Missão, Visão e Valores',
+    excerpt:
+      'Missão de apoiar institucionalmente o CBMDF, visão de referência em transparência e impacto social, e valores de ética e responsabilidade.',
+    link: '#missao-valores',
+    keywords: ['missão', 'visão', 'valores', 'propósito', 'princípios'],
+  },
+  {
+    id: 4,
+    type: 'pagina',
+    title: 'Áreas de Atuação',
+    excerpt:
+      'Apoio operacional, capacitação e treinamentos, eventos institucionais e projetos sociais desenvolvidos pela Fundação 193.',
+    link: '#areas',
+    keywords: ['apoio operacional', 'capacitação', 'treinamentos', 'eventos', 'projetos sociais', 'atuações'],
+  },
+  {
+    id: 5,
+    type: 'pagina',
+    title: 'Prestação de Contas',
+    excerpt:
+      'Transparência financeira, relatórios, documentos e política de alocação de recursos da Fundação 193.',
+    link: '#prestacao-contas',
+    keywords: ['prestação de contas', 'relatórios financeiros', 'transparência', 'balanço', 'contas'],
+  },
+  {
+    id: 13,
+    type: 'pagina',
+    title: 'Editais',
+    excerpt:
+      'Chamadas públicas, seleção de projetos, resultados e documentos relacionados aos editais da Fundação 193.',
+    link: '#editais',
+    keywords: ['editais', 'edital', 'seleção de projetos', 'chamadas públicas'],
+  },
+  {
+    id: 14,
+    type: 'pagina',
+    title: 'Parcerias',
+    excerpt:
+      'Informações sobre parcerias institucionais, benefícios, tipos de parceria e histórico de cooperação.',
+    link: '#parcerias',
+    keywords: ['parcerias', 'parceiros', 'parceria institucional', 'parcerias estratégicas'],
+  },
+  {
+    id: 6,
+    type: 'pagina',
+    title: 'Documentos e Transparência',
+    excerpt:
+      'Acesso a estatuto, regimento interno, código de ética, relatórios anuais e demais documentos institucionais.',
+    link: '#documentos',
+    keywords: ['documentos', 'estatuto', 'regimento interno', 'código de ética', 'relatórios anuais'],
+  },
+  {
+    id: 7,
+    type: 'pagina',
+    title: 'LGPD e Privacidade',
+    excerpt:
+      'Informações sobre tratamento de dados pessoais, política de privacidade e conformidade com a LGPD.',
+    link: '#lgpd',
+    keywords: ['lgpd', 'privacidade', 'dados pessoais', 'política de privacidade'],
+  },
+  {
+    id: 8,
+    type: 'pagina',
+    title: 'Equipe e Governança',
+    excerpt:
+      'Conheça a equipe, diretoria executiva, conselhos e estrutura de governança da Fundação 193.',
+    link: '#equipe',
+    keywords: ['equipe', 'diretoria', 'conselho', 'governança', 'organograma'],
+  },
+  {
+    id: 9,
+    type: 'pagina',
+    title: 'Impacto e Resultados',
+    excerpt:
+      'Indicadores de impacto, projetos apoiados, capacitações realizadas e resultados institucionais.',
+    link: '#impacto',
+    keywords: ['impacto', 'resultados', 'indicadores', 'projetos apoiados'],
+  },
+  {
+    id: 10,
+    type: 'pagina',
+    title: 'Notícias',
+    excerpt:
+      'Acompanhe as principais notícias, publicações e destaques da Fundação 193.',
+    link: '#noticias',
+    keywords: ['notícias', 'novidades', 'publicações', 'clipping'],
+  },
+  {
+    id: 11,
+    type: 'pagina',
+    title: 'Contato',
+    excerpt:
+      'Canais oficiais de comunicação com a Fundação 193 para dúvidas, parcerias e imprensa.',
+    link: '#contato',
+    keywords: ['contato', 'fale conosco', 'telefone', 'endereço', 'e-mail'],
+  },
+  {
+    id: 12,
+    type: 'pagina',
+    title: 'Colabore e Doações',
+    excerpt:
+      'Saiba como apoiar a Fundação 193 por meio de doações, parcerias e outras formas de contribuição.',
+    link: '#colabore',
+    keywords: ['doação', 'doações', 'colabore', 'seja doador', 'seja parceiro', 'contribuir'],
+  },
+];
+
+function normalizeText(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function searchLocalContent(query: string): SearchResultItem[] {
+  const normalizedQuery = normalizeText(query.trim());
+  if (normalizedQuery.length < 2) return [];
+
+  type Scored = { item: SearchResultItem; score: number };
+  const scored: Scored[] = [];
+
+  for (const item of LOCAL_CONTENT) {
+    let score = 0;
+
+    const title = normalizeText(item.title);
+    const excerpt = item.excerpt ? normalizeText(item.excerpt) : '';
+    const keywords = (item.keywords || []).map(normalizeText);
+
+    if (title === normalizedQuery) score += 10;
+    else if (title.startsWith(normalizedQuery)) score += 7;
+    else if (title.includes(normalizedQuery)) score += 5;
+
+    if (excerpt.includes(normalizedQuery)) score += 2;
+
+    for (const kw of keywords) {
+      if (kw === normalizedQuery) {
+        score += 8;
+      } else if (kw.startsWith(normalizedQuery)) {
+        score += 6;
+      } else if (kw.includes(normalizedQuery)) {
+        score += 4;
+      }
+    }
+
+    if (score > 0) {
+      scored.push({ item, score });
+    }
+  }
+
+  scored.sort((a, b) => b.score - a.score);
+  return scored.map((s) => s.item);
 }
 
 /**
@@ -139,6 +320,9 @@ export async function searchAll(query: string): Promise<SearchResults> {
     return cached.results;
   }
 
+  // Resultados locais (fallback) sempre são considerados
+  const localResults = searchLocalContent(query);
+
   try {
     let results: SearchResultItem[] = [];
 
@@ -170,11 +354,25 @@ export async function searchAll(query: string): Promise<SearchResults> {
       const bMatch = b.title.toLowerCase().includes(lowerQuery) ? 0 : 1;
       return aMatch - bMatch;
     });
+    
+    // Combina com resultados locais, evitando duplicados por link+tipo+id
+    const seen = new Set<string>();
+    const combined: SearchResultItem[] = [];
+
+    const pushUnique = (item: SearchResultItem) => {
+      const key = `${item.type}-${item.id}-${item.link ?? ''}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      combined.push(item);
+    };
+
+    localResults.forEach(pushUnique);
+    results.forEach(pushUnique);
 
     const searchResults: SearchResults = {
       query,
-      results: results.slice(0, 20), // Limita a 20 resultados
-      total: results.length,
+      results: combined.slice(0, 20), // Limita a 20 resultados combinados
+      total: combined.length,
     };
 
     searchCache.set(cacheKey, {
@@ -185,7 +383,14 @@ export async function searchAll(query: string): Promise<SearchResults> {
     return searchResults;
   } catch (error) {
     console.error('Erro ao buscar:', error);
-    return { query, results: [], total: 0 };
+    // Em caso de erro na API, ainda retornamos os resultados locais
+    const fallbackResults: SearchResults = {
+      query,
+      results: localResults.slice(0, 20),
+      total: localResults.length,
+    };
+
+    return fallbackResults;
   }
 }
 
@@ -199,6 +404,7 @@ export function getTypeLabel(type: SearchResultItem['type']): string {
     evento: 'Evento',
     capacitacao: 'Capacitação',
     parceiro: 'Parceiro',
+    pagina: 'Página',
   };
   return labels[type];
 }

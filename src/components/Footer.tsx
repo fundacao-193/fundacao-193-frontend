@@ -41,15 +41,18 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-neutral-400 mb-6 leading-relaxed">
-            Desde 2022, a Fundação 193 atua no apoio ao Corpo de Bombeiros Militar do Distrito Federal, contribuindo para a prevenção, a segurança e o bem-estar da população.
+              Instituição sem fins lucrativos criada para apoiar e fortalecer o Corpo de Bombeiros Militar do Distrito Federal, promovendo projetos, capacitações e iniciativas sociais em benefício da sociedade.
+            </p>
+            <p className="text-neutral-500 text-sm mb-4">
+              Endereço: SHS Quadra 6, Conj. A, Bloco A, Sala 501, Brasília-DF
             </p>
             <div className="mb-6 space-y-2">
               <a
-                href="tel:+556133213000"
+                href="tel:+5561993823763"
                 className="flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors"
               >
                 <Phone size={16} />
-                <span>(61) 99557-8286</span>
+                <span>(61) 99382-3763</span>
               </a>
               <a
                 href="mailto:contato@fundacao193.org.br"

@@ -82,10 +82,10 @@ export default function Accounts() {
   ];
 
   const financialMetrics = [
-    { label: 'Receita Total (2023)', value: 'R$ 15.2 M' },
-    { label: 'Investimentos Realizados', value: 'R$ 12.8 M' },
-    { label: 'Projetos Financiados', value: '47' },
-    { label: 'Taxa de Transparência', value: '98%' },
+    { label: 'Relatórios Financeiros Publicados', value: 'Em construção' },
+    { label: 'Projetos Financiados', value: 'Em atualização' },
+    { label: 'Indicadores de Impacto', value: 'Em consolidação' },
+    { label: 'Compromisso com a Transparência', value: 'Permanente' },
   ];
 
   return (
@@ -100,9 +100,9 @@ export default function Accounts() {
           Voltar
         </button>
 
-        <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">Prestação de Contas</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">Transparência e Prestação de Contas</h1>
         <p className="text-xl text-neutral-600 mb-12">
-          Transparência financeira e prestação de contas de todas as atividades da Fundação 193.
+          A Fundação 193 preza pela transparência na gestão dos recursos, pela divulgação dos resultados e pela governança institucional, em alinhamento às melhores práticas de fundações nacionais e internacionais.
         </p>
 
         {/* ====================================================================== */}
@@ -133,7 +133,7 @@ export default function Accounts() {
         {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
         {/* ====================================================================== */}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {financialMetrics.map((metric) => (
             <div key={metric.label} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-neutral-600 text-sm font-medium mb-2">{metric.label}</p>
@@ -141,6 +141,10 @@ export default function Accounts() {
             </div>
           ))}
         </div>
+
+        <p className="text-sm text-neutral-500 mb-12">
+          Os números apresentados nesta área são ilustrativos e serão substituídos pelos dados oficiais da Fundação 193, garantindo informações reais, auditáveis e em conformidade com as exigências legais.
+        </p>
 
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
