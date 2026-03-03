@@ -143,6 +143,15 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['notícias', 'novidades', 'publicações', 'clipping'],
   },
   {
+    id: 15,
+    type: 'pagina',
+    title: 'Atividades',
+    excerpt:
+      'Linha do tempo com todas as notícias, eventos e projetos da Fundação 193 em ordem cronológica.',
+    link: '#atividades',
+    keywords: ['atividades', 'linha do tempo', 'timeline', 'todas', 'cronologia', 'histórico de atividades'],
+  },
+  {
     id: 11,
     type: 'pagina',
     title: 'Contato',
@@ -211,7 +220,15 @@ function searchLocalContent(query: string): SearchResultItem[] {
 /**
  * Busca em uma rota específica do novo WordPress (CPT)
  */
-async function searchNewAPI<T extends { id: number; title?: { rendered?: string }; excerpt?: { rendered?: string } }>(
+async function searchNewAPI<T extends { 
+  id: number; 
+  title?: { rendered?: string }; 
+  excerpt?: { rendered?: string };
+  acf?: Record<string, unknown>;
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{ source_url?: string }>;
+  };
+}>(
   resource: string,
   query: string,
   type: SearchResultItem['type']
@@ -220,6 +237,7 @@ async function searchNewAPI<T extends { id: number; title?: { rendered?: string 
     const params = new URLSearchParams({
       search: query,
       per_page: '10',
+      _embed: '1', // Inclui imagens destacadas
     });
     
     const response = await fetch(`${API_URL}/${resource}?${params.toString()}`);
@@ -227,13 +245,30 @@ async function searchNewAPI<T extends { id: number; title?: { rendered?: string 
     
     const data = await response.json() as T[];
     
-    return data.map((item: T) => ({
-      id: item.id,
-      title: item.title?.rendered || 'Sem título',
-      excerpt: item.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 100),
-      type,
-      link: `#${type}-${item.id}`,
-    }));
+    return data.map((item: T) => {
+      // Extrai imagem destacada se disponível
+      const imageUrl = item._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+      
+      // Gera link apropriado baseado no tipo
+      let link: string;
+      if (type === 'capacitacao') {
+        link = '#capacitacao';
+      } else if (type === 'parceiro') {
+        link = '#parcerias';
+      } else {
+        // noticia, projeto, evento têm páginas de detalhe
+        link = `#${type}-${item.id}`;
+      }
+      
+      return {
+        id: item.id,
+        title: item.title?.rendered || 'Sem título',
+        excerpt: item.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 150),
+        type,
+        link,
+        image: imageUrl,
+      };
+    });
   } catch (error) {
     console.error(`Erro ao buscar ${resource}:`, error);
     return [];
@@ -332,11 +367,11 @@ export async function searchAll(query: string): Promise<SearchResults> {
     } else {
       // Busca simultânea em todos os recursos do novo WordPress
       const [noticias, projetos, eventos, capacitacoes, parceiros] = await Promise.allSettled([
-        searchNewAPI('noticia', query, 'noticia'),
-        searchNewAPI('projeto', query, 'projeto'),
-        searchNewAPI('evento', query, 'evento'),
-        searchNewAPI('capacitacao', query, 'capacitacao'),
-        searchNewAPI('parceiro', query, 'parceiro'),
+        searchNewAPI('noticias', query, 'noticia'),
+        searchNewAPI('projetos', query, 'projeto'),
+        searchNewAPI('eventos', query, 'evento'),
+        searchNewAPI('capacitacoes', query, 'capacitacao'),
+        searchNewAPI('parcerias', query, 'parceiro'),
       ]);
 
       // Combina resultados bem-sucedidos

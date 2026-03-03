@@ -120,6 +120,12 @@ function App() {
       case 'parcerias':
         document.title = `Parcerias - ${baseTitle}`;
         break;
+      case 'atividades':
+        document.title = `Atividades - ${baseTitle}`;
+        break;
+      case 'noticias':
+        document.title = `Notícias - ${baseTitle}`;
+        break;
       case 'prestacao-contas':
         document.title = `Prestação de Contas - ${baseTitle}`;
         break;
