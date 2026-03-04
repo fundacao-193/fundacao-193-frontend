@@ -9,7 +9,7 @@ import { cleanContent, extractImageUrl, extractFeaturedImageUrl } from '../lib/w
 // API URL: usa localhost em dev, produção em build
 const API_URL = import.meta.env.VITE_WP_API_URL || (
   import.meta.env.PROD 
-    ? 'https://api.fundacao193.org.br/wp-json/wp/v2'
+    ? 'https://conteudo.fundacao193.org.br/wp-json/wp/v2'
     : 'http://localhost:10003/wp-json/wp/v2'
 );
 
@@ -28,15 +28,17 @@ const LEGACY_CATEGORY_EVENTS = import.meta.env.VITE_WP_LEGACY_CATEGORY_EVENTS ||
 const LEGACY_CATEGORY_PARTNERS = import.meta.env.VITE_WP_LEGACY_CATEGORY_PARTNERS || '';     // Não usado
 const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAINING || '';     // Não usado
 
-// ✅ MODO LEGACY: Pode ser usado em QUALQUER ambiente (dev ou produção)
+// MODO LEGACY: Pode ser usado em QUALQUER ambiente (dev ou produção)
 // Útil como fallback de emergência se o novo WordPress apresentar problemas
 const isLegacyEnabled = DATA_SOURCE === 'legacy';
 
-// Log informativo sobre qual API está sendo usada
-if (isLegacyEnabled) {
-  console.info('[api] 🔄 Modo LEGACY ativo - Consumindo site antigo:', LEGACY_API_URL);
-} else {
-  console.info('[api] ✅ Modo NOVO ativo - Consumindo CPT/ACF:', API_URL);
+// Log informativo sobre qual API está sendo usada (somente em desenvolvimento)
+if (import.meta.env.DEV) {
+  if (isLegacyEnabled) {
+    console.info('[api] Modo LEGACY ativo - Consumindo site antigo:', LEGACY_API_URL);
+  } else {
+    console.info('[api] Modo NOVO ativo - Consumindo CPT/ACF:', API_URL);
+  }
 }
 
 /**
