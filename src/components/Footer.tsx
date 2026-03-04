@@ -63,54 +63,53 @@ export default function Footer() {
               </a>
             </div>
             <div className="flex gap-3">
-              {/* Social links: placeholders for now - marked as coming soon to avoid no-op navigation */}
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Facebook - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.facebook.com/profile.php?id=100091474837798"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Facebook da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#1877F2] transition-colors"
+                aria-label="Acesse nossa página no Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Instagram - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.instagram.com/fundacao193/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Instagram da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] transition-colors"
+                aria-label="Acesse nosso Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Twitter - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://x.com/fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Twitter/X da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-black transition-colors"
+                aria-label="Acesse nosso Twitter/X"
               >
                 <Twitter size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="LinkedIn - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.linkedin.com/in/fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="LinkedIn da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#0A66C2] transition-colors"
+                aria-label="Acesse nosso LinkedIn"
               >
                 <Linkedin size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="YouTube - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.youtube.com/@fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="YouTube da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#FF0000] transition-colors"
+                aria-label="Acesse nosso canal no YouTube"
               >
                 <Youtube size={20} />
               </a>
