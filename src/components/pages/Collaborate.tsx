@@ -219,10 +219,9 @@ export default function Collaborate() {
             Entre em contato conosco para saber mais sobre as formas de colaboração.
           </p>
           <a
-            href="mailto:contato@fundacao193.org.br"
-            className="inline-block px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-50 transition-colors"
-          >
-            Enviar E-mail
+              href="mailto:contato@fundacao193.org.br?subject=Quero%20Colaborar%20com%20a%20Fundação%20193&body=Olá,%0A%0ATenho%20interesse%20em%20colaborar%20com%20a%20Fundação%20193.%20Gostaria%20de%20mais%20informações%20sobre:%0A%0A( )%20Voluntariado%0A( )%20Parcerias%20Corporativas%0A( )%20Doações%20em%20Espécie%0A%0APor%20favor,%20me%20retorne%20com%20mais%20detalhes.%0A%0AObrigado!"
+              className="inline-block px-8 py-3 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-50 transition-colors">
+              Enviar E-mail
           </a>
         </section>
       </div>
