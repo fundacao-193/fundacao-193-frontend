@@ -298,9 +298,14 @@ export default function Events() {
             </div>
           </div>
 
-          <button className="px-6 py-2 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
-            Entre em Contato
-          </button>
+            <a
+              href="https://api.whatsapp.com/send/?phone=5561993823763&text&type=phone_number&app_absent=0"
+              target="_blank"
+              rel="noopener noreferrer">
+              <button className="px-6 py-2 bg-white text-primary rounded-lg font-semibold hover:bg-neutral-100 transition-colors">
+                Entre em Contato
+              </button>
+            </a>
         </div>
       </div>
     </div>

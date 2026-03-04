@@ -376,7 +376,7 @@ export default function Training() {
           </p>
           <div className="bg-white bg-opacity-10 rounded-lg p-4">
             <p className="font-semibold">contato@fundacao193.org.br</p>
-            <p className="font-semibold">(61) 99557-8286</p>
+            <p className="font-semibold">(61) 99382-3763</p>
           </div>
         </section>
       </div>

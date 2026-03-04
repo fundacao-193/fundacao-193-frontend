@@ -148,7 +148,7 @@ export default function Contact() {
                 <div>
                   <h3 className="font-bold text-neutral-900 mb-1">Telefone</h3>
                   <p className="text-neutral-600">
-                    (61) 99557-8286
+                    (61) 99382-3763
                     <br />
                     Seg à Sex: 8h às 18h
                   </p>

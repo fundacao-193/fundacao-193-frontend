@@ -317,7 +317,7 @@ export default function Documents() {
         <div className="mt-12 bg-neutral-100 rounded-xl p-6">
           <h4 className="font-bold text-neutral-900 mb-2">Precisa de ajuda?</h4>
           <p className="text-neutral-600 mb-2">Email: contato@fundacao193.org.br</p>
-          <p className="text-neutral-600">Telefone: (61) 99557-8286</p>
+          <p className="text-neutral-600">Telefone: (61) 99382-3763</p>
         </div>
       </div>
     </div>

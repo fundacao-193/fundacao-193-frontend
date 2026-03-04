@@ -576,7 +576,7 @@ Este projeto é propriedade da Fundação 193. Todos os direitos reservados.
 **Fundação 193**
 - Website: [fundacao193.org.br]
 - Email: contato@fundacao193.org.br
-- Telefone: (61) 99557-8286
+- Telefone: (61) 99382-3763
 - Endereço: SHS Quadra 6, Conjunto A, Bloco A, Sala 501 - Brasília-DF
 
 ## Equipe de Desenvolvimento
