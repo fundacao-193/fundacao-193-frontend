@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, AlertCircle, RotateCw } from 'lucide-react';
 import { fetchProjetos } from '../../services/api';
 import type { Project } from '../../types/projects';
 import ImageWithPlaceholder from '../ImageWithPlaceholder';
+import PageLoader from '../PageLoader';
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -35,16 +36,7 @@ export default function Projects() {
 
   // Estado de loading
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-badge-text">
-            <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
-            <p className="text-sm font-medium">Carregando projetos...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <PageLoader message="Carregando projetos..." />;
   }
 
   // Estado de erro

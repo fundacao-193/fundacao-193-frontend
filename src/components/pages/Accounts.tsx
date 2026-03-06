@@ -1,5 +1,6 @@
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Download, TrendingUp, BarChart3 } from 'lucide-react';
+import PageLoader from '../PageLoader';
 // import { fetchPrestacaoContas } from '../../services/api';
 // import type { Documento } from '../../types/documents';
 // import { formatFileSize } from '../../utils/format';
@@ -12,6 +13,9 @@ export default function Accounts() {
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
+  
+  // Descomente a linha abaixo quando descomentar o código de API
+  // if (loading) return <PageLoader message="Carregando relatórios..." />;
 
   // useEffect(() => {
   //   if (hasFetched.current) return;

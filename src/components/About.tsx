@@ -41,6 +41,8 @@ export default function About() {
                     src="/logo-reduzida.png"
                     alt="Fundação 193 Logo"
                     className="h-12 w-auto"
+                    width="48"
+                    height="48"
                     loading="lazy"
                     decoding="async"
                   />
@@ -48,6 +50,7 @@ export default function About() {
               )}
               
               <picture>
+                <source srcSet="/images/lineandFlag.avif" type="image/avif" />
                 <source srcSet="/images/lineandFlag.webp" type="image/webp" />
                 <img
                   src="/images/lineandFlag.jpg"
@@ -55,6 +58,8 @@ export default function About() {
                   className={`w-full h-full object-cover transition-opacity duration-500 ${
                     isImageLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
+                  width="1200"
+                  height="900"
                   loading="lazy"
                   decoding="async"
                   onLoad={() => setIsImageLoaded(true)}

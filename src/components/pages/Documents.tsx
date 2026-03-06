@@ -3,6 +3,7 @@
 // ==============================================================================
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, FileText, Download, Folder } from 'lucide-react';
+import PageLoader from '../PageLoader';
 // import { fetchDocumentos } from '../../services/api';
 // import type { Documento } from '../../types/documents';
 // import { isDocumentoInstitucional } from '../../types/documents';
@@ -16,6 +17,9 @@ export default function Documents() {
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
+  
+  // Descomente a linha abaixo quando descomentar o código de API
+  // if (loading) return <PageLoader message="Carregando documentos..." />;
 
   // useEffect(() => {
   //   if (hasFetched.current) return;

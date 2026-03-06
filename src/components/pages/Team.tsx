@@ -69,6 +69,8 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-8 w-auto"
+                width="32"
+                height="32"
                 loading="lazy"
                 decoding="async"
               />

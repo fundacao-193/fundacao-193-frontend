@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { fetchCapacitacoes } from '../../services/api';
 import type { Training } from '../../types/training';
+import PageLoader from '../PageLoader';
 
 /* =====================
    Utils

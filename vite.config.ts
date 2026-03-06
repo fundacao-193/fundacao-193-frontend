@@ -22,9 +22,16 @@ export default defineConfig({
       compress: {
         drop_console: true, // Remove console.logs em produção
         drop_debugger: true,
+        passes: 2, // Multiple passes para melhor minificação
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+      format: {
+        comments: false, // Remove comentários
       },
     },
-    // Aumenta limite de warning para chunks grandes (imagens)
+    // Desabilita source maps em produção (economiza ~50KB)
+    sourcemap: false,
+    // Aumenta limite de warning para chunks grandes
     chunkSizeWarningLimit: 1000,
     // Otimizações de CSS
     cssCodeSplit: true,

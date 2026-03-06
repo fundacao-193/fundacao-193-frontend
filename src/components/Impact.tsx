@@ -32,11 +32,15 @@ export default function Impact() {
 
   return (
     <section id="impacto" className="relative py-20 bg-gradient-to-br from-impact-start to-impact-end text-white overflow-hidden">
-      {/* Background com WebP otimizado */}
+      {/* Background com AVIF + WebP + JPG fallback otimizado */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20"
         style={{ 
-          backgroundImage: `url('/images/impact.webp')`,
+          backgroundImage: `
+            url('/images/impact.avif'),
+            url('/images/impact.webp'),
+            url('/images/impact.jpg')
+          `,
         }}
       ></div>
 

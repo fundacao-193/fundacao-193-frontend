@@ -5,14 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     
-    <!-- ====== GOOGLE TAG MANAGER ====== -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5Z9SQKGV');</script>
-    <!-- End Google Tag Manager -->
-    
     <!-- DNS Prefetch & Preconnect para otimização -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
@@ -49,8 +41,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="icon" type="image/png" href="/logo-reduzida.png" />
     <link rel="apple-touch-icon" href="/logo-reduzida.png" />
     
-    <!-- Theme color for browser UI -->
-    <meta name="theme-color" content="#3d685d" />
+    <!-- Theme color for browser UI (white for status bar) -->
+    <meta name="theme-color" content="#ffffff" />
+    <!-- iOS status bar style (white background with dark icons) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     
     <!-- Additional SEO -->
     <meta name="robots" content="index, follow" />
@@ -61,6 +55,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5Z9SQKGV"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Defer GTM loading until after page interactive (Web Vitals optimization) -->
+    <script>
+      // GTM IDs
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MMM20FTFR3', { 'send_page_view': false });
+      
+      // Load GTM after page interactive
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(() => {
+            var gtmScript = document.createElement('script');
+            gtmScript.async = true;
+            gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMM20FTFR3&cx=c&gtm=4e6321';
+            document.head.appendChild(gtmScript);
+          }, 3000); // Load GTM after 3 seconds to avoid blocking LCP
+        });
+      } else {
+        setTimeout(() => {
+          var gtmScript = document.createElement('script');
+          gtmScript.async = true;
+          gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMM20FTFR3&cx=c&gtm=4e6321';
+          document.head.appendChild(gtmScript);
+        }, 3000);
+      }
+    </script>
     
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>

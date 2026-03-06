@@ -3,6 +3,7 @@
 // ==============================================================================
 // import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Calendar, FileText, Download } from 'lucide-react';
+import PageLoader from '../PageLoader';
 // import { fetchEditais } from '../../services/api';
 // import type { Documento } from '../../types/documents';
 // import { formatFileSize, formatDate } from '../../utils/format';
@@ -15,6 +16,9 @@ export default function Edits() {
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
   // const hasFetched = useRef(false);
+  
+  // Descomente a linha abaixo quando descomentar o código de API
+  // if (loading) return <PageLoader message="Carregando editais..." />;
 
   // useEffect(() => {
   //   if (hasFetched.current) return;

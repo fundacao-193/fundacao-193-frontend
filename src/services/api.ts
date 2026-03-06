@@ -32,15 +32,6 @@ const LEGACY_CATEGORY_TRAINING = import.meta.env.VITE_WP_LEGACY_CATEGORY_TRAININ
 // Útil como fallback de emergência se o novo WordPress apresentar problemas
 const isLegacyEnabled = DATA_SOURCE === 'legacy';
 
-// Log informativo sobre qual API está sendo usada (somente em desenvolvimento)
-if (import.meta.env.DEV) {
-  if (isLegacyEnabled) {
-    console.info('[api] Modo LEGACY ativo - Consumindo site antigo:', LEGACY_API_URL);
-  } else {
-    console.info('[api] Modo NOVO ativo - Consumindo CPT/ACF:', API_URL);
-  }
-}
-
 /**
  * Funcao base generica para requisicoes na API
  */

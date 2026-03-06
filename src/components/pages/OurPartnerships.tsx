@@ -228,6 +228,8 @@ export default function OurPartnerships() {
                               src={logoSrc}
                               alt={`Logo ${item.name}`}
                               className="h-12 sm:h-14 w-auto object-contain"
+                              width="120"
+                              height="56"
                               loading="lazy"
                               decoding="async"
                               onError={(e) => {

@@ -84,14 +84,20 @@ export default function Collaborate() {
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                {/* Imagem de fundo */}
-                <img
-                  src="/images/colabore.jpg"
-                  alt="Colabore com a Fundação 193"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                  decoding="async"
-                />
+                {/* Imagem de fundo com AVIF + WebP + JPG */}
+                <picture>
+                  <source srcSet="/images/colabore.avif" type="image/avif" />
+                  <source srcSet="/images/colabore.webp" type="image/webp" />
+                  <img
+                    src="/images/colabore.jpg"
+                    alt="Colabore com a Fundação 193"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    width="300"
+                    height="400"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 
                 {/* Overlay escurecido (aparece no hover) */}
                 <div 
@@ -117,6 +123,8 @@ export default function Collaborate() {
                       src="/qrcode-pix-300x300.png"
                       alt="QR Code PIX para doação"
                       className="w-48 h-48 rounded-lg"
+                      width="192"
+                      height="192"
                       loading="lazy"
                       decoding="async"
                     />
@@ -170,6 +178,8 @@ export default function Collaborate() {
                   src="/qrcode-pix-300x300.png"
                   alt="QR Code PIX"
                   className="w-64 h-64 rounded-lg"
+                  width="256"
+                  height="256"
                   loading="lazy"
                   decoding="async"
                 />

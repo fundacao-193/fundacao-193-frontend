@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Calendar, MapPin, Users, AlertCircle, RotateCw }
 
 import { fetchEventos } from '../../services/api';
 import type { Event } from '../../types/events';
+import PageLoader from '../PageLoader';
 
 /**
  * Parse Ymd (20260122) to Date using noon to avoid timezone shift
@@ -66,16 +67,7 @@ export default function Events() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 text-badge-text">
-            <div className="w-2 h-2 bg-badge-text rounded-full animate-pulse"></div>
-            <p className="text-sm font-medium">Carregando eventos...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <PageLoader message="Carregando eventos..." />;
   }
 
   if (error) {

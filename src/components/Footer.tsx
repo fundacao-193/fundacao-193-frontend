@@ -34,6 +34,8 @@ export default function Footer() {
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-16 w-auto"
+                width="64"
+                height="64"
               />
               <div>
                 <h3 className="text-xl font-bold">Fundação 193</h3>
