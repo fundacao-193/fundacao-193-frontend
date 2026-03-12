@@ -12,10 +12,10 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState<SearchResults | null>(null);
   const [loading, setLoading] = useState(false);
-  const searchRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const shouldFocusOnOpenRef = useRef(false);
 
   // Escape key para fechar
   useEffect(() => {
@@ -61,24 +61,11 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
     };
   }, [query]);
 
-  // Fecha ao clicar fora
+  // Focus no input quando abre (especialmente no mobile)
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        handleClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [isOpen]);
-
-  // Focus no input quando abre
-  useEffect(() => {
-    if (isOpen && !isClosing && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 50);
+    if (isOpen && !isClosing && inputRef.current && shouldFocusOnOpenRef.current) {
+      shouldFocusOnOpenRef.current = false;
+      inputRef.current.focus();
     }
   }, [isOpen, isClosing]);
 
@@ -144,7 +131,7 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
   };
 
   return (
-    <div ref={searchRef} className="relative">
+    <div className="relative">
       <style>{`
         @keyframes fadeInScale {
           from {
@@ -179,7 +166,11 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
 
       {/* Botão ícone - Usa cor do tema */}
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          // Registra intenção de focar o input logo após abrir (melhor para mobile/iOS)
+          shouldFocusOnOpenRef.current = true;
+          setIsOpen(true);
+        }}
         className={`p-2 rounded-lg transition-colors h-10 w-10 flex items-center justify-center hover:bg-neutral-100 ${
           isOpen ? 'text-primary' : 'text-neutral-700 hover:text-institutional'
         }`}
@@ -229,7 +220,9 @@ export default function SearchBar({ onResultClick }: SearchBarProps) {
                 placeholder="Buscar notícias, projetos, eventos..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-sm"
+                // text-base (16px) evita zoom automático no iOS ao focar
+                className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-base sm:text-sm"
+                autoFocus={isOpen}
               />
               {loading && (
                 <Loader size={18} className="flex-shrink-0 animate-spin text-primary" />

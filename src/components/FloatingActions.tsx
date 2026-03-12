@@ -1,4 +1,4 @@
-import { Instagram, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { Instagram, MessageCircle, Volume2, VolumeX, Plus } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 
 export default function FloatingActions() {
@@ -89,13 +89,22 @@ export default function FloatingActions() {
 
       <button
         onClick={handleToggle}
-        className={`w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center font-bold text-xl ${
+        className={`bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg z-[100]
+        transform transition-all duration-500 ease-out
+        hover:scale-110 hover:shadow-2xl hover:-translate-y-1
+        active:scale-95
+        ${
           isExpanded
-            ? 'bg-neutral-600 text-white hover:bg-neutral-700'
-            : 'bg-red-600 text-white hover:bg-red-700'
+            ? 'bg-neutral-600 hover:bg-neutral-700'
+            : 'bg-primary hover:bg-primary-dark'
         }`}
+        aria-label={isExpanded ? 'Fechar ações flutuantes' : 'Abrir ações flutuantes'}
       >
-        {isExpanded ? '✕' : '+'}
+        {isExpanded ? (
+          <span className="text-2xl leading-none font-bold">✕</span>
+        ) : (
+          <Plus className="w-6 h-6 block" strokeWidth={2.5} />
+        )}
       </button>
     </div>
   );

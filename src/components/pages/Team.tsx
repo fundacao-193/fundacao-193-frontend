@@ -1,4 +1,4 @@
-import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 
 import PresidenteDeHonraCarlosAlberto from '../../assets/teams/Presidente De Honra CARLOS ALBERTO DO NASCIMENTO.jpeg';
@@ -18,7 +18,6 @@ import MembroDomingosMarcio from '../../assets/teams/Membro DOMINGOS MÁRCIO FER
 import MembroEnzoKleberJustino from '../../assets/teams/Membro KLEBER JUSTINO OLIVEIRA.jpeg';
 import MembroFlavioMurilo from '../../assets/teams/Membro FLÁVIO MURILO NUNES PEREIRA.jpeg';
 import MembroLisandroPaixao from '../../assets/teams/Membro LISANDRO PAIXÃO DOS SANTOS.png';
-import MembroJoseGenilson from '../../assets/teams/Membro JOSÉ GENILSON DOS SANTOS.png';
 import MembroAthosAlexandre from '../../assets/teams/Membro ATHOS ALEXANDRE FERREIRA CAMARGO.jpeg';
 import MembroPatriciaRaquel from '../../assets/teams/Membro PATRÍCIA RAQUEL BRAGA DINIZ PEVIDOR.jpeg';
 import SuplenteRosangelaFortaleza from '../../assets/teams/Suplente ROSÂNGELA FORTALEZA DE MIRANDA.jpeg';
@@ -93,29 +92,7 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
           <h3 className="text-base font-bold text-neutral-900 mb-1 group-hover:text-primary transition-colors">
             {member.name}
           </h3>
-          <p className="text-sm font-semibold text-primary mb-3">{member.role}</p>
-
-          <div className="flex gap-2 justify-center pt-3 border-t border-slate-100">
-            <a
-              href="#"
-              aria-disabled="true"
-              tabIndex={-1}
-              title="Perfil em breve"
-              onClick={(e) => e.preventDefault()}
-              className="text-neutral-400 opacity-50 cursor-not-allowed hover:opacity-75 transition-opacity"
-            >
-              <Linkedin size={16} />
-            </a>
-            <a
-              href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
-                'Contato sobre ' + member.name,
-              )}`}
-              className="text-neutral-400 hover:text-primary transition-colors"
-              title={`Enviar e-mail para ${member.name}`}
-            >
-              <Mail size={16} />
-            </a>
-          </div>
+          <p className="text-sm font-semibold text-primary">{member.role}</p>
         </div>
       </article>
     </div>
@@ -159,10 +136,10 @@ export default function Team() {
     },
     {
       id: 'ceo',
-      name: 'Welington Alves de Oliveira',
+      name: 'Moisés Alves Barcelos',
       role: 'Presidente',
       bio: 'Responsável pela condução executiva da Fundação 193 e pela implementação das diretrizes do Conselho.',
-      image: PresidenteWelingtonAlves,
+      image: PresidenteMoisésAlves,
       level: 'executive',
     },
   ];
@@ -282,21 +259,6 @@ export default function Team() {
           level: 'council',
         },
         {
-          id: 'curator-8',
-          name: 'Wanderlei Santos da Silva',
-          role: 'Membro',
-          bio: 'Atua na supervisão das ações institucionais e na proteção da missão da Fundação.',
-          image: MembroWanderleiSantos,
-          level: 'council',
-        },
-      ],
-    },
-    {
-      id: 'board-fiscal',
-      title: 'Conselho Fiscal',
-      description: 'Responsável pela fiscalização econômico-financeira e pela transparência na aplicação dos recursos.',
-      members: [
-        {
           id: 'fiscal-1',
           name: 'Flávio Murilo Nunes Pereira',
           role: 'Membro',
@@ -313,35 +275,11 @@ export default function Team() {
           level: 'council',
         },
         {
-          id: 'fiscal-3',
-          name: 'José Genilson dos Santos',
-          role: 'Membro',
-          bio: 'Participa da fiscalização econômico-financeira e da transparência institucional.',
-          image: MembroJoseGenilson,
-          level: 'council',
-        },
-        {
-          id: 'fiscal-4',
-          name: 'Kleber Justino Oliveira',
-          role: 'Membro',
-          bio: 'Atua na análise das contas e na conformidade financeira da Fundação.',
-          image: MembroEnzoKleberJustino,
-          level: 'council',
-        },
-        {
           id: 'fiscal-5',
           name: 'Rosângela Fortaleza de Miranda',
           role: 'Suplente',
           bio: 'Apoia as atividades do Conselho Fiscal sempre que necessário.',
           image: SuplenteRosangelaFortaleza,
-          level: 'council',
-        },
-        {
-          id: 'fiscal-6',
-          name: 'Esequiel Rosa Eduardo',
-          role: 'Suplente',
-          bio: 'Atua como suplente nas atividades de acompanhamento fiscal.',
-          image: SuplenteEsequielRosa,
           level: 'council',
         },
         {
@@ -362,7 +300,50 @@ export default function Team() {
         },
       ],
     },
+    {
+      id: 'board-fiscal',
+      title: 'Conselho Fiscal',
+      description: 'Responsável pela fiscalização econômico-financeira e pela transparência na aplicação dos recursos.',
+      members: [
+        {
+          id: 'curator-1',
+          name: 'Welington Alves de Oliveira',
+          role: 'Presidente do Conselho',
+          bio: 'Responsável pela liderança e supervisão estratégica do Conselho de Curadores.',
+          image: PresidenteWelingtonAlves,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-6',
+          name: 'Esequiel Rosa Eduardo',
+          role: 'Membro',
+          bio: 'Atua como suplente nas atividades de acompanhamento fiscal.',
+          image: SuplenteEsequielRosa,
+          level: 'council',
+        },
+        {
+        id: 'curator-8',
+        name: 'Wanderlei Santos da Silva',
+        role: 'Membro',
+        bio: 'Atua na supervisão das ações institucionais e na proteção da missão da Fundação.',
+        image: MembroWanderleiSantos,
+        level: 'council',
+      },
+      {
+        id: 'fiscal-4',
+        name: 'Kleber Justino Oliveira',
+        role: 'Membro',
+        bio: 'Atua na análise das contas e na conformidade financeira da Fundação.',
+        image: MembroEnzoKleberJustino,
+        level: 'council',
+      },
+      ],
+    },
   ];
+
+  const [activeDepartmentId, setActiveDepartmentId] = useState<string>(departments[0]?.id ?? '');
+
+  const activeDepartment = departments.find((dept) => dept.id === activeDepartmentId) ?? departments[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-white">
@@ -418,7 +399,7 @@ export default function Team() {
         <div className="my-24 h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
         <div className="mb-20">
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">Órgãos de Governança</h2>
             <p className="text-neutral-600 max-w-2xl mx-auto">
               Conselhos independentes que garantem transparência, fiscalização e conformidade institucional.
@@ -426,70 +407,61 @@ export default function Team() {
             <div className="h-1 w-24 bg-gradient-to-r from-primary to-transparent rounded-full mx-auto mt-6" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
-            {departments.map((dept) => (
-              <section
-                key={dept.id}
-                className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl"
-              >
-                <div className="bg-primary p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">
-                    {dept.title}
-                  </h3>
-                  <p className="text-white/90 text-sm leading-relaxed">{dept.description}</p>
-                </div>
-
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {dept.members.map((member, idx) => (
-                      <div key={member.id}>
-                        <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all duration-300 group/item">
-                          <div className="relative w-16 h-16 flex-shrink-0">
-                            <img
-                              src={member.image}
-                              alt={member.name}
-                              className="w-full h-full object-cover rounded-lg group-hover/item:scale-105 transition-transform duration-300"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-primary transition-colors truncate">
-                              {member.name}
-                            </h4>
-                            <p className="text-primary font-medium text-xs mb-1">{member.role}</p>
-                            <p className="text-neutral-600 text-xs line-clamp-1">{member.bio}</p>
-                          </div>
-                          <div className="flex gap-2 flex-shrink-0">
-                            <a
-                              href="#"
-                              aria-disabled="true"
-                              tabIndex={-1}
-                              title="Perfil em breve"
-                              onClick={(e) => e.preventDefault()}
-                              className="text-neutral-400 opacity-50 hover:opacity-75 transition-opacity"
-                            >
-                              <Linkedin size={14} />
-                            </a>
-                            <a
-                              href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
-                                'Contato sobre ' + member.name,
-                              )}`}
-                              className="text-neutral-400 hover:text-primary transition-colors"
-                              title={`Enviar e-mail para ${member.name}`}
-                            >
-                              <Mail size={14} />
-                            </a>
-                          </div>
-                        </div>
-                        {idx < dept.members.length - 1 && (
-                          <div className="w-0.5 h-2 bg-slate-200 mx-auto" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            ))}
+          {/* Abas dos Conselhos */}
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {departments.map((dept) => {
+              const isActive = dept.id === activeDepartmentId;
+              return (
+                <button
+                  key={dept.id}
+                  type="button"
+                  onClick={() => setActiveDepartmentId(dept.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200
+                    ${isActive ? 'bg-primary text-white border-primary shadow-md' : 'bg-white text-neutral-700 border-slate-200 hover:border-primary/60 hover:text-primary'}`}
+                >
+                  {dept.title}
+                </button>
+              );
+            })}
           </div>
+
+          {/* Card do Conselho ativo */}
+          <section className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl max-w-5xl mx-auto">
+            <div className="bg-primary p-6 text-white">
+              <h3 className="text-2xl font-bold mb-2">
+                {activeDepartment.title}
+              </h3>
+              <p className="text-white/90 text-sm leading-relaxed">{activeDepartment.description}</p>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                {activeDepartment.members.map((member, idx) => (
+                  <div key={member.id}>
+                    <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all duration-300 group/item">
+                      <div className="relative w-16 h-16 flex-shrink-0">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover rounded-lg group-hover/item:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-primary transition-colors truncate">
+                          {member.name}
+                        </h4>
+                        <p className="text-primary font-medium text-xs mb-1">{member.role}</p>
+                        <p className="text-neutral-600 text-xs line-clamp-1">{member.bio}</p>
+                      </div>
+                    </div>
+                    {idx < activeDepartment.members.length - 1 && (
+                      <div className="w-0.5 h-2 bg-slate-200 mx-auto" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         </div>
 
         <section className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 md:p-12 border border-slate-200 shadow-sm">

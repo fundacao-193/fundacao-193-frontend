@@ -210,8 +210,8 @@ function App() {
           <>
             <Hero />
             <About />
-            <Impact />
             <Services />
+            <Impact />
             <News />
             <Partners />
             <Contact />
