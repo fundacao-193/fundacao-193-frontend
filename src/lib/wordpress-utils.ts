@@ -2,6 +2,8 @@
  * Utilitários para processar dados do WordPress
  */
 
+import type { Documento } from '../types/documents';
+
 /**
  * Extrai URL da imagem featured do _embedded/wp:featuredmedia
  */
@@ -103,4 +105,51 @@ export function cleanContent(html: string): string {
     .replace(/\[\/?elementor[^\]]*\]/g, '');        // Elementor tags
   
   return cleaned.trim();
+}
+
+/**
+ * Resolve URL e tamanho do PDF de documentos mesmo quando ACF retorna ID numérico.
+ */
+export function extractDocumentFile(documento: Documento): { url: string; filesize: number | null } {
+  const raw = documento.acf?.arquivo_pdf;
+
+  if (typeof raw === 'string' && raw.startsWith('http')) {
+    return { url: raw, filesize: null };
+  }
+
+  if (typeof raw === 'object' && raw !== null) {
+    const obj = raw as Record<string, unknown>;
+    const url = typeof obj.url === 'string' ? obj.url : '';
+    const size = typeof obj.filesize === 'number' ? obj.filesize : null;
+    if (url) {
+      return { url, filesize: size };
+    }
+  }
+
+  const attachments = documento._embedded?.['wp:attachment'] || [];
+  const pdfAttachments = attachments.filter(
+    (item) => item?.mime_type === 'application/pdf' || item?.source_url?.toLowerCase().endsWith('.pdf')
+  );
+
+  let targetId: number | null = null;
+  if (typeof raw === 'number') {
+    targetId = raw;
+  } else if (typeof raw === 'object' && raw !== null) {
+    const obj = raw as Record<string, unknown>;
+    if (typeof obj.ID === 'number') {
+      targetId = obj.ID;
+    } else if (typeof obj.id === 'number') {
+      targetId = obj.id;
+    }
+  }
+
+  const match = targetId
+    ? pdfAttachments.find((item) => item.id === targetId)
+    : pdfAttachments[0];
+
+  if (match?.source_url) {
+    return { url: match.source_url, filesize: match.media_details?.filesize ?? null };
+  }
+
+  return { url: '', filesize: null };
 }

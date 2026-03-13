@@ -6,7 +6,7 @@
 
 // Campos ACF comuns a todos os documentos (baseado no layout atual)
 interface DocumentoACFBase {
-  arquivo_pdf?: {
+  arquivo_pdf?: number | string | {
     ID: number;
     url: string;
     filename: string;
@@ -49,6 +49,14 @@ export interface Documento {
       slug: string;
       taxonomy: string;
     }>>;
+    'wp:attachment'?: Array<{
+      id?: number;
+      source_url?: string;
+      mime_type?: string;
+      media_details?: {
+        filesize?: number;
+      };
+    }>;
   };
 }
 

@@ -36,9 +36,9 @@ const isLegacyEnabled = DATA_SOURCE === 'legacy';
  * Funcao base generica para requisicoes na API
  */
 
-async function fetchAPI<T>(endpoint: string): Promise<T> {
+async function fetchAPI<T>(endpoint: string, options?: { noCache?: boolean }): Promise<T> {
   const url = `${API_URL}/${endpoint}`;
-  return fetchJsonWithCache<T>(url, endpoint);
+  return fetchJsonWithCache<T>(url, endpoint, options?.noCache ?? false);
 }
 
 async function fetchLegacyAPI<T>(endpoint: string): Promise<T> {
@@ -52,16 +52,17 @@ type CacheEntry = {
 };
 
 const responseCache = new Map<string, CacheEntry>();
+const tipoDocumentoIdCache = new Map<string, number>();
 
-async function fetchJsonWithCache<T>(url: string, label: string): Promise<T> {
-  if (CACHE_TTL_MS > 0) {
+async function fetchJsonWithCache<T>(url: string, label: string, noCache: boolean = false): Promise<T> {
+  if (!noCache && CACHE_TTL_MS > 0) {
     const cached = responseCache.get(url);
     if (cached && cached.expiry > Date.now()) {
       return cached.value as T;
     }
   }
 
-  const response = await fetch(url);
+  const response = await fetch(url, noCache ? { cache: 'no-store' } : undefined);
 
   if (!response.ok) {
     throw new Error(`Erro ao buscar ${label}`);
@@ -69,7 +70,7 @@ async function fetchJsonWithCache<T>(url: string, label: string): Promise<T> {
 
   const data = (await response.json()) as T;
 
-  if (CACHE_TTL_MS > 0) {
+  if (!noCache && CACHE_TTL_MS > 0) {
     responseCache.set(url, {
       expiry: Date.now() + CACHE_TTL_MS,
       value: data,
@@ -509,7 +510,7 @@ export function fetchEvento(id: number | string) {
 
 /**
  * Busca documentos filtrados por tipo (taxonomy tipo_documento)
- * Usa filtro por slug direto - sem buscar ID antes (mais performático)
+ * Primeiro busca o ID do termo pelo slug, depois filtra por ID (WordPress REST exige ID numérico).
  * @param tipoSlug - Slug do tipo ('edital', 'prestacao-contas', 'documentos-institucionais', etc.)
  * @param perPage - Quantidade de resultados por página (padrão: 20)
  * @returns Array de documentos
@@ -519,10 +520,26 @@ async function fetchDocumentosPorTipo(tipoSlug: string, perPage: number = 20): P
     return Promise.resolve([]);
   }
 
-  // Filtro direto por slug - WordPress REST aceita slug na query
-  // Reduz de 2 requisições para 1, eliminando latência
+  let tipoId = tipoDocumentoIdCache.get(tipoSlug);
+
+  if (!tipoId) {
+    type TipoDocumentoTerm = { id: number; slug: string };
+    const terms = await fetchAPI<TipoDocumentoTerm[]>(
+      `tipo_documento?slug=${encodeURIComponent(tipoSlug)}&_fields=id,slug&per_page=1`,
+      { noCache: true }
+    );
+
+    if (!terms.length) {
+      return [];
+    }
+
+    tipoId = terms[0].id;
+    tipoDocumentoIdCache.set(tipoSlug, tipoId);
+  }
+
   return fetchAPI<Documento[]>(
-    `documentos?tipo_documento=${tipoSlug}&per_page=${perPage}&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+    `documentos?tipo_documento=${tipoId}&per_page=${perPage}&acf_format=standard&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`,
+    { noCache: true }
   );
 }
 
@@ -535,7 +552,8 @@ export function fetchDocumentos(perPage: number = 20) {
     return Promise.resolve([]);
   }
   return fetchAPI<Documento[]>(
-    `documentos?per_page=${perPage}&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+    `documentos?per_page=${perPage}&acf_format=standard&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`,
+    { noCache: true }
   );
 }
 
@@ -565,7 +583,8 @@ export function fetchDocumento(id: number | string) {
     return Promise.resolve(null);
   }
   return fetchAPI<Documento>(
-    `documentos/${id}?_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`
+    `documentos/${id}?acf_format=standard&_embed=true&_fields=id,date,slug,title,content,tipo_documento,ano_documento,acf,_embedded`,
+    { noCache: true }
   );
 }
 

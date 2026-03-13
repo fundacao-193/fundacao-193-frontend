@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import { fetchCapacitacoes } from '../../services/api';
 import type { Training } from '../../types/training';
-import PageLoader from '../PageLoader';
 
 /* =====================
    Utils
@@ -49,7 +48,7 @@ const STATUS_MAP: Record<
   },
 };
 
-const USE_HARDCODED_TRAINING = true;
+const USE_HARDCODED_TRAINING = false;
 
 const HARDCODED_TRAININGS: Training[] = [
   {
@@ -237,7 +236,7 @@ export default function Training() {
           internacionais e metodologias inovadoras.
         </p>
 
-        {/* CARDS DE CAPACITAÇÕES - Comentado até que o CPT seja implementado
+        {/* Fonte principal: API. Mantido hardcoded apenas como fallback opcional de desenvolvimento. */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {trainings.map(training => {
             const acf = training.acf;
@@ -331,7 +330,12 @@ export default function Training() {
             );
           })}
         </div>
-        */}
+
+        {trainings.length === 0 && (
+          <div className="bg-white rounded-xl p-8 shadow-md text-center text-neutral-600 mb-16">
+            Nenhuma capacitação disponível no momento.
+          </div>
+        )}
 
         {/* Blocos estáticos */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -377,7 +381,7 @@ export default function Training() {
           </p>
           <div className="bg-white bg-opacity-10 rounded-lg p-4">
             <p className="font-semibold">contato@fundacao193.org.br</p>
-            <p className="font-semibold">(61) 99382-3763</p>
+            <p className="font-semibold">(61) 99557-8286</p>
           </div>
         </section>
       </div>

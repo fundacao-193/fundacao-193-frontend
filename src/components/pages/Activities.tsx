@@ -126,7 +126,7 @@ export default function Activities() {
   useEffect(() => {
     setPage(1);
     triggerAnim();
-  }, [filter]);
+  }, [filter, triggerAnim]);
 
   useEffect(() => {
     triggerAnim();

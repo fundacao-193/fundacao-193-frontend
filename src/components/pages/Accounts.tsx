@@ -1,92 +1,72 @@
-// import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Download, TrendingUp, BarChart3 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Download, TrendingUp, BarChart3, RotateCw } from 'lucide-react';
 import PageLoader from '../PageLoader';
-// import { fetchPrestacaoContas } from '../../services/api';
-// import type { Documento } from '../../types/documents';
-// import { formatFileSize } from '../../utils/format';
+import { fetchPrestacaoContas } from '../../services/api';
+import type { Documento } from '../../types/documents';
+import { formatFileSize } from '../../utils/format';
+import { extractDocumentFile } from '../../lib/wordpress-utils';
 
 export default function Accounts() {
-  // ============================================================================
-  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
-  // ============================================================================
-  // const [contas, setContas] = useState<Documento[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const hasFetched = useRef(false);
-  
-  // Descomente a linha abaixo quando descomentar o código de API
-  // if (loading) return <PageLoader message="Carregando relatórios..." />;
+  const [contas, setContas] = useState<Documento[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const hasFetched = useRef(false);
 
-  // useEffect(() => {
-  //   if (hasFetched.current) return;
-  //   hasFetched.current = true;
-  //   
-  //   async function loadContas() {
-  //     try {
-  //       const data = await fetchPrestacaoContas();
-  //       setContas(data);
-  //     } catch (err) {
-  //       setError('Não conseguimos carregar os relatórios. Tente novamente mais tarde.');
-  //       console.error('Erro ao carregar prestação de contas:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   loadContas();
-  // }, []);
+  const loadContas = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchPrestacaoContas();
+      setContas(data);
+    } catch (err) {
+      console.error('Erro ao carregar prestação de contas:', err);
+      setError('Não conseguimos carregar os relatórios. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // // Agrupar prestações de contas por ano (extrair de data_publicacao Ymd)
-  // const groupedByYear = contas.reduce((acc, conta) => {
-  //   const dateStr = conta.acf?.data_publicacao;
-  //   const year = dateStr ? parseInt(dateStr.substring(0, 4)) : new Date().getFullYear();
-  //   if (!acc[year]) acc[year] = [];
-  //   acc[year].push(conta);
-  //   return acc;
-  // }, {} as Record<number, Documento[]>);
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    loadContas();
+  }, []);
 
-  // // Ordenar anos em ordem decrescente
-  // const sortedYears = Object.keys(groupedByYear)
-  //   .map(Number)
-  //   .sort((a, b) => b - a);
-  // ============================================================================
+  const extractYear = (doc: Documento): number => {
+    const acfDate = doc.acf?.data_publicacao;
+    if (acfDate && acfDate.length >= 4) {
+      return Number(acfDate.substring(0, 4));
+    }
 
-  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
-  const reports = [
-    {
-      year: 2023,
-      documents: [
-        { name: 'Relatório Financeiro Anual', size: '2.4 MB' },
-        { name: 'Balanço Patrimonial', size: '1.2 MB' },
-        { name: 'Demonstrativo de Resultado', size: '890 KB' },
-        { name: 'Relatório de Auditoria Independente', size: '1.8 MB' },
-      ],
-    },
-    {
-      year: 2022,
-      documents: [
-        { name: 'Relatório Financeiro Anual', size: '2.3 MB' },
-        { name: 'Balanço Patrimonial', size: '1.1 MB' },
-        { name: 'Demonstrativo de Resultado', size: '850 KB' },
-        { name: 'Relatório de Auditoria Independente', size: '1.7 MB' },
-      ],
-    },
-    {
-      year: 2021,
-      documents: [
-        { name: 'Relatório Financeiro Anual', size: '2.2 MB' },
-        { name: 'Balanço Patrimonial', size: '1.0 MB' },
-        { name: 'Demonstrativo de Resultado', size: '800 KB' },
-        { name: 'Relatório de Auditoria Independente', size: '1.6 MB' },
-      ],
-    },
-  ];
+    const parsed = new Date(doc.date);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.getFullYear();
+    }
+
+    return new Date().getFullYear();
+  };
+
+  const groupedByYear = contas.reduce((acc, conta) => {
+    const year = extractYear(conta);
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(conta);
+    return acc;
+  }, {} as Record<number, Documento[]>);
+
+  const sortedYears = Object.keys(groupedByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
 
   const financialMetrics = [
-    { label: 'Relatórios Financeiros Publicados', value: 'Em construção' },
-    { label: 'Projetos Financiados', value: 'Em atualização' },
+    { label: 'Relatórios Financeiros Publicados', value: String(contas.length) },
+    { label: 'Anos com prestação disponível', value: String(sortedYears.length) },
     { label: 'Indicadores de Impacto', value: 'Em consolidação' },
     { label: 'Compromisso com a Transparência', value: 'Permanente' },
   ];
+
+  if (loading) {
+    return <PageLoader message="Carregando relatórios..." />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -105,34 +85,22 @@ export default function Accounts() {
           A Fundação 193 preza pela transparência na gestão dos recursos, pela divulgação dos resultados e pela governança institucional, em alinhamento às melhores práticas de fundações nacionais e internacionais.
         </p>
 
-        {/* ====================================================================== */}
-        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {loading && (
-          <div className="flex items-center justify-center py-16">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-neutral-600">Carregando relatórios...</p>
+        {error && (
+          <div className="mb-10 max-w-2xl bg-red-50 border border-red-200 rounded-lg p-6 flex items-center gap-4">
+            <div className="flex-1">
+              <p className="text-red-700 font-medium mb-2">{error}</p>
+              <button
+                onClick={loadContas}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                <RotateCw size={16} />
+                Tentar Novamente
+              </button>
             </div>
           </div>
         )}
 
-        {error && (
-          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
-            <p className="text-red-600 mb-4 font-medium">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
-            >
-              Tentar Novamente
-            </button>
-          </div>
-        )} */}
-
-        {/* ====================================================================== */}
-        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-
+        {/* Conteudo parcialmente hardcoded ate consolidacao completa dos indicadores */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {financialMetrics.map((metric) => (
             <div key={metric.label} className="bg-white rounded-xl p-6 shadow-md">
@@ -149,54 +117,45 @@ export default function Accounts() {
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <BarChart3 size={28} className="text-icon-fg" />
-        {/* ====================================================================== */}
-        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {!loading && !error && (
-          <section className="mb-16">
-            <div className="flex items-center gap-3 mb-8">
-              <BarChart3 size={28} className="text-icon-fg" />
-              <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
-            </div>
+            <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
+          </div>
 
+          {!error && sortedYears.length > 0 && (
             <div className="space-y-8">
               {sortedYears.map((year) => {
                 const yearDocs = groupedByYear[year];
                 return (
                   <div key={year} className="bg-white rounded-xl p-8 shadow-md">
                     <h3 className="text-2xl font-bold text-neutral-900 mb-6">Ano {year}</h3>
-                    <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                       {yearDocs.map((doc) => {
-                        const file = doc.acf?.arquivo_pdf;
-                        const fileSize = file?.filesize
+                        const file = extractDocumentFile(doc);
+                        const fileSize = file.filesize
                           ? formatFileSize(file.filesize)
-                          : 'N/A';
+                          : 'PDF';
 
                         return (
                           <div
                             key={doc.id}
                             className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
                           >
-                            <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-neutral-900 truncate">
-                                {doc.title.rendered}
-                              </p>
+                            <div className="min-w-0 flex-1">
+                              <p className="font-semibold text-neutral-900 truncate">{doc.title.rendered}</p>
                               <p className="text-sm text-neutral-500">{fileSize}</p>
                             </div>
-                            {file?.url ? (
+                            {file.url ? (
                               <a
                                 href={file.url}
                                 download
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-primary hover:text-primary-hover transition-colors ml-3 flex-shrink-0"
+                                className="text-primary hover:text-primary-hover transition-colors ml-3"
                                 aria-label={`Baixar ${doc.title.rendered}`}
-                                title="Baixar relatório"
                               >
                                 <Download size={22} />
                               </a>
                             ) : (
-                              <span className="text-neutral-400 opacity-60 ml-3 flex-shrink-0" title="Arquivo não disponível">
+                              <span className="text-neutral-400 opacity-60 ml-3" title="Arquivo não disponível">
                                 <Download size={22} />
                               </span>
                             )}
@@ -208,37 +167,35 @@ export default function Accounts() {
                 );
               })}
             </div>
-          </section>
-        )} */}
+          )}
 
-            <h2 className="text-3xl font-bold text-neutral-900">Relatórios Financeiros por Ano</h2>
-          </div>
-
-          <div className="space-y-8">
-            {reports.map((report) => (
-              <div key={report.year} className="bg-white rounded-xl p-8 shadow-md">
-                <h3 className="text-2xl font-bold text-neutral-900 mb-6">Ano {report.year}</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {report.documents.map((doc) => (
-                    <div
-                      key={doc.name}
-                      className="flex items-center justify-between p-4 bg-neutral-50 rounded-lg hover:bg-neutral-100 transition-colors"
-                    >
-                      <div>
-                        <p className="font-semibold text-neutral-900">{doc.name}</p>
-                        <p className="text-sm text-neutral-500">{doc.size}</p>
-                      </div>
-                      <button className="text-primary hover:text-primary-hover transition-colors">
-                        <Download size={22} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+          {!error && sortedYears.length === 0 && (
+            <section className="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-neutral-100 text-center">
+              <h3 className="text-2xl font-bold text-neutral-900 mb-3">Nenhum relatório disponível</h3>
+              <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
+                Ainda não encontramos relatórios de prestação de contas publicados nesta área. Se precisar de informações
+                financeiras específicas, entre em contato com a equipe responsável.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a
+                  href="mailto:financeiro@fundacao193.org.br?subject=Solicitação%20de%20Prestação%20de%20Contas"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+                >
+                  Solicitar por E-mail
+                </a>
+                <button
+                  onClick={loadContas}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-neutral-100 text-neutral-700 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+                >
+                  <RotateCw size={16} />
+                  Atualizar lista
+                </button>
               </div>
-            ))}
-          </div>
+            </section>
+          )}
         </section>
 
+        {/* Conteudo institucional hardcoded */}
         <section className="grid md:grid-cols-2 gap-8 mb-16">
           <div className="bg-white rounded-2xl p-8 shadow-md">
             <div className="flex items-center gap-3 mb-6">

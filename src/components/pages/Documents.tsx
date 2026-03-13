@@ -1,122 +1,60 @@
-// ==============================================================================
-// IMPORTS - Descomentar quando ativar API
-// ==============================================================================
-// import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, FileText, Download, Folder } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, FileText, Download, Folder, RotateCw } from 'lucide-react';
 import PageLoader from '../PageLoader';
-// import { fetchDocumentos } from '../../services/api';
-// import type { Documento } from '../../types/documents';
-// import { isDocumentoInstitucional } from '../../types/documents';
-// import { formatFileSize } from '../../utils/format';
+import { fetchDocumentos } from '../../services/api';
+import type { Documento } from '../../types/documents';
+import { isDocumentoInstitucional } from '../../types/documents';
+import { formatFileSize } from '../../utils/format';
+import { extractDocumentFile } from '../../lib/wordpress-utils';
 
 export default function Documents() {
-  // ============================================================================
-  // CÓDIGO PRONTO PARA API - DESCOMENTAR QUANDO WORDPRESS ESTIVER PRONTO
-  // ============================================================================
-  // const [documents, setDocuments] = useState<Documento[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const hasFetched = useRef(false);
-  
-  // Descomente a linha abaixo quando descomentar o código de API
-  // if (loading) return <PageLoader message="Carregando documentos..." />;
+  const [documents, setDocuments] = useState<Documento[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const hasFetched = useRef(false);
 
-  // useEffect(() => {
-  //   if (hasFetched.current) return;
-  //   hasFetched.current = true;
-  //   
-  //   async function loadDocuments() {
-  //     try {
-  //       const data = await fetchDocumentos();
-  //       // Filtra apenas documentos institucionais (exclui editais e prestação de contas)
-  //       const docsInstitucionais = data.filter(doc => isDocumentoInstitucional(doc));
-  //       setDocuments(docsInstitucionais);
-  //     } catch (err) {
-  //       setError('Não conseguimos carregar os documentos. Tente novamente mais tarde.');
-  //       console.error('Erro ao carregar documentos:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   loadDocuments();
-  // }, []);
+  const loadDocuments = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchDocumentos();
+      const docsInstitucionais = data.filter((doc) => isDocumentoInstitucional(doc));
+      setDocuments(docsInstitucionais);
+    } catch (err) {
+      console.error('Erro ao carregar documentos:', err);
+      setError('Não conseguimos carregar os documentos. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // // Agrupar documentos por tipo (usando taxonomy _embedded)
-  // const groupedByType = documents.reduce((acc, doc) => {
-  //   const tipoTerm = doc._embedded?.['wp:term']?.[0]?.find(
-  //     term => term.taxonomy === 'tipo_documento'
-  //   );
-  //   const category = tipoTerm?.name || 'Outros';
-  //   if (!acc[category]) acc[category] = [];
-  //   acc[category].push(doc);
-  //   return acc;
-  // }, {} as Record<string, Documento[]>);
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    loadDocuments();
+  }, []);
 
-  // // Ordenar dentro de cada categoria por data (mais recentes primeiro)
-  // Object.values(groupedByType).forEach(docs => {
-  //   docs.sort((a, b) => {
-  //     const aDate = a.acf?.data_publicacao || '';
-  //     const bDate = b.acf?.data_publicacao || '';
-  //     return bDate.localeCompare(aDate);
-  //   });
-  // });
-  //
-  // // Ordenar grupos por ano em ordem decrescente (2026 → 2023)
-  // const sortedByYear = Object.entries(groupedByType)
-  //   .sort(([yearA], [yearB]) => {
-  //     const numA = Number(yearA) || 0;
-  //     const numB = Number(yearB) || 0;
-  //     return numB - numA;
-  //   })
-  //   .reduce((acc, [year, docs]) => {
-  //     acc[year] = docs;
-  //     return acc;
-  //   }, {} as Record<string, Documento[]>);
-  // ============================================================================
+  const groupedByType = documents.reduce((acc, doc) => {
+    const tipoTerm = doc._embedded?.['wp:term']?.[0]?.find(
+      (term) => term.taxonomy === 'tipo_documento'
+    );
+    const category = tipoTerm?.name || 'Outros';
+    if (!acc[category]) acc[category] = [];
+    acc[category].push(doc);
+    return acc;
+  }, {} as Record<string, Documento[]>);
 
-  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
-  const documentCategories = [
-    {
-      name: 'Documentos Institucionais',
-      icon: Folder,
-      files: [
-        { name: 'Estatuto Social', size: '1.2 MB', date: '2023' },
-        { name: 'Regimento Interno', size: '890 KB', date: '2023' },
-        { name: 'Código de Ética e Conduta', size: '650 KB', date: '2022' },
-        { name: 'Política de Privacidade', size: '520 KB', date: '2023' },
-      ],
-    },
-    {
-      name: 'Relatórios de Gestão',
-      icon: Folder,
-      files: [
-        { name: 'Relatório de Atividades 2023', size: '2.8 MB', date: '2023' },
-        { name: 'Relatório de Atividades 2022', size: '2.5 MB', date: '2022' },
-        { name: 'Relatório de Atividades 2021', size: '2.2 MB', date: '2021' },
-        { name: 'Plano Estratégico 2024-2027', size: '1.5 MB', date: '2024' },
-      ],
-    },
-    {
-      name: 'Termos de Referência',
-      icon: Folder,
-      files: [
-        { name: 'TR - Centro de Treinamento Avançado', size: '1.8 MB', date: '2023' },
-        { name: 'TR - Modernização de Frota', size: '1.3 MB', date: '2023' },
-        { name: 'TR - Pesquisa e Inovação', size: '950 KB', date: '2022' },
-        { name: 'TR - Capacitação Profissional', size: '1.1 MB', date: '2023' },
-      ],
-    },
-    {
-      name: 'Normas e Procedimentos',
-      icon: Folder,
-      files: [
-        { name: 'Manual de Procedimentos Operacionais', size: '3.2 MB', date: '2023' },
-        { name: 'Guia de Boas Práticas', size: '2.1 MB', date: '2023' },
-        { name: 'Protocolo de Segurança Institucional', size: '1.4 MB', date: '2022' },
-        { name: 'Política de Gestão de Conflitos', size: '890 KB', date: '2023' },
-      ],
-    },
-  ];
+  Object.values(groupedByType).forEach((docs) => {
+    docs.sort((a, b) => {
+      const aDate = a.acf?.data_publicacao || a.date || '';
+      const bDate = b.acf?.data_publicacao || b.date || '';
+      return bDate.localeCompare(aDate);
+    });
+  });
+
+  if (loading) {
+    return <PageLoader message="Carregando documentos..." />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -135,79 +73,22 @@ export default function Documents() {
           Acesso a documentos, manuais, normas e procedimentos da Fundação 193.
         </p>
 
-        {/* ====================================================================== */}
-        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {loading && (
-          <div className="flex items-center justify-center py-16">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-neutral-600">Carregando documentos...</p>
+        {error && (
+          <div className="mb-10 max-w-2xl bg-red-50 border border-red-200 rounded-lg p-6 flex items-center gap-4">
+            <div className="flex-1">
+              <p className="text-red-700 font-medium mb-2">{error}</p>
+              <button
+                onClick={loadDocuments}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                <RotateCw size={16} />
+                Tentar Novamente
+              </button>
             </div>
           </div>
         )}
 
-        {error && (
-          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
-            <p className="text-red-600 mb-4 font-medium">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
-            >
-              Tentar Novamente
-            </button>
-          </div>
-        )} */}
-
-        {/* ====================================================================== */}
-        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-
-        <div className="space-y-12">
-          {documentCategories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <section key={category.name}>
-                <div className="flex items-center gap-3 mb-6">
-                  <Icon size={28} className="text-icon-fg" />
-                  <h2 className="text-2xl font-bold text-neutral-900">{category.name}</h2>
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {category.files.map((file) => (
-                    <div
-                      key={file.name}
-                      className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-3">
-                        <FileText size={20} className="text-icon-fg" />
-                        <div>
-                          <p className="font-semibold text-neutral-900">{file.name}</p>
-                          <p className="text-xs text-neutral-500">{file.size} • {file.date}</p>
-                        </div>
-                      </div>
-                      {/* Placeholder download - not available yet */}
-                      <a
-                        href="#"
-                        aria-disabled="true"
-                        tabIndex={-1}
-                        onClick={(e) => e.preventDefault()}
-                        title="Disponível em breve"
-                        className="text-neutral-400 opacity-60 cursor-not-allowed transition-colors"
-                      >
-                        <Download size={20} />
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
-
-        {/* ====================================================================== */}
-        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {!loading && !error && (
+        {!error && (
           <div className="space-y-12">
             {Object.entries(groupedByType).map(([category, docs]) => (
               <section key={category}>
@@ -217,14 +98,14 @@ export default function Documents() {
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
                   {docs.map((doc) => {
-                    const file = doc.acf?.arquivo_pdf;
-                    const fileSize = file?.filesize
+                    const file = extractDocumentFile(doc);
+                    const fileSize = file.filesize
                       ? formatFileSize(file.filesize)
-                      : 'N/A';
+                      : 'PDF';
                     const year = doc.acf?.data_publicacao
                       ? doc.acf.data_publicacao.substring(0, 4)
-                      : 'N/A';
-                    
+                      : doc.date?.substring(0, 4) || 'N/A';
+
                     return (
                       <div
                         key={doc.id}
@@ -236,7 +117,7 @@ export default function Documents() {
                             <p className="font-semibold text-neutral-900 truncate">
                               {doc.title.rendered}
                             </p>
-                            {doc.acf?.descricao_curta && (
+                            {'descricao_curta' in (doc.acf || {}) && doc.acf?.descricao_curta && (
                               <p className="text-sm text-neutral-600 line-clamp-1">
                                 {doc.acf.descricao_curta}
                               </p>
@@ -246,7 +127,7 @@ export default function Documents() {
                             </p>
                           </div>
                         </div>
-                        {file?.url ? (
+                        {file.url ? (
                           <a
                             href={file.url}
                             download
@@ -270,8 +151,34 @@ export default function Documents() {
               </section>
             ))}
           </div>
-        )} */}
+        )}
 
+        {!error && documents.length === 0 && (
+          <section className="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-neutral-100 text-center mb-12">
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Nenhum documento disponível</h3>
+            <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
+              Ainda não encontramos documentos institucionais publicados nesta área. Se precisar de um arquivo específico,
+              nossa equipe pode ajudar.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href="mailto:documentos@fundacao193.org.br?subject=Solicitação%20de%20Documento"
+                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+              >
+                Solicitar por E-mail
+              </a>
+              <button
+                onClick={loadDocuments}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-neutral-100 text-neutral-700 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+              >
+                <RotateCw size={16} />
+                Atualizar lista
+              </button>
+            </div>
+          </section>
+        )}
+
+        {/* Conteudo institucional hardcoded */}
         <section className="mt-16 grid md:grid-cols-2 gap-8">
           <div className="bg-white rounded-2xl p-8 shadow-md">
             <h3 className="text-2xl font-bold text-neutral-900 mb-6">Solicitação de Documentos</h3>
