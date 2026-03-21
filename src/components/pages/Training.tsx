@@ -48,7 +48,8 @@ const STATUS_MAP: Record<
   },
 };
 
-const USE_HARDCODED_TRAINING = false;
+const USE_HARDCODED_TRAINING = true;
+const SHOW_TRAINING_CARDS = false;
 
 const HARDCODED_TRAININGS: Training[] = [
   {
@@ -236,105 +237,109 @@ export default function Training() {
           internacionais e metodologias inovadoras.
         </p>
 
-        {/* Fonte principal: API. Mantido hardcoded apenas como fallback opcional de desenvolvimento. */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {trainings.map(training => {
-            const acf = training.acf;
-            const statusKey = normalizeStatus(acf?.cap_status);
-            const status =
-              STATUS_MAP[statusKey] ?? {
-                label: acf?.cap_status || 'Status',
-                className: 'bg-gray-200 text-gray-700',
-                canSignup: false,
-              };
+        {SHOW_TRAINING_CARDS && (
+          <>
+            {/* Fonte principal: API. Mantido hardcoded apenas como fallback opcional de desenvolvimento. */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {trainings.map(training => {
+                const acf = training.acf;
+                const statusKey = normalizeStatus(acf?.cap_status);
+                const status =
+                  STATUS_MAP[statusKey] ?? {
+                    label: acf?.cap_status || 'Status',
+                    className: 'bg-gray-200 text-gray-700',
+                    canSignup: false,
+                  };
 
-            const imageUrl = extractImageUrl(acf?.cap_feature_image);
-            const dateLabel = formatFriendlyDate(
-              acf?.cap_start_date,
-              acf?.cap_end_date
-            );
+                const imageUrl = extractImageUrl(acf?.cap_feature_image);
+                const dateLabel = formatFriendlyDate(
+                  acf?.cap_start_date,
+                  acf?.cap_end_date
+                );
 
-            const showSignup =
-              status.canSignup && Boolean(acf?.cap_signup_link);
+                const showSignup =
+                  status.canSignup && Boolean(acf?.cap_signup_link);
 
-            return (
-              <div
-                key={training.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col"
-              >
-                {imageUrl && (
-                  <img
-                    src={imageUrl}
-                    alt={training.title?.rendered}
-                    className="h-40 w-full object-cover"
-                  />
-                )}
+                return (
+                  <div
+                    key={training.id}
+                    className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col"
+                  >
+                    {imageUrl && (
+                      <img
+                        src={imageUrl}
+                        alt={training.title?.rendered}
+                        className="h-40 w-full object-cover"
+                      />
+                    )}
 
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold mb-2">
-                    {training.title?.rendered}
-                  </h3>
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3 className="text-lg font-bold mb-2">
+                        {training.title?.rendered}
+                      </h3>
 
-                  <p className="text-sm text-neutral-600 mb-4">
-                    {acf?.cap_summary}
-                  </p>
+                      <p className="text-sm text-neutral-600 mb-4">
+                        {acf?.cap_summary}
+                      </p>
 
-                  <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
-                    <div className="flex items-center gap-4 flex-wrap">
-                      {acf?.cap_workload && (
-                        <span className="flex items-center gap-1">
-                          <Clock size={16} className="text-icon-fg" />
-                          {acf.cap_workload}
+                      <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
+                        <div className="flex items-center gap-4 flex-wrap">
+                          {acf?.cap_workload && (
+                            <span className="flex items-center gap-1">
+                              <Clock size={16} className="text-icon-fg" />
+                              {acf.cap_workload}
+                            </span>
+                          )}
+
+                          {dateLabel && (
+                            <span className="flex items-center gap-1">
+                              <Calendar size={16} className="text-icon-fg" />
+                              {dateLabel}
+                            </span>
+                          )}
+                        </div>
+
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${status.className}`}
+                        >
+                          {status.label}
                         </span>
-                      )}
+                      </div>
 
-                      {dateLabel && (
-                        <span className="flex items-center gap-1">
-                          <Calendar size={16} className="text-icon-fg" />
-                          {dateLabel}
-                        </span>
+                      {showSignup && (
+                        <a
+                          href={acf?.cap_signup_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+                            mt-auto
+                            text-center
+                            px-4
+                            py-2
+                            bg-primary
+                            text-white
+                            rounded-md
+                            text-sm
+                            font-medium
+                            hover:bg-primary-hover
+                            transition
+                          "
+                        >
+                          Inscrever-se
+                        </a>
                       )}
                     </div>
-
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${status.className}`}
-                    >
-                      {status.label}
-                    </span>
                   </div>
+                );
+              })}
+            </div>
 
-                  {showSignup && (
-                    <a
-                      href={acf?.cap_signup_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                        mt-auto
-                        text-center
-                        px-4
-                        py-2
-                        bg-primary
-                        text-white
-                        rounded-md
-                        text-sm
-                        font-medium
-                        hover:bg-primary-hover
-                        transition
-                      "
-                    >
-                      Inscrever-se
-                    </a>
-                  )}
-                </div>
+            {trainings.length === 0 && (
+              <div className="bg-white rounded-xl p-8 shadow-md text-center text-neutral-600 mb-16">
+                Nenhuma capacitação disponível no momento.
               </div>
-            );
-          })}
-        </div>
-
-        {trainings.length === 0 && (
-          <div className="bg-white rounded-xl p-8 shadow-md text-center text-neutral-600 mb-16">
-            Nenhuma capacitação disponível no momento.
-          </div>
+            )}
+          </>
         )}
 
         {/* Blocos estáticos */}

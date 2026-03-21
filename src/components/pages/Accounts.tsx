@@ -60,8 +60,6 @@ export default function Accounts() {
   const financialMetrics = [
     { label: 'Relatórios Financeiros Publicados', value: String(contas.length) },
     { label: 'Anos com prestação disponível', value: String(sortedYears.length) },
-    { label: 'Indicadores de Impacto', value: 'Em consolidação' },
-    { label: 'Compromisso com a Transparência', value: 'Permanente' },
   ];
 
   if (loading) {
@@ -101,7 +99,7 @@ export default function Accounts() {
         )}
 
         {/* Conteudo parcialmente hardcoded ate consolidacao completa dos indicadores */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           {financialMetrics.map((metric) => (
             <div key={metric.label} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-neutral-600 text-sm font-medium mb-2">{metric.label}</p>
@@ -109,10 +107,6 @@ export default function Accounts() {
             </div>
           ))}
         </div>
-
-        <p className="text-sm text-neutral-500 mb-12">
-          Os números apresentados nesta área são ilustrativos e serão substituídos pelos dados oficiais da Fundação 193, garantindo informações reais, auditáveis e em conformidade com as exigências legais.
-        </p>
 
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
@@ -264,8 +258,15 @@ export default function Accounts() {
           <h3 className="text-2xl font-bold text-neutral-900 mb-6">Informações de Contato para Dúvidas</h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <p className="font-semibold text-neutral-900 mb-2">Departamento Financeiro</p>
-              <p className="text-neutral-600 mb-2">Email: financeiro@fundacao193.org.br</p>
+              <p className="text-neutral-600 mb-2">
+                Email:{' '}
+                <a
+                  href="mailto:contato@fundacao193.org.br"
+                  className="text-primary hover:text-primary-hover underline transition-colors"
+                >
+                  contato@fundacao193.org.br
+                </a>
+              </p>
               <p className="text-neutral-600">Telefone: (61) 99382-3763</p>
             </div>
           </div>
