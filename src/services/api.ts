@@ -574,6 +574,14 @@ export function fetchPrestacaoContas(perPage: number = 20) {
 }
 
 /**
+ * Busca apenas documentos institucionais
+ * Usado na página Documents.tsx
+ */
+export function fetchDocumentosInstitucionais(perPage: number = 20) {
+  return fetchDocumentosPorTipo('documentos-institucionais', perPage);
+}
+
+/**
  * Busca documento individual por ID
  * @param id - ID do documento
  * @returns Documento completo

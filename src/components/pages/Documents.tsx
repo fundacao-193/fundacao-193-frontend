@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, FileText, Download, Folder, RotateCw } from 'lucide-react';
 import PageLoader from '../PageLoader';
-import { fetchDocumentos } from '../../services/api';
+import { fetchDocumentosInstitucionais } from '../../services/api';
 import type { Documento } from '../../types/documents';
-import { isDocumentoInstitucional } from '../../types/documents';
 import { formatFileSize } from '../../utils/format';
 import { extractDocumentFile } from '../../lib/wordpress-utils';
 
@@ -17,9 +16,8 @@ export default function Documents() {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchDocumentos();
-      const docsInstitucionais = data.filter((doc) => isDocumentoInstitucional(doc));
-      setDocuments(docsInstitucionais);
+      const data = await fetchDocumentosInstitucionais();
+      setDocuments(data);
     } catch (err) {
       console.error('Erro ao carregar documentos:', err);
       setError('Não conseguimos carregar os documentos. Tente novamente mais tarde.');
@@ -34,11 +32,25 @@ export default function Documents() {
     loadDocuments();
   }, []);
 
-  const groupedByType = documents.reduce((acc, doc) => {
+  const getTipoDocumentoNome = (doc: Documento): string => {
     const tipoTerm = doc._embedded?.['wp:term']?.[0]?.find(
       (term) => term.taxonomy === 'tipo_documento'
     );
-    const category = tipoTerm?.name || 'Outros';
+
+    if (tipoTerm?.name) {
+      return tipoTerm.name;
+    }
+
+    const tipoId = doc.tipo_documento?.[0];
+    if (tipoId === 4) return 'Documentos Institucionais';
+    if (tipoId === 3) return 'Prestação de Contas';
+    if (tipoId === 2) return 'Edital';
+
+    return 'Outros';
+  };
+
+  const groupedByType = documents.reduce((acc, doc) => {
+    const category = getTipoDocumentoNome(doc);
     if (!acc[category]) acc[category] = [];
     acc[category].push(doc);
     return acc;
