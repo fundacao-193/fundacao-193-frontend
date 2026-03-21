@@ -104,10 +104,18 @@ export default function Documents() {
           <div className="space-y-12">
             {Object.entries(groupedByType).map(([category, docs]) => (
               <section key={category}>
+                {(() => {
+                  const displayCategory = category === 'Documentos Institucionais'
+                    ? 'Documentos de Transparência'
+                    : category;
+
+                  return (
                 <div className="flex items-center gap-3 mb-6">
                   <Folder size={28} className="text-icon-fg" />
-                  <h2 className="text-2xl font-bold text-neutral-900">{category}</h2>
+                  <h2 className="text-2xl font-bold text-neutral-900">{displayCategory}</h2>
                 </div>
+                  );
+                })()}
                 <div className="grid md:grid-cols-2 gap-4">
                   {docs.map((doc) => {
                     const file = extractDocumentFile(doc);
@@ -169,7 +177,7 @@ export default function Documents() {
           <section className="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-neutral-100 text-center mb-12">
             <h3 className="text-2xl font-bold text-neutral-900 mb-3">Nenhum documento disponível</h3>
             <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
-              Ainda não encontramos documentos institucionais publicados nesta área. Se precisar de um arquivo específico,
+              Ainda não encontramos documentos de transparência publicados nesta área. Se precisar de um arquivo específico,
               nossa equipe pode ajudar.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
