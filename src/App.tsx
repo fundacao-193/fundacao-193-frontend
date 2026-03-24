@@ -24,6 +24,7 @@ const OurPartnerships = lazy(() => import('./components/pages/OurPartnerships'))
 const Accounts = lazy(() => import('./components/pages/Accounts'));
 const Edits = lazy(() => import('./components/pages/Edits'));
 const Documents = lazy(() => import('./components/pages/Documents'));
+const Integrity = lazy(() => import('./components/pages/Integrity'));
 const LGPD = lazy(() => import('./components/pages/LGPD'));
 const Collaborate = lazy(() => import('./components/pages/Collaborate'));
 const NewsList = lazy(() => import('./components/pages/NewsList'));
@@ -135,6 +136,9 @@ function App() {
       case 'documentos':
         document.title = `Documentos - ${baseTitle}`;
         break;
+      case 'integridade':
+        document.title = `Integridade - ${baseTitle}`;
+        break;
       case 'lgpd':
         document.title = `LGPD - ${baseTitle}`;
         break;
@@ -200,6 +204,8 @@ function App() {
         return <Edits />;
       case 'documentos':
         return <Documents />;
+      case 'integridade':
+        return <Integrity />;
       case 'lgpd':
         return <LGPD />;
       case 'colabore':

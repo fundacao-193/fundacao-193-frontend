@@ -109,6 +109,15 @@ const LOCAL_CONTENT: SearchResultItem[] = [
   {
     id: 7,
     type: 'pagina',
+    title: 'Integridade',
+    excerpt:
+      'Programa de integridade com acesso ao código de ética, estatuto, regimento interno e políticas institucionais.',
+    link: '#integridade',
+    keywords: ['integridade', 'programa de integridade', 'codigo de etica', 'estatuto', 'regimento'],
+  },
+  {
+    id: 8,
+    type: 'pagina',
     title: 'LGPD e Privacidade',
     excerpt:
       'Informações sobre tratamento de dados pessoais, política de privacidade e conformidade com a LGPD.',
@@ -116,7 +125,7 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['lgpd', 'privacidade', 'dados pessoais', 'política de privacidade'],
   },
   {
-    id: 8,
+    id: 9,
     type: 'pagina',
     title: 'Equipe e Governança',
     excerpt:
@@ -125,7 +134,7 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['equipe', 'diretoria', 'conselho', 'governança', 'organograma'],
   },
   {
-    id: 9,
+    id: 10,
     type: 'pagina',
     title: 'Impacto e Resultados',
     excerpt:
@@ -134,7 +143,7 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['impacto', 'resultados', 'indicadores', 'projetos apoiados'],
   },
   {
-    id: 10,
+    id: 11,
     type: 'pagina',
     title: 'Notícias',
     excerpt:
@@ -152,7 +161,7 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['atividades', 'linha do tempo', 'timeline', 'todas', 'cronologia', 'histórico de atividades'],
   },
   {
-    id: 11,
+    id: 12,
     type: 'pagina',
     title: 'Contato',
     excerpt:
@@ -161,7 +170,7 @@ const LOCAL_CONTENT: SearchResultItem[] = [
     keywords: ['contato', 'fale conosco', 'telefone', 'endereço', 'e-mail'],
   },
   {
-    id: 12,
+    id: 16,
     type: 'pagina',
     title: 'Colabore e Doações',
     excerpt:

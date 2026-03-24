@@ -198,6 +198,7 @@ fundacao-193/
 │   │   │   ├── Accounts.tsx         # Prestação de Contas
 │   │   │   ├── Edits.tsx            # Editais
 │   │   │   ├── Documents.tsx        # Documentos
+│   │   │   ├── Integrity.tsx        # Programa de Integridade
 │   │   │   ├── NewsList.tsx         # Listagem de Notícias com filtros
 │   │   │   ├── NewsDetail.tsx       # Detalhes da Notícia
 │   │   │   ├── ProjectDetail.tsx    # Detalhes do Projeto
@@ -307,7 +308,23 @@ O site utiliza navegação baseada em hash (#), permitindo:
    - Prestação de Contas (por ano)
    - Editais (por ano, com status)
    - Documentos (por categoria)
+   - Integridade (documentos oficiais em PDF)
    - LGPD
+
+### Programa de Integridade
+
+- Rota dedicada: `#integridade`
+- Página em `src/components/pages/Integrity.tsx`
+- Documentos estáticos em `public/pdfs/integridade/`:
+  - Código de Ética
+  - Estatuto Social
+  - Manual de Identidade Visual
+  - Regimento Interno
+  - Política de Segurança
+  - Política de Recebimento e Tratamento de Denúncias
+  - Regulamento do Processo Eleitoral Interno
+  - Planejamento Estratégico (versão resumida)
+  - Manual de Compras
 
 ### Funcionalidades Interativas
 
@@ -586,4 +603,4 @@ Desenvolvido com dedicação para apoiar quem salva vidas.
 ---
 
 **Versão:** 1.0.0
-**Última atualização:** Janeiro 2026
+**Última atualização:** Março 2026

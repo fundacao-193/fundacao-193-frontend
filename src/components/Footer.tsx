@@ -20,6 +20,7 @@ export default function Footer() {
       { label: 'Prestação de Contas', href: '#prestacao-contas' },
       { label: 'Editais', href: '#editais' },
       { label: 'Documentos', href: '#documentos' },
+      { label: 'Integridade', href: '#integridade' },
       { label: 'LGPD', href: '#lgpd' },
     ],
   };
