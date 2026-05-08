@@ -10,7 +10,15 @@ export interface Project {
     rendered: string;
   };
   acf?: {
-    impacto?: string;
-    project_image?: string;
+    project_client?: string;
+    project_subtitle?: string;
+    project_summary?: string;
+    project_featured_image?: string;  // Seguindo padrão WordPress ACF
+    project_gallery?: Array<{ url: string; title?: string; alt?: string }>;  // Galeria de imagens
+    project_status?: string;
+    project_start_date?: string;
+    project_end_date?: string;
+    project_url?: string;
+    impacto?: string;  // Legacy field - manter para compatibilidade
   };
 }

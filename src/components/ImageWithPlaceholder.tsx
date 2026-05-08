@@ -4,12 +4,16 @@ type ImageWithPlaceholderProps = {
   src?: string | null;
   alt: string;
   containerClassName?: string;
+  width?: string | number;
+  height?: string | number;
 };
 
 export default function ImageWithPlaceholder({
   src,
   alt,
   containerClassName = 'aspect-[16/10]',
+  width,
+  height,
 }: ImageWithPlaceholderProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -17,7 +21,10 @@ export default function ImageWithPlaceholder({
   const showPlaceholder = !showImage || !isLoaded;
 
   return (
-    <div className={`${containerClassName} relative overflow-hidden bg-white`}>
+    <div 
+      className={`${containerClassName} relative overflow-hidden bg-white`}
+      style={{ width, height }}
+    >
       {showPlaceholder && (
         <div className="absolute inset-0 flex items-center justify-center bg-white">
           <img

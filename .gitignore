@@ -21,6 +21,11 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
 # Markdown files (except README.md)
 *.md
 !README.md
+
+# Test files and platform configs
+test-*.ps1
+netlify.toml

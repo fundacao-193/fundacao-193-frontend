@@ -15,13 +15,13 @@ export default function About() {
               Quem Somos
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-neutral-900 mb-6">
-              Instituição de apoio ao Corpo de Bombeiros do Distrito Federal
+              Fundação 193 – Instituição de Apoio ao Corpo de Bombeiros Militar do Distrito Federal
             </h2>
             <p className="text-lg text-neutral-600 mb-6 leading-relaxed">
-              A Fundação 193 é uma instituição sem fins lucrativos criada para apoiar e fortalecer o Corpo de Bombeiros Militar do Distrito Federal, atuando como um elo entre a Corporação e a sociedade.
+              A Fundação 193 é uma instituição sem fins lucrativos criada para apoiar e fortalecer o Corpo de Bombeiros Militar do Distrito Federal, atuando como elo institucional entre a Corporação, a sociedade e os parceiros públicos e privados.
             </p>
             <p className="text-lg text-neutral-600 mb-8 leading-relaxed">
-            Nossa atuação está voltada ao desenvolvimento de projetos socioambientais, preventivos, culturais, educacionais e desportivos, contribuindo para a capacitação de profissionais, o aprimoramento das operações e a promoção da segurança e do bem-estar da população.
+              Nossa atuação está organizada em frentes estratégicas de apoio operacional, capacitação e treinamentos, eventos institucionais e projetos sociais, contribuindo para a prevenção, a segurança e o bem-estar da população.
             </p>
             <a
               href="#nossa-historia"
@@ -41,6 +41,8 @@ export default function About() {
                     src="/logo-reduzida.png"
                     alt="Fundação 193 Logo"
                     className="h-12 w-auto"
+                    width="48"
+                    height="48"
                     loading="lazy"
                     decoding="async"
                   />
@@ -48,6 +50,7 @@ export default function About() {
               )}
               
               <picture>
+                <source srcSet="/images/lineandFlag.avif" type="image/avif" />
                 <source srcSet="/images/lineandFlag.webp" type="image/webp" />
                 <img
                   src="/images/lineandFlag.jpg"
@@ -55,6 +58,8 @@ export default function About() {
                   className={`w-full h-full object-cover transition-opacity duration-500 ${
                     isImageLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
+                  width="1200"
+                  height="900"
                   loading="lazy"
                   decoding="async"
                   onLoad={() => setIsImageLoaded(true)}
@@ -78,7 +83,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Missão</h3>
             <p className="text-neutral-600 leading-relaxed">
-            Apoiar o Corpo de Bombeiros Militar do Distrito Federal por meio do desenvolvimento de projetos e ações que fortaleçam suas operações, promovam a prevenção, a segurança e o bem-estar da sociedade.
+              Apoiar institucionalmente o Corpo de Bombeiros Militar do Distrito Federal, captando e gerindo recursos, projetos e parcerias que fortaleçam suas operações, promovam a prevenção, a segurança e o bem-estar da sociedade.
             </p>
           </div>
 
@@ -90,7 +95,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Visão</h3>
             <p className="text-neutral-600 leading-relaxed">
-            Consolidar-se como instituição de referência no apoio institucional ao Corpo de Bombeiros Militar do Distrito Federal, fortalecendo a integração com a sociedade e ampliando o impacto social de suas ações.
+              Consolidar-se como fundação de referência nacional em transparência, governança e impacto social no apoio ao Corpo de Bombeiros Militar do Distrito Federal, reconhecida por doadores, parceiros e pela sociedade.
             </p>
           </div>
 
@@ -102,7 +107,7 @@ export default function About() {
             </div>
             <h3 className="text-xl font-bold text-neutral-900 mb-3">Valores</h3>
             <p className="text-neutral-600 leading-relaxed">
-            Ética, transparência, compromisso social, responsabilidade institucional, inovação, solidariedade e respeito à vida.
+              Ética, transparência, compromisso social, responsabilidade institucional, inovação, solidariedade, respeito à vida e à coisa pública.
             </p>
           </div>
         </div>

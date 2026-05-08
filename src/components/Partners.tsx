@@ -56,6 +56,8 @@ export default function Partners() {
                   src={imageSrc}
                   alt={partner.name}
                   className="h-20 md:h-24 w-auto object-contain transition-all duration-300 hover:scale-110"
+                  width="150"
+                  height="80"
                   loading="lazy"
                   decoding="async"
                   onError={(e) => {
@@ -207,6 +209,8 @@ export default function Partners() {
                   transition-all
                   hover:opacity-100
                 "
+                width="150"
+                height="80"
                 onError={(e) => {
                   console.error('Erro ao carregar logo:', logoUrl);
                   e.currentTarget.style.display = 'none';

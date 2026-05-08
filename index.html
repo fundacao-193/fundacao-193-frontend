@@ -41,14 +41,49 @@
     <link rel="icon" type="image/png" href="/logo-reduzida.png" />
     <link rel="apple-touch-icon" href="/logo-reduzida.png" />
     
-    <!-- Theme color for browser UI -->
-    <meta name="theme-color" content="#3d685d" />
+    <!-- Theme color for browser UI (white for status bar) -->
+    <meta name="theme-color" content="#ffffff" />
+    <!-- iOS status bar style (white background with dark icons) -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     
     <!-- Additional SEO -->
     <meta name="robots" content="index, follow" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
   </head>
   <body>
+    <!-- ====== GOOGLE TAG MANAGER (noscript) ====== -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5Z9SQKGV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <!-- Defer GTM loading until after page interactive (Web Vitals optimization) -->
+    <script>
+      // GTM IDs
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MMM20FTFR3', { 'send_page_view': false });
+      
+      // Load GTM after page interactive
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(() => {
+            var gtmScript = document.createElement('script');
+            gtmScript.async = true;
+            gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMM20FTFR3&cx=c&gtm=4e6321';
+            document.head.appendChild(gtmScript);
+          }, 3000); // Load GTM after 3 seconds to avoid blocking LCP
+        });
+      } else {
+        setTimeout(() => {
+          var gtmScript = document.createElement('script');
+          gtmScript.async = true;
+          gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-MMM20FTFR3&cx=c&gtm=4e6321';
+          document.head.appendChild(gtmScript);
+        }, 3000);
+      }
+    </script>
+    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

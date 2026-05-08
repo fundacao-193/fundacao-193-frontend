@@ -10,7 +10,7 @@ import Contact from './components/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
-import ThemeToggle from './components/ThemeToggle';
+// import ThemeToggle from './components/ThemeToggle';  // Desabilitado temporariamente
 import BackToTopButton from './components/BackToTopButton';
 
 // Code splitting: lazy load páginas internas
@@ -24,6 +24,7 @@ const OurPartnerships = lazy(() => import('./components/pages/OurPartnerships'))
 const Accounts = lazy(() => import('./components/pages/Accounts'));
 const Edits = lazy(() => import('./components/pages/Edits'));
 const Documents = lazy(() => import('./components/pages/Documents'));
+const Integrity = lazy(() => import('./components/pages/Integrity'));
 const LGPD = lazy(() => import('./components/pages/LGPD'));
 const Collaborate = lazy(() => import('./components/pages/Collaborate'));
 const NewsList = lazy(() => import('./components/pages/NewsList'));
@@ -120,6 +121,12 @@ function App() {
       case 'parcerias':
         document.title = `Parcerias - ${baseTitle}`;
         break;
+      case 'atividades':
+        document.title = `Atividades - ${baseTitle}`;
+        break;
+      case 'noticias':
+        document.title = `Notícias - ${baseTitle}`;
+        break;
       case 'prestacao-contas':
         document.title = `Prestação de Contas - ${baseTitle}`;
         break;
@@ -128,6 +135,9 @@ function App() {
         break;
       case 'documentos':
         document.title = `Documentos - ${baseTitle}`;
+        break;
+      case 'integridade':
+        document.title = `Integridade - ${baseTitle}`;
         break;
       case 'lgpd':
         document.title = `LGPD - ${baseTitle}`;
@@ -194,6 +204,8 @@ function App() {
         return <Edits />;
       case 'documentos':
         return <Documents />;
+      case 'integridade':
+        return <Integrity />;
       case 'lgpd':
         return <LGPD />;
       case 'colabore':
@@ -204,8 +216,8 @@ function App() {
           <>
             <Hero />
             <About />
-            <Impact />
             <Services />
+            <Impact />
             <News />
             <Partners />
             <Contact />

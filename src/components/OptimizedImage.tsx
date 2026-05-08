@@ -7,6 +7,10 @@ interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 
   alt: string;
   /** Classes CSS adicionais */
   className?: string;
+  /** Width em pixels ou CSS (ex: '100%', '400px') */
+  width?: string | number;
+  /** Height em pixels ou CSS (ex: 'auto', '300px') */
+  height?: string | number;
   /** Callback quando a imagem carregar */
   onLoad?: () => void;
   /** Callback quando houver erro */
@@ -21,6 +25,8 @@ export default function OptimizedImage({
   imageName,
   alt,
   className = '',
+  width,
+  height,
   onLoad,
   onError,
   loading = 'lazy',
@@ -44,7 +50,7 @@ export default function OptimizedImage({
 
   if (hasError) {
     return (
-      <div className={`bg-neutral-100 flex items-center justify-center ${className}`}>
+      <div className={`bg-neutral-100 flex items-center justify-center ${className}`} style={{ width, height }}>
         <img
           src="/logo-reduzida.png"
           alt="Fundação 193 Logo"
@@ -66,6 +72,8 @@ export default function OptimizedImage({
         src={fallbackSrc}
         alt={alt}
         className={className}
+        width={width}
+        height={height}
         loading={loading}
         decoding={decoding}
         onLoad={handleLoad}

@@ -1,5 +1,29 @@
-import { ArrowLeft, Linkedin, Mail } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
+
+import PresidenteDeHonraCarlosAlberto from '../../assets/teams/Presidente De Honra CARLOS ALBERTO DO NASCIMENTO.jpeg';
+import PresidenteWelingtonAlves from '../../assets/teams/Presidente WELINGTON ALVES DE OLIVEIRA.jpeg';
+import PresidenteMoisésAlves from '../../assets/teams/Presidente MOISÉS ALVES BARCELOS, Comandante-Geral.png';
+import DiretorExecutivoFranciscoRoberto from '../../assets/teams/Diretor Executivo FRANCISCO ROBERTO DE MATOS GUEDES.jpeg';
+import DiretorProjetosMauroAndre from '../../assets/teams/Diretor de Projetos MAURO ANDRÉ KAISER CABRAL.jpeg';
+import DiretorComunicacaoCleonioDourado from '../../assets/teams/Diretor de Comunicação CLEONIO DOURADO DE SOUZA.jpeg';
+import DiretorAdministrativoEnzoPereira from '../../assets/teams/Diretor Administrativo ENZO PEREIRA TEIXEIRA.jpeg';
+import DiretorTecnologiaHelonVieira from '../../assets/teams/Diretor de Tecnologia e Inovação HELON VIEIRA FLORINDO.jpeg';
+import ComplianceMauricioSilva from '../../assets/teams/Compliance MAURICIO SILVA DE OLIVEIRA.jpeg';
+import MembroMarianaSirimarco from '../../assets/teams/Membro MARIANA SIRIMARCO FERNANDES.png';
+import MembroWanderleiSantos from '../../assets/teams/Membro WANDERLEI SANTOS DA SILVA.jpeg';
+import MembroFernandoBeggiato from '../../assets/teams/Membro FERNANDO BEGGIATO BARROS.png';
+import MembroRaimundoSilva from '../../assets/teams/Membro RAIMUNDO DA SILVA RIBEIRO NETO.jpeg';
+import MembroDomingosMarcio from '../../assets/teams/Membro DOMINGOS MÁRCIO FERREIRA DA SILVA.jpeg';
+import MembroEnzoKleberJustino from '../../assets/teams/Membro KLEBER JUSTINO OLIVEIRA.jpeg';
+import MembroFlavioMurilo from '../../assets/teams/Membro FLÁVIO MURILO NUNES PEREIRA.jpeg';
+import MembroLisandroPaixao from '../../assets/teams/Membro LISANDRO PAIXÃO DOS SANTOS.png';
+import MembroAthosAlexandre from '../../assets/teams/Membro ATHOS ALEXANDRE FERREIRA CAMARGO.jpeg';
+import MembroPatriciaRaquel from '../../assets/teams/Membro PATRÍCIA RAQUEL BRAGA DINIZ PEVIDOR.jpeg';
+import SuplenteRosangelaFortaleza from '../../assets/teams/Suplente ROSÂNGELA FORTALEZA DE MIRANDA.jpeg';
+import SuplenteEsequielRosa from '../../assets/teams/Suplente ESEQUIEL ROSA EDUARDO.jpeg';
+import SuplenteEvertonRocha from '../../assets/teams/Suplente EVÉRTON ROCHA DA SILVEIRA.png';
+import SuplenteFlavioCosta from '../../assets/teams/Suplente FLÁVIO DA COSTA PORTELA.jpeg';
 
 interface TeamMember {
   id: string;
@@ -28,9 +52,9 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
   };
 
   const imageHeightClasses = {
-    large: 'h-36',
-    normal: 'h-32',
-    small: 'h-28',
+    large: 'h-64',
+    normal: 'h-56',
+    small: 'h-48',
   };
 
   return (
@@ -44,6 +68,8 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-8 w-auto"
+                width="32"
+                height="32"
                 loading="lazy"
                 decoding="async"
               />
@@ -53,8 +79,8 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
           <img
             src={member.image}
             alt={member.name}
-            className={`w-full h-full object-cover transition-all duration-500 ${
-              isImageLoaded ? 'opacity-100 group-hover:scale-110' : 'opacity-0'
+            className={`w-full h-full object-cover object-center transition-all duration-500 ${
+              isImageLoaded ? 'opacity-100 group-hover:scale-105' : 'opacity-0'
             }`}
             onLoad={() => setIsImageLoaded(true)}
             onError={() => setHasImageError(true)}
@@ -66,29 +92,7 @@ function OrgChartCard({ member, size = 'normal' }: { member: TeamMember; size?: 
           <h3 className="text-base font-bold text-neutral-900 mb-1 group-hover:text-primary transition-colors">
             {member.name}
           </h3>
-          <p className="text-sm font-semibold text-primary mb-3">{member.role}</p>
-
-          <div className="flex gap-2 justify-center pt-3 border-t border-slate-100">
-            <a
-              href="#"
-              aria-disabled="true"
-              tabIndex={-1}
-              title="Perfil em breve"
-              onClick={(e) => e.preventDefault()}
-              className="text-neutral-400 opacity-50 cursor-not-allowed hover:opacity-75 transition-opacity"
-            >
-              <Linkedin size={16} />
-            </a>
-            <a
-              href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
-                'Contato sobre ' + member.name,
-              )}`}
-              className="text-neutral-400 hover:text-primary transition-colors"
-              title={`Enviar e-mail para ${member.name}`}
-            >
-              <Mail size={16} />
-            </a>
-          </div>
+          <p className="text-sm font-semibold text-primary">{member.role}</p>
         </div>
       </article>
     </div>
@@ -124,18 +128,18 @@ export default function Team() {
   const executives: TeamMember[] = [
     {
       id: 'president',
-      name: 'Presidente de Honra',
+      name: 'Carlos Alberto do Nascimento',
       role: 'Presidente de Honra',
-      bio: 'Liderança institucional que inspira e orienta a atuação estratégica.',
-      image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&h=500&fit=crop',
+      bio: 'Liderança institucional que inspira e orienta a atuação estratégica da Fundação 193.',
+      image: PresidenteDeHonraCarlosAlberto,
       level: 'executive',
     },
     {
       id: 'ceo',
-      name: 'Dr. Carlos Fernando',
-      role: 'Presidente Executivo',
-      bio: 'Profissional com ampla experiência em gestão estratégica e operações.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop',
+      name: 'Moisés Alves Barcelos',
+      role: 'Presidente',
+      bio: 'Responsável pela condução executiva da Fundação 193 e pela implementação das diretrizes do Conselho.',
+      image: PresidenteMoisésAlves,
       level: 'executive',
     },
   ];
@@ -143,26 +147,50 @@ export default function Team() {
   const directors: TeamMember[] = [
     {
       id: 'coo',
-      name: 'Dra. Ana Paula Silva',
-      role: 'Diretora de Operações',
-      bio: 'Especialista em capacitação profissional e desenvolvimento organizacional.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop',
+      name: 'Francisco Roberto de Matos Guedes',
+      role: 'Diretor Executivo',
+      bio: 'Responsável pela coordenação geral das ações executivas e alinhamento estratégico da Fundação.',
+      image: DiretorExecutivoFranciscoRoberto,
       level: 'director',
     },
     {
       id: 'cpo',
-      name: 'Tenente Marcos Oliveira',
-      role: 'Diretor de Projetos Especiais',
-      bio: 'Oficial com expertise em planejamento estratégico e coordenação.',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=500&fit=crop',
+      name: 'Mauro André Kaiser Cabral',
+      role: 'Diretor de Projetos',
+      bio: 'Responsável pela estruturação, desenvolvimento e acompanhamento dos projetos institucionais.',
+      image: DiretorProjetosMauroAndre,
       level: 'director',
     },
     {
       id: 'cio',
-      name: 'Eng. Patricia Costa',
-      role: 'Diretora de Infraestrutura',
-      bio: 'Engenheira focada em modernização tecnológica e inovação.',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=500&fit=crop',
+      name: 'Cleonio Dourado de Souza',
+      role: 'Diretor de Comunicação',
+      bio: 'Responsável pelas estratégias de comunicação e relacionamento institucional da Fundação 193.',
+      image: DiretorComunicacaoCleonioDourado,
+      level: 'director',
+    },
+    {
+      id: 'administrativo',
+      name: 'Enzo Pereira Teixeira',
+      role: 'Diretor Administrativo',
+      bio: 'Responsável pela gestão administrativa e suporte às áreas estratégicas da Fundação.',
+      image: DiretorAdministrativoEnzoPereira,
+      level: 'director',
+    },
+    {
+      id: 'tecnologia-inovacao',
+      name: 'Helon Vieira Florindo',
+      role: 'Diretor de Tecnologia e Inovação',
+      bio: 'Responsável pela modernização tecnológica e iniciativas de inovação institucional.',
+      image: DiretorTecnologiaHelonVieira,
+      level: 'director',
+    },
+    {
+      id: 'compliance',
+      name: 'Mauricio Silva de Oliveira',
+      role: 'Compliance',
+      bio: 'Responsável pela integridade, conformidade e boas práticas de governança da Fundação.',
+      image: ComplianceMauricioSilva,
       level: 'director',
     },
   ];
@@ -176,34 +204,98 @@ export default function Team() {
       members: [
         {
           id: 'curator-1',
-          name: 'Presidente do Conselho',
-          role: 'Presidente',
-          bio: 'Liderança e supervisão estratégica.',
-          image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&h=500&fit=crop',
+          name: 'Moisés Alves Barcelos',
+          role: 'Presidente do Conselho',
+          bio: 'Responsável pela liderança e supervisão estratégica do Conselho de Curadores.',
+          image: PresidenteMoisésAlves,
           level: 'council',
         },
         {
           id: 'curator-2',
-          name: 'Membro do Conselho',
+          name: 'Athos Alexandre Ferreira Camargo',
           role: 'Membro',
-          bio: 'Governança institucional.',
-          image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=500&h=500&fit=crop',
+          bio: 'Atuação na governança institucional e acompanhamento das diretrizes da Fundação.',
+          image: MembroAthosAlexandre,
           level: 'council',
         },
         {
           id: 'curator-3',
-          name: 'Membro do Conselho',
+          name: 'Domingos Márcio Ferreira da Silva',
           role: 'Membro',
-          bio: 'Conselheiro institucional.',
-          image: 'https://images.unsplash.com/photo-1544723795-3fb0b90cff2f?w=500&h=500&fit=crop',
+          bio: 'Conselheiro responsável por apoiar a tomada de decisões estratégicas.',
+          image: MembroDomingosMarcio,
           level: 'council',
         },
         {
           id: 'curator-4',
-          name: 'Membro do Conselho',
+          name: 'Fernando Beggiato Barros',
           role: 'Membro',
-          bio: 'Representação e governança.',
-          image: 'https://images.unsplash.com/photo-1525134479668-1bee5c7c6845?w=500&h=500&fit=crop',
+          bio: 'Atuação na representação institucional e governança da Fundação 193.',
+          image: MembroFernandoBeggiato,
+          level: 'council',
+        },
+        {
+          id: 'curator-5',
+          name: 'Mariana Sirimarco Fernandes',
+          role: 'Membro',
+          bio: 'Participa da definição e acompanhamento das diretrizes estratégicas da Fundação.',
+          image: MembroMarianaSirimarco,
+          level: 'council',
+        },
+        {
+          id: 'curator-6',
+          name: 'Patrícia Raquel Braga Diniz Pevidor',
+          role: 'Membro',
+          bio: 'Conselheira atuante em temas de impacto social e desenvolvimento institucional.',
+          image: MembroPatriciaRaquel,
+          level: 'council',
+        },
+        {
+          id: 'curator-7',
+          name: 'Raimundo da Silva Ribeiro Neto',
+          role: 'Membro',
+          bio: 'Contribui com a governança e acompanhamento das ações estratégicas.',
+          image: MembroRaimundoSilva,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-1',
+          name: 'Flávio Murilo Nunes Pereira',
+          role: 'Membro',
+          bio: 'Atuação na supervisão fiscal e financeira da Fundação 193.',
+          image: MembroFlavioMurilo,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-2',
+          name: 'Lisandro Paixão dos Santos',
+          role: 'Membro',
+          bio: 'Responsável pelo acompanhamento contábil e financeiro da instituição.',
+          image: MembroLisandroPaixao,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-5',
+          name: 'Rosângela Fortaleza de Miranda',
+          role: 'Suplente',
+          bio: 'Apoia as atividades do Conselho Fiscal sempre que necessário.',
+          image: SuplenteRosangelaFortaleza,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-7',
+          name: 'Evérton Rocha da Silveira',
+          role: 'Suplente',
+          bio: 'Suplente no Conselho Fiscal, contribuindo com o controle financeiro.',
+          image: SuplenteEvertonRocha,
+          level: 'council',
+        },
+        {
+          id: 'fiscal-8',
+          name: 'Flávio da Costa Portela',
+          role: 'Suplente',
+          bio: 'Apoia o Conselho Fiscal na análise e fiscalização das contas.',
+          image: SuplenteFlavioCosta,
           level: 'council',
         },
       ],
@@ -214,32 +306,44 @@ export default function Team() {
       description: 'Responsável pela fiscalização econômico-financeira e pela transparência na aplicação dos recursos.',
       members: [
         {
-          id: 'fiscal-1',
-          name: 'Presidente do Conselho Fiscal',
-          role: 'Presidente',
-          bio: 'Supervisão fiscal e financeira.',
-          image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&h=500&fit=crop',
+          id: 'curator-1',
+          name: 'Welington Alves de Oliveira',
+          role: 'Presidente do Conselho',
+          bio: 'Responsável pela liderança e supervisão estratégica do Conselho de Curadores.',
+          image: PresidenteWelingtonAlves,
           level: 'council',
         },
         {
-          id: 'fiscal-2',
-          name: 'Membro do Conselho Fiscal',
+          id: 'fiscal-6',
+          name: 'Esequiel Rosa Eduardo',
           role: 'Membro',
-          bio: 'Fiscalização contábil.',
-          image: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=500&h=500&fit=crop',
+          bio: 'Atua como suplente nas atividades de acompanhamento fiscal.',
+          image: SuplenteEsequielRosa,
           level: 'council',
         },
         {
-          id: 'fiscal-3',
-          name: 'Suplente do Conselho Fiscal',
-          role: 'Suplente',
-          bio: 'Apoio fiscal e financeiro.',
-          image: 'https://images.unsplash.com/photo-1544723795-3fb0b90cff2f?w=500&h=500&fit=crop',
-          level: 'council',
-        },
+        id: 'curator-8',
+        name: 'Wanderlei Santos da Silva',
+        role: 'Membro',
+        bio: 'Atua na supervisão das ações institucionais e na proteção da missão da Fundação.',
+        image: MembroWanderleiSantos,
+        level: 'council',
+      },
+      {
+        id: 'fiscal-4',
+        name: 'Kleber Justino Oliveira',
+        role: 'Membro',
+        bio: 'Atua na análise das contas e na conformidade financeira da Fundação.',
+        image: MembroEnzoKleberJustino,
+        level: 'council',
+      },
       ],
     },
   ];
+
+  const [activeDepartmentId, setActiveDepartmentId] = useState<string>(departments[0]?.id ?? '');
+
+  const activeDepartment = departments.find((dept) => dept.id === activeDepartmentId) ?? departments[0];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-white">
@@ -295,7 +399,7 @@ export default function Team() {
         <div className="my-24 h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
         <div className="mb-20">
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">Órgãos de Governança</h2>
             <p className="text-neutral-600 max-w-2xl mx-auto">
               Conselhos independentes que garantem transparência, fiscalização e conformidade institucional.
@@ -303,70 +407,61 @@ export default function Team() {
             <div className="h-1 w-24 bg-gradient-to-r from-primary to-transparent rounded-full mx-auto mt-6" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
-            {departments.map((dept) => (
-              <section
-                key={dept.id}
-                className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl"
-              >
-                <div className="bg-primary p-6 text-white">
-                  <h3 className="text-2xl font-bold mb-2">
-                    {dept.title}
-                  </h3>
-                  <p className="text-white/90 text-sm leading-relaxed">{dept.description}</p>
-                </div>
-
-                <div className="p-6">
-                  <div className="space-y-4">
-                    {dept.members.map((member, idx) => (
-                      <div key={member.id}>
-                        <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all duration-300 group/item">
-                          <div className="relative w-16 h-16 flex-shrink-0">
-                            <img
-                              src={member.image}
-                              alt={member.name}
-                              className="w-full h-full object-cover rounded-lg group-hover/item:scale-105 transition-transform duration-300"
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-primary transition-colors truncate">
-                              {member.name}
-                            </h4>
-                            <p className="text-primary font-medium text-xs mb-1">{member.role}</p>
-                            <p className="text-neutral-600 text-xs line-clamp-1">{member.bio}</p>
-                          </div>
-                          <div className="flex gap-2 flex-shrink-0">
-                            <a
-                              href="#"
-                              aria-disabled="true"
-                              tabIndex={-1}
-                              title="Perfil em breve"
-                              onClick={(e) => e.preventDefault()}
-                              className="text-neutral-400 opacity-50 hover:opacity-75 transition-opacity"
-                            >
-                              <Linkedin size={14} />
-                            </a>
-                            <a
-                              href={`mailto:contato@fundacao193.org.br?subject=${encodeURIComponent(
-                                'Contato sobre ' + member.name,
-                              )}`}
-                              className="text-neutral-400 hover:text-primary transition-colors"
-                              title={`Enviar e-mail para ${member.name}`}
-                            >
-                              <Mail size={14} />
-                            </a>
-                          </div>
-                        </div>
-                        {idx < dept.members.length - 1 && (
-                          <div className="w-0.5 h-2 bg-slate-200 mx-auto" />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            ))}
+          {/* Abas dos Conselhos */}
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {departments.map((dept) => {
+              const isActive = dept.id === activeDepartmentId;
+              return (
+                <button
+                  key={dept.id}
+                  type="button"
+                  onClick={() => setActiveDepartmentId(dept.id)}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-200
+                    ${isActive ? 'bg-primary text-white border-primary shadow-md' : 'bg-white text-neutral-700 border-slate-200 hover:border-primary/60 hover:text-primary'}`}
+                >
+                  {dept.title}
+                </button>
+              );
+            })}
           </div>
+
+          {/* Card do Conselho ativo */}
+          <section className="group bg-white rounded-2xl overflow-hidden border-2 border-slate-200 hover:border-primary/40 transition-all duration-300 hover:shadow-2xl max-w-5xl mx-auto">
+            <div className="bg-primary p-6 text-white">
+              <h3 className="text-2xl font-bold mb-2">
+                {activeDepartment.title}
+              </h3>
+              <p className="text-white/90 text-sm leading-relaxed">{activeDepartment.description}</p>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                {activeDepartment.members.map((member, idx) => (
+                  <div key={member.id}>
+                    <div className="flex items-center gap-4 p-4 rounded-lg border border-slate-200 hover:border-primary/30 hover:bg-slate-50 transition-all duration-300 group/item">
+                      <div className="relative w-16 h-16 flex-shrink-0">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-full h-full object-cover rounded-lg group-hover/item:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-neutral-900 text-sm group-hover/item:text-primary transition-colors truncate">
+                          {member.name}
+                        </h4>
+                        <p className="text-primary font-medium text-xs mb-1">{member.role}</p>
+                        <p className="text-neutral-600 text-xs line-clamp-1">{member.bio}</p>
+                      </div>
+                    </div>
+                    {idx < activeDepartment.members.length - 1 && (
+                      <div className="w-0.5 h-2 bg-slate-200 mx-auto" />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         </div>
 
         <section className="bg-gradient-to-br from-slate-50 to-white rounded-2xl p-8 md:p-12 border border-slate-200 shadow-sm">

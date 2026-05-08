@@ -84,7 +84,7 @@ export default function Activities() {
       type: 'event' as const,
       title: ev.title.rendered,
       excerpt: ev.acf?.event_summary || '',
-      date: ymdToIso(ev.acf?.event_start_date) || '',
+      date: ymdToIso(ev.acf?.event_start_date) || ev.date || '',
       location: ev.acf?.event_location || '',
       image: ev.acf?.event_featured_image || null,
     }));
@@ -94,8 +94,8 @@ export default function Activities() {
       type: 'project' as const,
       title: p.title.rendered,
       excerpt: p.excerpt?.rendered || '',
-      date: '',
-      image: p.acf?.project_image || null,
+      date: ymdToIso(p.acf?.project_start_date) || '',
+      image: p.acf?.project_featured_image || null,
     }));
 
     const all = [...newsCards, ...eventCards, ...projectCards].sort((a, b) => {
@@ -126,7 +126,7 @@ export default function Activities() {
   useEffect(() => {
     setPage(1);
     triggerAnim();
-  }, [filter]);
+  }, [filter, triggerAnim]);
 
   useEffect(() => {
     triggerAnim();

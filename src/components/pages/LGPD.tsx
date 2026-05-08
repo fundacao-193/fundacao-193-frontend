@@ -124,7 +124,7 @@ export default function LGPD() {
             <div className="bg-white rounded-2xl p-8 shadow-md">
               <h4 className="text-lg font-bold text-neutral-900 mb-4">Solicitação de Dados</h4>
               <ol className="list-decimal list-inside text-neutral-600 space-y-2 mb-6">
-                <li>Envie email para privacidade@fundacao193.org.br</li>
+                <li>Envie email para contato@fundacao193.org.br</li>
                 <li>Descreva claramente qual dado você deseja acessar</li>
                 <li>Inclua informações para verificação de identidade</li>
                 <li>Receberá resposta em até 30 dias</li>
@@ -196,11 +196,11 @@ export default function LGPD() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="font-semibold text-neutral-900 mb-2">Email</p>
-              <p className="text-neutral-600">privacidade@fundacao193.org.br</p>
+              <p className="text-neutral-600">contato@fundacao193.org.br</p>
             </div>
             <div>
               <p className="font-semibold text-neutral-900 mb-2">Telefone</p>
-              <p className="text-neutral-600">(61) 99557-8286</p>
+              <p className="text-neutral-600">(61) 99382-3763</p>
             </div>
           </div>
           <div className="mt-6 p-4 bg-neutral-50 rounded-lg">

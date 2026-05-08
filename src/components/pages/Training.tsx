@@ -48,6 +48,49 @@ const STATUS_MAP: Record<
   },
 };
 
+const USE_HARDCODED_TRAINING = true;
+const SHOW_TRAINING_CARDS = false;
+
+const HARDCODED_TRAININGS: Training[] = [
+  {
+    id: 1,
+    title: { rendered: 'Primeiros Socorros e Atendimento Inicial' },
+    acf: {
+      cap_summary:
+        'Formacao basica para resposta rapida e suporte a vitimas em situacoes de emergencia.',
+      cap_workload: '20h',
+      cap_start_date: '2026-03-10',
+      cap_end_date: '2026-03-14',
+      cap_status: 'Inscricoes abertas',
+      cap_signup_link: 'https://fundacao193.org.br',
+    },
+  },
+  {
+    id: 2,
+    title: { rendered: 'Gestao de Riscos e Prevencao de Incendios' },
+    acf: {
+      cap_summary:
+        'Curso focado em analise de riscos, planos de contingencia e protocolos operacionais.',
+      cap_workload: '32h',
+      cap_start_date: '2026-04-05',
+      cap_end_date: '2026-04-12',
+      cap_status: 'Planejada',
+    },
+  },
+  {
+    id: 3,
+    title: { rendered: 'Operacoes Integradas em Desastres' },
+    acf: {
+      cap_summary:
+        'Treinamento avancado para coordenacao de equipes em cenarios complexos.',
+      cap_workload: '40h',
+      cap_start_date: '2026-05-18',
+      cap_end_date: '2026-05-25',
+      cap_status: 'Inscricoes encerradas',
+    },
+  },
+];
+
 const formatFriendlyDate = (start?: string, end?: string) => {
   if (!start) return '';
 
@@ -110,8 +153,10 @@ const extractImageUrl = (value: unknown): string => {
 ===================== */
 
 export default function Training() {
-  const [trainings, setTrainings] = useState<Training[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [trainings, setTrainings] = useState<Training[]>(
+    USE_HARDCODED_TRAINING ? HARDCODED_TRAININGS : []
+  );
+  const [loading, setLoading] = useState(!USE_HARDCODED_TRAINING);
   const [error, setError] = useState<string | null>(null);
 
   const loadCapacitacoes = async () => {
@@ -129,6 +174,9 @@ export default function Training() {
   };
 
   useEffect(() => {
+    if (USE_HARDCODED_TRAINING) {
+      return;
+    }
     loadCapacitacoes();
   }, []);
 
@@ -189,100 +237,110 @@ export default function Training() {
           internacionais e metodologias inovadoras.
         </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {trainings.map(training => {
-            const acf = training.acf;
-            const statusKey = normalizeStatus(acf?.cap_status);
-            const status =
-              STATUS_MAP[statusKey] ?? {
-                label: acf?.cap_status || 'Status',
-                className: 'bg-gray-200 text-gray-700',
-                canSignup: false,
-              };
+        {SHOW_TRAINING_CARDS && (
+          <>
+            {/* Fonte principal: API. Mantido hardcoded apenas como fallback opcional de desenvolvimento. */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              {trainings.map(training => {
+                const acf = training.acf;
+                const statusKey = normalizeStatus(acf?.cap_status);
+                const status =
+                  STATUS_MAP[statusKey] ?? {
+                    label: acf?.cap_status || 'Status',
+                    className: 'bg-gray-200 text-gray-700',
+                    canSignup: false,
+                  };
 
-            const imageUrl = extractImageUrl(acf?.cap_feature_image);
-            const dateLabel = formatFriendlyDate(
-              acf?.cap_start_date,
-              acf?.cap_end_date
-            );
+                const imageUrl = extractImageUrl(acf?.cap_feature_image);
+                const dateLabel = formatFriendlyDate(
+                  acf?.cap_start_date,
+                  acf?.cap_end_date
+                );
 
-            const showSignup =
-              status.canSignup && Boolean(acf?.cap_signup_link);
+                const showSignup =
+                  status.canSignup && Boolean(acf?.cap_signup_link);
 
-            return (
-              <div
-                key={training.id}
-                className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col"
-              >
-                {imageUrl && (
-                  <img
-                    src={imageUrl}
-                    alt={training.title?.rendered}
-                    className="h-40 w-full object-cover"
-                  />
-                )}
+                return (
+                  <div
+                    key={training.id}
+                    className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col"
+                  >
+                    {imageUrl && (
+                      <img
+                        src={imageUrl}
+                        alt={training.title?.rendered}
+                        className="h-40 w-full object-cover"
+                      />
+                    )}
 
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-lg font-bold mb-2">
-                    {training.title?.rendered}
-                  </h3>
+                    <div className="p-6 flex flex-col flex-1">
+                      <h3 className="text-lg font-bold mb-2">
+                        {training.title?.rendered}
+                      </h3>
 
-                  <p className="text-sm text-neutral-600 mb-4">
-                    {acf?.cap_summary}
-                  </p>
+                      <p className="text-sm text-neutral-600 mb-4">
+                        {acf?.cap_summary}
+                      </p>
 
-                  {/* Linha inferior */}
-                  <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
-                    <div className="flex items-center gap-4 flex-wrap">
-                      {acf?.cap_workload && (
-                        <span className="flex items-center gap-1">
-                          <Clock size={16} className="text-icon-fg" />
-                          {acf.cap_workload}
+                      <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
+                        <div className="flex items-center gap-4 flex-wrap">
+                          {acf?.cap_workload && (
+                            <span className="flex items-center gap-1">
+                              <Clock size={16} className="text-icon-fg" />
+                              {acf.cap_workload}
+                            </span>
+                          )}
+
+                          {dateLabel && (
+                            <span className="flex items-center gap-1">
+                              <Calendar size={16} className="text-icon-fg" />
+                              {dateLabel}
+                            </span>
+                          )}
+                        </div>
+
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${status.className}`}
+                        >
+                          {status.label}
                         </span>
-                      )}
+                      </div>
 
-                      {dateLabel && (
-                        <span className="flex items-center gap-1">
-                          <Calendar size={16} className="text-icon-fg" />
-                          {dateLabel}
-                        </span>
+                      {showSignup && (
+                        <a
+                          href={acf?.cap_signup_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="
+                            mt-auto
+                            text-center
+                            px-4
+                            py-2
+                            bg-primary
+                            text-white
+                            rounded-md
+                            text-sm
+                            font-medium
+                            hover:bg-primary-hover
+                            transition
+                          "
+                        >
+                          Inscrever-se
+                        </a>
                       )}
                     </div>
-
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${status.className}`}
-                    >
-                      {status.label}
-                    </span>
                   </div>
+                );
+              })}
+            </div>
 
-                  {showSignup && (
-                    <a
-                      href={acf?.cap_signup_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="
-                        mt-auto
-                        text-center
-                        px-4
-                        py-2
-                        bg-primary
-                        text-white
-                        rounded-md
-                        text-sm
-                        font-medium
-                        hover:bg-primary-hover
-                        transition
-                      "
-                    >
-                      Inscrever-se
-                    </a>
-                  )}
-                </div>
+            {trainings.length === 0 && (
+              <div className="bg-white rounded-xl p-8 shadow-md text-center text-neutral-600 mb-16">
+                Nenhuma capacitação disponível no momento.
               </div>
-            );
-          })}
-        </div>
+            )}
+          </>
+        )}
 
         {/* Blocos estáticos */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">

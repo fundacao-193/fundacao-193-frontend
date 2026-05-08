@@ -1,5 +1,6 @@
-import { Instagram, MessageCircle, Volume2, VolumeX } from 'lucide-react';
+import { Instagram, MessageCircle, Volume2, VolumeX, Plus } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import LogoMuseu from '../assets/images/LOGO CBMDF final.png';
 
 export default function FloatingActions() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -52,11 +53,26 @@ export default function FloatingActions() {
       {showItems && (
         <>
           <a
+            href="https://museu.cbm.df.gov.br/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex items-center gap-2 bg-white text-neutral-900 px-3 py-2 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
+            style={{ animationDelay: '0s' }}
+          >
+            <img
+              src={LogoMuseu}
+              alt="Museu do Fogo (CBMDF)"
+              className="w-7 h-7 rounded-full object-contain"
+            />
+            <span className="text-sm font-semibold whitespace-nowrap text-sm">Museu do Fogo</span>
+          </a>
+
+          <a
             href="https://instagram.com/fundacao193"
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-3 bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
-            style={{ animationDelay: '0s' }}
+            style={{ animationDelay: '0.05s' }}
           >
             <span className="text-sm font-semibold whitespace-nowrap">Instagram</span>
             <Instagram size={20} />
@@ -67,7 +83,7 @@ export default function FloatingActions() {
             target="_blank"
             rel="noopener noreferrer"
             className={`flex items-center gap-3 bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
-            style={{ animationDelay: '0.05s' }}
+            style={{ animationDelay: '0.1s' }}
           >
             <span className="text-sm font-semibold whitespace-nowrap">WhatsApp</span>
             <MessageCircle size={20} />
@@ -78,7 +94,7 @@ export default function FloatingActions() {
             className={`flex items-center gap-3 ${
               isMuted ? 'bg-neutral-600' : 'bg-blue-600'
             } text-white px-4 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110 fab-item ${isClosing ? 'fab-item-close' : 'fab-item-open'}`}
-            style={{ animationDelay: '0.1s' }}
+            style={{ animationDelay: '0.15s' }}
             title={isMuted ? 'Ativar Rádio' : 'Desativar Rádio'}
           >
             <span className="text-sm font-semibold whitespace-nowrap">Rádio</span>
@@ -89,13 +105,22 @@ export default function FloatingActions() {
 
       <button
         onClick={handleToggle}
-        className={`w-14 h-14 rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center font-bold text-xl ${
+        className={`bg-primary text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg z-[100]
+        transform transition-all duration-500 ease-out
+        hover:scale-110 hover:shadow-2xl hover:-translate-y-1
+        active:scale-95
+        ${
           isExpanded
-            ? 'bg-neutral-600 text-white hover:bg-neutral-700'
-            : 'bg-red-600 text-white hover:bg-red-700'
+            ? 'bg-neutral-600 hover:bg-neutral-700'
+            : 'bg-primary hover:bg-primary-dark'
         }`}
+        aria-label={isExpanded ? 'Fechar ações flutuantes' : 'Abrir ações flutuantes'}
       >
-        {isExpanded ? '✕' : '+'}
+        {isExpanded ? (
+          <span className="text-2xl leading-none font-bold">✕</span>
+        ) : (
+          <Plus className="w-6 h-6 block" strokeWidth={2.5} />
+        )}
       </button>
     </div>
   );

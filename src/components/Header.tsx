@@ -143,6 +143,7 @@ export default function Header() {
         { label: 'Prestação de Contas', href: '#prestacao-contas' },
         { label: 'Editais', href: '#editais' },
         { label: 'Documentos', href: '#documentos' },
+        { label: 'Integridade', href: '#integridade' },
         { label: 'LGPD', href: '#lgpd' },
       ]
     },
@@ -169,6 +170,8 @@ export default function Header() {
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-12 w-auto"
+                width="48"
+                height="48"
                 loading="lazy"
                 decoding="async"
               />

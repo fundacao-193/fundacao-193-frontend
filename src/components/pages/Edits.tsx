@@ -1,113 +1,58 @@
-// import { useState, useEffect, useRef } from 'react';
-import { ArrowLeft, Calendar, FileText, Download } from 'lucide-react';
-// import { fetchEditais } from '../../services/api';
-// import type { Edit } from '../../types/edits';
-// import { formatFileSize, formatDate } from '../../utils/format';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Calendar, FileText, Download, RotateCw } from 'lucide-react';
+import PageLoader from '../PageLoader';
+import { fetchEditais } from '../../services/api';
+import type { Documento } from '../../types/documents';
+import { extractDocumentFile } from '../../lib/wordpress-utils';
 
 export default function Edits() {
-  // ============================================================================
-  // CÓDIGO PRONTO PARA API - COMENTADO ATÉ WORDPRESS HEADLESS ESTAR PRONTO
-  // ============================================================================
-  // const [editais, setEditais] = useState<Edit[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // const hasFetched = useRef(false);
+  const [editais, setEditais] = useState<Documento[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const hasFetched = useRef(false);
 
-  // useEffect(() => {
-  //   if (hasFetched.current) return;
-  //   hasFetched.current = true;
-  //   
-  //   async function loadEditais() {
-  //     try {
-  //       const data = await fetchEditais();
-  //       setEditais(data);
-  //     } catch (err) {
-  //       setError('Não conseguimos carregar os editais. Tente novamente mais tarde.');
-  //       console.error('Erro ao carregar editais:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   loadEditais();
-  // }, []);
+  const loadEditais = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchEditais();
+      setEditais(data);
+    } catch (err) {
+      console.error('Erro ao carregar editais:', err);
+      setError('Não conseguimos carregar os editais. Tente novamente mais tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // // Agrupar editais por ano
-  // const groupedByYear = editais.reduce((acc, edital) => {
-  //   const year = edital.acf?.edital_year || new Date().getFullYear();
-  //   if (!acc[year]) acc[year] = [];
-  //   acc[year].push(edital);
-  //   return acc;
-  // }, {} as Record<number, Edit[]>);
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    loadEditais();
+  }, []);
 
-  // // Ordenar anos em ordem decrescente
-  // const sortedYears = Object.keys(groupedByYear)
-  //   .map(Number)
-  //   .sort((a, b) => b - a);
+  const groupedByYear = editais.reduce((acc, edital) => {
+    const dateStr = edital.acf?.data_publicacao || edital.date;
+    const year = dateStr ? parseInt(dateStr.substring(0, 4), 10) : new Date().getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(edital);
+    return acc;
+  }, {} as Record<number, Documento[]>);
 
-  // // Encontrar edital em destaque (Featured)
-  // const featuredEdit = editais.find(e => e.acf?.edital_is_featured && e.acf?.edital_status === 'Aberto');
-  // ============================================================================
+  const sortedYears = Object.keys(groupedByYear)
+    .map(Number)
+    .sort((a, b) => b - a);
 
-  // PLACEHOLDER ESTÁTICO (remover quando API estiver pronta)
-  const edits = [
-    {
-      year: 2024,
-      items: [
-        {
-          title: 'Edital de Seleção de Projetos',
-          description: 'Chamada pública para apresentação de projetos inovadores em segurança pública',
-          date: 'Publicado em: 15/01/2024',
-          status: 'Aberto',
-        },
-        {
-          title: 'Edital de Contratação de Consultores',
-          description: 'Processo de seleção para contratação de consultores especializados',
-          date: 'Publicado em: 10/01/2024',
-          status: 'Encerrado',
-        },
-      ],
-    },
-    {
-      year: 2023,
-      items: [
-        {
-          title: 'Edital de Fornecimento de Equipamentos',
-          description: 'Seleção de fornecedores para equipamentos de treinamento especializado',
-          date: 'Publicado em: 20/12/2023',
-          status: 'Encerrado',
-        },
-        {
-          title: 'Edital de Bolsas de Pós-Graduação',
-          description: 'Programa de apoio a profissionais em especialização e mestrado',
-          date: 'Publicado em: 01/11/2023',
-          status: 'Encerrado',
-        },
-        {
-          title: 'Edital de Pesquisa e Inovação',
-          description: 'Edital para desenvolvimento de pesquisas aplicadas em segurança',
-          date: 'Publicado em: 15/08/2023',
-          status: 'Encerrado',
-        },
-      ],
-    },
-    {
-      year: 2022,
-      items: [
-        {
-          title: 'Edital de Seleção de Parceiros',
-          description: 'Processo de seleção de instituições para parcerias estratégicas',
-          date: 'Publicado em: 10/05/2022',
-          status: 'Encerrado',
-        },
-        {
-          title: 'Edital de Modernização de Infraestrutura',
-          description: 'Chamada para projetos de melhoria de instalações e equipamentos',
-          date: 'Publicado em: 20/03/2022',
-          status: 'Encerrado',
-        },
-      ],
-    },
-  ];
+  const featuredEdit = editais.find((e) => e.acf?.status_edital === 'Aberto');
+  const featuredFile = featuredEdit ? extractDocumentFile(featuredEdit) : { url: '', filesize: null };
+
+  const formatYmdDate = (ymd?: string): string => {
+    if (!ymd || ymd.length !== 8) return '';
+    const year = ymd.substring(0, 4);
+    const month = ymd.substring(4, 6);
+    const day = ymd.substring(6, 8);
+    return `${day}/${month}/${year}`;
+  };
 
   const getStatusBadge = (status: string) => {
     if (status === 'Aberto') {
@@ -115,6 +60,10 @@ export default function Edits() {
     }
     return 'bg-neutral-100 text-neutral-600';
   };
+
+  if (loading) {
+    return <PageLoader message="Carregando editais..." />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
@@ -133,67 +82,49 @@ export default function Edits() {
           Chamadas públicas, seleções e oportunidades de participação em programas da Fundação 193.
         </p>
 
-        {/* ====================================================================== */}
-        {/* LOADING/ERROR STATES - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {loading && (
-          <div className="flex items-center justify-center py-16">
-            <div className="text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-neutral-600">Carregando editais...</p>
+        {error && (
+          <div className="mb-10 max-w-2xl bg-red-50 border border-red-200 rounded-lg p-6 flex items-center gap-4">
+            <div className="flex-1">
+              <p className="text-red-700 font-medium mb-2">{error}</p>
+              <button
+                onClick={loadEditais}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                <RotateCw size={16} />
+                Tentar Novamente
+              </button>
             </div>
           </div>
         )}
 
-        {error && (
-          <div className="text-center py-16 bg-red-50 rounded-xl p-8">
-            <p className="text-red-600 mb-4 font-medium">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors"
-            >
-              Tentar Novamente
-            </button>
-          </div>
-        )} */}
-
-        {/* ====================================================================== */}
-        {/* EDITAL EM DESTAQUE - DESCOMENTAR QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {!loading && !error && featuredEdit && (
+        {!error && featuredEdit && (
           <div className="mb-12">
             <div className="flex items-center gap-3 mb-8 bg-white rounded-xl p-6 shadow-md">
               <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                 <span className="text-green-700 font-bold">!</span>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-neutral-900">{featuredEdit.title.rendered}</p>
-                <p className="text-sm text-neutral-600">{featuredEdit.acf?.edital_description}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-neutral-900 truncate">{featuredEdit.title.rendered}</p>
+                {featuredEdit.acf?.descricao_curta && (
+                  <p className="text-sm text-neutral-600 truncate">{featuredEdit.acf.descricao_curta}</p>
+                )}
               </div>
-              {featuredEdit.acf?.edital_file?.url && (
+              {featuredFile.url && (
                 <a
-                  href={featuredEdit.acf.edital_file.url}
+                  href={featuredFile.url}
                   download
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+                  className="ml-auto px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
                 >
                   Acessar
                 </a>
               )}
             </div>
           </div>
-        )} */}
+        )}
 
-        {/* ====================================================================== */}
-        {/* PLACEHOLDER ATUAL - REMOVER QUANDO API ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-
-        <div className="mb-12">
-        {/* ====================================================================== */}
-        {/* RENDERIZAR DADOS DA API - DESCOMENTAR QUANDO ESTIVER PRONTA */}
-        {/* ====================================================================== */}
-        {/* {!loading && !error && (
+        {!error && sortedYears.length > 0 && (
           <div className="space-y-12">
             {sortedYears.map((year) => {
               const yearEdits = groupedByYear[year];
@@ -205,10 +136,10 @@ export default function Edits() {
                   </h2>
                   <div className="space-y-4">
                     {yearEdits.map((edital) => {
-                      const file = edital.acf?.edital_file;
-                      const status = edital.acf?.edital_status || 'Encerrado';
-                      const publishDate = edital.acf?.edital_publish_date 
-                        ? `Publicado em: ${formatDate(edital.acf.edital_publish_date)}`
+                      const file = extractDocumentFile(edital);
+                      const status = edital.acf?.status_edital || 'Encerrado';
+                      const publishDate = edital.acf?.data_publicacao
+                        ? `Publicado em: ${formatYmdDate(edital.acf.data_publicacao)}`
                         : '';
 
                       return (
@@ -224,25 +155,20 @@ export default function Edits() {
                                   {edital.title.rendered}
                                 </h4>
                               </div>
-                              <p className="text-neutral-600 mb-3">
-                                {edital.acf?.edital_description || 
-                                 edital.content?.rendered?.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
-                              </p>
+                              {edital.acf?.descricao_curta && (
+                                <p className="text-neutral-600 mb-3">{edital.acf.descricao_curta}</p>
+                              )}
                               {publishDate && (
                                 <p className="text-sm text-neutral-500">{publishDate}</p>
                               )}
                             </div>
                             <div className="flex items-center gap-3">
                               <span
-                                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${
-                                  status === 'Aberto' 
-                                    ? 'bg-green-100 text-green-700' 
-                                    : 'bg-neutral-100 text-neutral-600'
-                                }`}
+                                className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusBadge(status)}`}
                               >
                                 {status}
                               </span>
-                              {file?.url ? (
+                              {file.url ? (
                                 <a
                                   href={file.url}
                                   download
@@ -269,64 +195,34 @@ export default function Edits() {
               );
             })}
           </div>
-        )} */}
+        )}
 
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <span className="text-green-700 font-bold">!</span>
+        {!error && sortedYears.length === 0 && (
+          <section className="bg-white rounded-2xl p-8 md:p-10 shadow-md border border-neutral-100 text-center">
+            <h3 className="text-2xl font-bold text-neutral-900 mb-3">Nenhum edital disponível</h3>
+            <p className="text-neutral-600 max-w-2xl mx-auto mb-6">
+              Ainda não encontramos editais publicados nesta área. Para receber orientações sobre processos seletivos,
+              fale com nossa equipe.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a
+                href="mailto:contato@fundacao193.org.br?subject=Informações%20sobre%20Editais"
+                className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors"
+              >
+                Solicitar por E-mail
+              </a>
+              <button
+                onClick={loadEditais}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-neutral-100 text-neutral-700 rounded-lg font-medium hover:bg-neutral-200 transition-colors"
+              >
+                <RotateCw size={16} />
+                Atualizar lista
+              </button>
             </div>
-            <div>
-              <p className="font-semibold text-neutral-900">Edital Aberto</p>
-              <p className="text-sm text-neutral-600">Edital de Seleção de Projetos 2024</p>
-            </div>
-            <button className="ml-auto px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-hover transition-colors">
-              Acessar
-            </button>
-          </div>
-        </div>
+          </section>
+        )}
 
-        <div className="space-y-12">
-          {edits.map((yearGroup) => (
-            <section key={yearGroup.year}>
-              <h2 className="text-3xl font-bold text-neutral-900 mb-6 flex items-center gap-2">
-                <Calendar size={28} className="text-icon-fg" />
-                Ano {yearGroup.year}
-              </h2>
-              <div className="space-y-4">
-                {yearGroup.items.map((edit) => (
-                  <div
-                    key={edit.title}
-                    className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <FileText size={20} className="text-icon-fg" />
-                          <h4 className="text-lg font-bold text-neutral-900">{edit.title}</h4>
-                        </div>
-                        <p className="text-neutral-600 mb-3">{edit.description}</p>
-                        <p className="text-sm text-neutral-500">{edit.date}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusBadge(
-                            edit.status
-                          )}`}
-                        >
-                          {edit.status}
-                        </span>
-                        <button className="text-neutral-400 hover:text-primary transition-colors">
-                          <Download size={20} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-
+        {/* Conteudo institucional hardcoded */}
         <section className="mt-16 bg-gradient-to-r from-primary to-primary-hover rounded-2xl p-8 text-white">
           <h3 className="text-2xl font-bold mb-6">Como Participar de Nossos Editais</h3>
           <div className="grid md:grid-cols-2 gap-8">
@@ -383,7 +279,7 @@ export default function Edits() {
 
         <div className="mt-12 bg-neutral-100 rounded-xl p-6">
           <p className="text-neutral-700 font-medium mb-4">Para mais informações sobre editais:</p>
-          <p className="text-neutral-600">Email: contato@fundacao193.org.br | Telefone: (61) 99557-8286</p>
+          <p className="text-neutral-600">Email: contato@fundacao193.org.br | Telefone: (61) 99382-3763</p>
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ export default function Footer() {
       { label: 'Prestação de Contas', href: '#prestacao-contas' },
       { label: 'Editais', href: '#editais' },
       { label: 'Documentos', href: '#documentos' },
+      { label: 'Integridade', href: '#integridade' },
       { label: 'LGPD', href: '#lgpd' },
     ],
   };
@@ -34,6 +35,8 @@ export default function Footer() {
                 src="/logo-reduzida.png"
                 alt="Fundação 193 Logo"
                 className="h-16 w-auto"
+                width="64"
+                height="64"
               />
               <div>
                 <h3 className="text-xl font-bold">Fundação 193</h3>
@@ -41,15 +44,18 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-neutral-400 mb-6 leading-relaxed">
-            Desde 2022, a Fundação 193 atua no apoio ao Corpo de Bombeiros Militar do Distrito Federal, contribuindo para a prevenção, a segurança e o bem-estar da população.
+              Instituição sem fins lucrativos criada para apoiar e fortalecer o Corpo de Bombeiros Militar do Distrito Federal, promovendo projetos, capacitações e iniciativas sociais em benefício da sociedade.
+            </p>
+            <p className="text-neutral-500 text-sm mb-4">
+              Endereço: SHS Quadra 6, Conj. A, Bloco A, Sala 501, Brasília-DF
             </p>
             <div className="mb-6 space-y-2">
               <a
-                href="tel:+556133213000"
+                href="tel:+5561993823763"
                 className="flex items-center gap-2 text-neutral-400 hover:text-primary transition-colors"
               >
                 <Phone size={16} />
-                <span>(61) 99557-8286</span>
+                <span>(61) 99382-3763</span>
               </a>
               <a
                 href="mailto:contato@fundacao193.org.br"
@@ -60,54 +66,53 @@ export default function Footer() {
               </a>
             </div>
             <div className="flex gap-3">
-              {/* Social links: placeholders for now - marked as coming soon to avoid no-op navigation */}
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Facebook - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.facebook.com/profile.php?id=100091474837798"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Facebook da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#1877F2] transition-colors"
+                aria-label="Acesse nossa página no Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Instagram - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.instagram.com/fundacao193/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Instagram da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] transition-colors"
+                aria-label="Acesse nosso Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="Twitter - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://x.com/fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Twitter/X da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-black transition-colors"
+                aria-label="Acesse nosso Twitter/X"
               >
                 <Twitter size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="LinkedIn - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.linkedin.com/in/fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="LinkedIn da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#0A66C2] transition-colors"
+                aria-label="Acesse nosso LinkedIn"
               >
                 <Linkedin size={20} />
               </a>
               <a
-                href="#"
-                aria-disabled="true"
-                tabIndex={-1}
-                title="YouTube - Em breve"
-                onClick={(e) => e.preventDefault()}
-                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center opacity-60 cursor-not-allowed transition-colors"
+                href="https://www.youtube.com/@fundacao193"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="YouTube da Fundação 193"
+                className="w-10 h-10 bg-neutral-800 rounded-lg flex items-center justify-center hover:bg-[#FF0000] transition-colors"
+                aria-label="Acesse nosso canal no YouTube"
               >
                 <Youtube size={20} />
               </a>
